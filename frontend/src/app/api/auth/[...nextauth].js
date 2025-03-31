@@ -3,8 +3,10 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 // Simulación de base de datos con usuarios y roles
 const users = [
-  { id: 1, userName: "Admin User", email: "admin@example.com", password: "admin123", role: "admin" },
-  { id: 2, userName: "Regular User", email: "user@example.com", password: "user123", role: "user" }
+  { id: 1, userName: "Admin User", email: "admin@example.com", password: "admin123", role: "client" },
+  { id: 2, userName: "Regular User", email: "user@example.com", password: "user123", role: "seller" },
+  { id: 3, userName: "User", email: "user@example.com", password: "user123", role: "provider" }
+
 ];
 
 export default NextAuth({
