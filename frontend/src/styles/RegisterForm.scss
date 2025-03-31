@@ -4,6 +4,7 @@
     @include logbar.flexing(row, space-evenly, center);
     background-color: logbar.$primary-color;
     color: red;
+    flex: 1;
     
     section {
         @include logbar.flexing(column, center, center);

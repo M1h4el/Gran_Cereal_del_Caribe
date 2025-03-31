@@ -122,6 +122,7 @@ input {
   align-items: center;
   background-color: #bdb9b9;
   color: red;
+  flex: 1;
 }
 
 .body-login section {
