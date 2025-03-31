@@ -1,0 +1,29 @@
+section {
+  width: 100%;
+}
+
+.bodyDashboard {
+    display: flex;
+    width: 100%;
+    height: auto
+  }
+  
+  .menuSide {
+    background-color: #f1f1f1;
+    min-width: 5%;
+    position: relative;
+    
+  }
+  
+  .displaySide {
+    background-color: #ddd;
+    min-width: 5%;
+    padding: 80px 50px;
+    height: auto;
+  }
+  
+  .resizer {
+    cursor: ew-resize;
+    background-color: #aaa;
+    width: 5px;
+  }

@@ -1,0 +1,32 @@
+@use "./LogBar.scss" as logbar;
+
+h1 {
+    font-size: 60px;
+    margin-bottom: 20px;
+    color: black;
+}
+
+h4 {
+    margin-bottom: 5px;
+}
+
+hr {
+    width: 100%;
+}
+
+section {
+    height: auto;
+    @include logbar.flexing(null, flex-start, center);
+    .TitleSection {
+        @include logbar.flexing(column, center, flex-start);
+        width: 97%;
+        
+    }
+    .MenuProjectSection {
+        height: 100%;
+        width: 100%;
+        /* .ProjectCard {
+            
+        } */
+    }
+}

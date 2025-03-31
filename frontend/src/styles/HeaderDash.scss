@@ -1,0 +1,43 @@
+@use "./LogBar.scss" as logbar;
+
+header {
+  @include logbar.flexing(null, space-between, center);
+  background-color: logbar.$primary-color;
+  height: 100px;
+
+  .menuBar {
+    @include logbar.flexing(null, center, center);
+    height: 100%;
+    gap: 0;
+    width: auto;
+
+    div {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      height: 100%;
+      width: 100px;
+
+      svg {
+        transition: transform 0.3s ease;
+      }
+
+      &:hover {
+        svg {
+          transform: scale(1.5);
+        }
+      }
+
+      &.active {
+        background-color: gray;
+
+        svg {
+          transform: scale(1.5);
+        }
+      }
+    }
+  }
+}
