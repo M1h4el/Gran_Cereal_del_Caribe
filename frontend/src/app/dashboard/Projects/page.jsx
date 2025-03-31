@@ -1,5 +1,5 @@
 import React from 'react'
-import ProjectContent from '../ProjectContentt
+import ProjectContent from '../ProjectContent'
 
 function page() {
   return (
