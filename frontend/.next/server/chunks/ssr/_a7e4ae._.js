@@ -21,7 +21,6 @@ const LoginForm = ()=>{
     const [password, setPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('');
     const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('');
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const backendUrl = process.env.NEXT_PUBLIC_URL_BACKEND;
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const handleForm = async (event)=>{
         event.preventDefault();
@@ -29,39 +28,37 @@ const LoginForm = ()=>{
             setError('Por favor, complete todos los campos.');
             return;
         }
-        /* setLoading(true);
-
-    try {
-      console.log(backendUrl);
-      const response = await fetch(`${backendUrl}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      setEmail('');
-      setPassword('');
-      setError('');
-
-      if (response.ok) {
-        console.log('Login exitoso');
-        localStorage.setItem('jwt', data.access_token);
-        router.push('/dashboard');
-      } else {
-        console.error('Error al iniciar sesión:', data.message);
-        setError('Hubo un error al iniciar sesión. Intenta nuevamente.');
-      }
-    } catch (err) {
-      console.error('Error al enviar los datos:', err);
-      setError('Hubo un error al iniciar sesión. Intenta nuevamente.');
-    } finally {
-      setLoading(false);
-    } */ router.push('/dashboard');
-    };
+        setLoading(true);
+        try {
+            const response = await fetch("auth/signin/credentials", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
+            const data = await response.json();
+            setEmail('');
+            setPassword('');
+            setError('');
+            if (response.ok) {
+                console.log('Login exitoso');
+                localStorage.setItem('jwt', data.access_token);
+                router.push('/dashboard');
+            } else {
+                console.error('Error al iniciar sesión:', data.message);
+                setError('Hubo un error al iniciar sesión. Intenta nuevamente.');
+            }
+        } catch (err) {
+            console.error('Error al enviar los datos:', err);
+            setError('Hubo un error al iniciar sesión. Intenta nuevamente.');
+        } finally{
+            setLoading(false);
+        }
+    /* router.push('/dashboard') */ };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
         className: "header-container",
         children: [
@@ -70,7 +67,7 @@ const LoginForm = ()=>{
                 children: "LOGO"
             }, void 0, false, {
                 fileName: "[project]/src/app/LogBar.jsx",
-                lineNumber: 62,
+                lineNumber: 60,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -87,7 +84,7 @@ const LoginForm = ()=>{
                             onChange: (e)=>setEmail(e.target.value)
                         }, void 0, false, {
                             fileName: "[project]/src/app/LogBar.jsx",
-                            lineNumber: 65,
+                            lineNumber: 63,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -98,7 +95,7 @@ const LoginForm = ()=>{
                             onChange: (e)=>setPassword(e.target.value)
                         }, void 0, false, {
                             fileName: "[project]/src/app/LogBar.jsx",
-                            lineNumber: 72,
+                            lineNumber: 70,
                             columnNumber: 11
                         }, this),
                         error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -106,7 +103,7 @@ const LoginForm = ()=>{
                             children: error
                         }, void 0, false, {
                             fileName: "[project]/src/app/LogBar.jsx",
-                            lineNumber: 79,
+                            lineNumber: 77,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -116,24 +113,24 @@ const LoginForm = ()=>{
                             children: loading ? 'Cargando...' : 'Login'
                         }, void 0, false, {
                             fileName: "[project]/src/app/LogBar.jsx",
-                            lineNumber: 80,
+                            lineNumber: 78,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/LogBar.jsx",
-                    lineNumber: 64,
+                    lineNumber: 62,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/LogBar.jsx",
-                lineNumber: 63,
+                lineNumber: 61,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/LogBar.jsx",
-        lineNumber: 61,
+        lineNumber: 59,
         columnNumber: 5
     }, this);
 };
@@ -147,7 +144,7 @@ var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_
 __turbopack_esm__({
     "fetchData": (()=>fetchData)
 });
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://localhost:3000/api';
 const fetchData = async (endpoint, method, body = null)=>{
     const token = localStorage.getItem('jwt') ?? '';
     const headers = {
@@ -165,10 +162,13 @@ const fetchData = async (endpoint, method, body = null)=>{
     }
     try {
         const res = await fetch(`${API_URL}/${endpoint}`, requestOptions);
-        if (!res.ok) throw new Error('Error al obtener datos');
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.error || 'Error al obtener datos');
+        }
         return await res.json();
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error en fetchData:', error.message);
         throw error;
     }
 };
@@ -207,14 +207,23 @@ function BodyLogin() {
         const { value } = e.target;
         setPassword(value);
     };
-    const handleSubmit = (e)=>{
-        (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])("users", "POST", {
-            userName,
-            email,
-            password
-        });
-        alert("Usuario registrado satisfactoriamente");
-        window.location.reload();
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+        try {
+            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])("auth/register", "POST", {
+                userName,
+                email,
+                password
+            });
+            if (response.error) {
+                alert(response.error);
+            } else {
+                alert("Usuario registrado satisfactoriamente");
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error("Error al registrar:", error);
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "body-login",
@@ -227,7 +236,7 @@ function BodyLogin() {
                         children: "asdasdasd"
                     }, void 0, false, {
                         fileName: "[project]/src/app/RegisterForm.jsx",
-                        lineNumber: 41,
+                        lineNumber: 53,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -236,18 +245,18 @@ function BodyLogin() {
                             children: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, dolor."
                         }, void 0, false, {
                             fileName: "[project]/src/app/RegisterForm.jsx",
-                            lineNumber: 43,
+                            lineNumber: 55,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/RegisterForm.jsx",
-                        lineNumber: 42,
+                        lineNumber: 54,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/RegisterForm.jsx",
-                lineNumber: 40,
+                lineNumber: 52,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -261,12 +270,12 @@ function BodyLogin() {
                                 children: "Registrate"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/RegisterForm.jsx",
-                                lineNumber: 51,
+                                lineNumber: 63,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/RegisterForm.jsx",
-                            lineNumber: 50,
+                            lineNumber: 62,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -280,12 +289,12 @@ function BodyLogin() {
                                         onChange: (e)=>handleChangeName(e)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/RegisterForm.jsx",
-                                        lineNumber: 55,
+                                        lineNumber: 67,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/RegisterForm.jsx",
-                                    lineNumber: 54,
+                                    lineNumber: 66,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -296,12 +305,12 @@ function BodyLogin() {
                                         onChange: (e)=>handleChangeEmail(e)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/RegisterForm.jsx",
-                                        lineNumber: 62,
+                                        lineNumber: 74,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/RegisterForm.jsx",
-                                    lineNumber: 61,
+                                    lineNumber: 73,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -310,12 +319,12 @@ function BodyLogin() {
                                         placeholder: "Confirmar E-mail"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/RegisterForm.jsx",
-                                        lineNumber: 69,
+                                        lineNumber: 81,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/RegisterForm.jsx",
-                                    lineNumber: 68,
+                                    lineNumber: 80,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -326,12 +335,12 @@ function BodyLogin() {
                                         onChange: (e)=>handleChangePassword(e)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/RegisterForm.jsx",
-                                        lineNumber: 72,
+                                        lineNumber: 84,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/RegisterForm.jsx",
-                                    lineNumber: 71,
+                                    lineNumber: 83,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -340,18 +349,18 @@ function BodyLogin() {
                                         placeholder: "Confimar Contraseña"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/RegisterForm.jsx",
-                                        lineNumber: 79,
+                                        lineNumber: 91,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/RegisterForm.jsx",
-                                    lineNumber: 78,
+                                    lineNumber: 90,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/RegisterForm.jsx",
-                            lineNumber: 53,
+                            lineNumber: 65,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -362,29 +371,29 @@ function BodyLogin() {
                                 children: "Sign up"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/RegisterForm.jsx",
-                                lineNumber: 83,
+                                lineNumber: 95,
                                 columnNumber: 11
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/RegisterForm.jsx",
-                            lineNumber: 82,
+                            lineNumber: 94,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/RegisterForm.jsx",
-                    lineNumber: 49,
+                    lineNumber: 61,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/RegisterForm.jsx",
-                lineNumber: 48,
+                lineNumber: 60,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/RegisterForm.jsx",
-        lineNumber: 39,
+        lineNumber: 51,
         columnNumber: 5
     }, this);
 }

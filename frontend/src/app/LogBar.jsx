@@ -11,7 +11,6 @@ const LoginForm = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const backendUrl = process.env.NEXT_PUBLIC_URL_BACKEND
   const router = useRouter();
 
   const handleForm = async (event) => {
@@ -22,11 +21,10 @@ const LoginForm = () => {
       return;
     }
 
-    /* setLoading(true);
+    setLoading(true);
 
     try {
-      console.log(backendUrl);
-      const response = await fetch(`${backendUrl}/auth/login`, {
+      const response = await fetch("auth/signin/credentials", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,8 +51,8 @@ const LoginForm = () => {
       setError('Hubo un error al iniciar sesión. Intenta nuevamente.');
     } finally {
       setLoading(false);
-    } */
-   router.push('/dashboard')
+    }
+   /* router.push('/dashboard') */
   };
 
   return (

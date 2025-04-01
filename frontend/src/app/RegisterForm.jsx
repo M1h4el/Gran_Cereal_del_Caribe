@@ -25,14 +25,26 @@ function BodyLogin() {
     setPassword(value);
   };
 
-  const handleSubmit = (e) => {
-    fetchData("users", "POST", {
-      userName,
-      email,
-      password,
-    });
-    alert("Usuario registrado satisfactoriamente");
-    window.location.reload();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetchData("auth/register", "POST", {
+        userName,
+        email,
+        password,
+      });
+  
+      if (response.error) {
+        alert(response.error);
+      } else {
+        alert("Usuario registrado satisfactoriamente");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Error al registrar:", error);
+    }
+  
   };
 
   return (

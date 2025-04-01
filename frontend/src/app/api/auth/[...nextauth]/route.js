@@ -1,13 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-// Simulación de base de datos con usuarios y roles
-const users = [
-  { id: 1, userName: "Admin User", email: "admin@example.com", password: "admin123", role: "client" },
-  { id: 2, userName: "Regular User", email: "user@example.com", password: "user123", role: "seller" },
-  { id: 3, userName: "User", email: "user@example.com", password: "user123", role: "provider" }
-
-];
+import {pool as db} from "@/lib/db";
+import bcrypt from "bcrypt";
 
 export default NextAuth({
   providers: [
@@ -18,11 +12,24 @@ export default NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        const user = users.find(u => u.email === credentials.email && u.password === credentials.password);
-        if (user) {
+        try {
+          const [users] = await db.query("SELECT * FROM users WHERE email = ?", [credentials.email]);
+          if (users.length === 0) {
+            throw new Error("Usuario no encontrado");
+          }
+
+          const user = users[0];
+
+          // Comparar contraseña encriptada
+          const isValidPassword = await bcrypt.compare(credentials.password, user.password);
+          if (!isValidPassword) {
+            throw new Error("Contraseña incorrecta");
+          }
+
           return { id: user.id, userName: user.userName, email: user.email, role: user.role };
+        } catch (error) {
+          throw new Error(error.message);
         }
-        throw new Error("Invalid credentials");
       }
     })
   ],
@@ -45,3 +52,6 @@ export default NextAuth({
     signIn: "/auth/login"
   }
 });
+
+export const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };

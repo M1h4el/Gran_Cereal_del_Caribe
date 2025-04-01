@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://localhost:3000/api';
 
 export const fetchData = async (endpoint, method, body = null) => {
   const token = localStorage.getItem('jwt') ?? '';
@@ -23,11 +23,14 @@ export const fetchData = async (endpoint, method, body = null) => {
   try {
     const res = await fetch(`${API_URL}/${endpoint}`, requestOptions);
 
-    if (!res.ok) throw new Error('Error al obtener datos');
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || 'Error al obtener datos');
+    }
 
     return await res.json();
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error en fetchData:', error.message);
     throw error;
   }
 };
