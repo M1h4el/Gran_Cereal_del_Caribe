@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Box, List, ListItem, ListItemButton, ListItemText, ListItemIcon } from "@mui/material";
+import { signOut } from "next-auth/react";
 
 function SideMenuContent({ tab }) {
   const router = useRouter();
@@ -48,8 +49,7 @@ function SideMenuContent({ tab }) {
         break;
       case "Cerrar sesión":
         console.log("Cerrando sesión...");
-        localStorage.removeItem("jwt");
-        router.replace("/");
+        signOut({ callbackUrl: "/" });
         break;
       default:
         console.log(`Acción no definida para: ${label}`);

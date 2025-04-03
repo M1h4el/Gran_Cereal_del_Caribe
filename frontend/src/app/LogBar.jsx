@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import '@/styles/LogBar.scss';
 import { useRouter } from 'next/navigation';
+import { fetchData } from '../../utils/api';
+import { signIn } from 'next-auth/react';
 
 const LoginForm = () => {
 
@@ -24,30 +26,19 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("auth/signin/credentials", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
+      const result = await signIn('credentials', {
+        redirect: false, // Evita redirección automática
+        email,
+        password,
       });
 
-      const data = await response.json();
-
-      setEmail('');
-      setPassword('');
-      setError('');
-
-      if (response.ok) {
-        console.log('Login exitoso');
-        localStorage.setItem('jwt', data.access_token);
-        router.push('/dashboard');
+      if (result.error) {
+        setError('Usuario o contraseña incorrectos.');
       } else {
-        console.error('Error al iniciar sesión:', data.message);
-        setError('Hubo un error al iniciar sesión. Intenta nuevamente.');
+        router.push('/dashboard'); // Redirige al dashboard tras login exitoso
       }
     } catch (err) {
-      console.error('Error al enviar los datos:', err);
+      console.error('Error en el login:', err);
       setError('Hubo un error al iniciar sesión. Intenta nuevamente.');
     } finally {
       setLoading(false);

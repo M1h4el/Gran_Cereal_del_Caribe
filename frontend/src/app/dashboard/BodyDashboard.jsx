@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import "@/styles/bodyDashboard.scss";
-import ProjectsContent from './ProjectContent';
+import ProjectsContent from './SucursalContent';
 import ProfileContent from './ProfileContent';
 import NotificationContent from './NotificationsContent';
 import SocialContent from './SocialContent';
@@ -10,7 +10,7 @@ import SideMenuContent from "./SideMenuContent";
 
 const BodyDashboard = ({ handleCard, selectedTab }) => {
   const [menuWidth, setMenuWidth] = useState(15);
-
+  
   const handleTab = (selectedTab) => {
     if (selectedTab === "projects") {
       return <ProjectsContent handleCard={handleCard} />;

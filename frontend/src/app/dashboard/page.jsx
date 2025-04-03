@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import HeaderDash from "./HeaderDash";
-import withAuth from "@/../utils/withAuth";
 
 // Components
 import BodyDashboard from "./BodyDashboard";
@@ -27,5 +26,5 @@ const Page = () => {
   );
 };
 
-export default withAuth(Page);
+export default Page;
 

@@ -65,13 +65,15 @@ function BodyLogin() {
           <div className="SignInForm">
             <div className="inputLogin">
               <input
-                placeholder="Usuario"
+                type="text"
+                placeholder="Nombre"
                 value={userName}
                 onChange={(e) => handleChangeName(e)}
               ></input>
             </div>
             <div className="inputLogin">
               <input
+                type="email"
                 placeholder="E-mail"
                 value={email}
                 onChange={(e) => handleChangeEmail(e)}
@@ -82,13 +84,16 @@ function BodyLogin() {
             </div>
             <div className="inputLogin">
               <input
+                type="password"
                 placeholder="Contraseña"
                 value={password}
                 onChange={(e) => handleChangePassword(e)}
               ></input>
             </div>
             <div className="inputLogin">
-              <input placeholder="Confimar Contraseña"></input>
+              <input 
+                type="password"
+                placeholder="Confimar Contraseña"></input>
             </div>
           </div>
         <div className="divButtom">
