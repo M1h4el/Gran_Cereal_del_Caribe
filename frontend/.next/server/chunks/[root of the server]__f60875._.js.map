@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 47, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/solan/Desktop/AssessmentProject/frontend/src/app/api/users/%5BuserId%5D/children/route.js"],"sourcesContent":["/* import { queryDB } from \"@/lib/dbUtils\";\r\n\r\nexport async function GET(req, { params }) {\r\n  try {\r\n    if (!params || !params.userId) {\r\n        return Response.json({ error: \"Usuario no especificado\" }, { status: 400 });\r\n    }\r\n    const { userId } = params;\r\n    if (!userId) {\r\n      return Response.json({ error: \"Usuario no especificado\" }, { status: 400 });\r\n    }\r\n    const [users] = await queryDB(\r\n      `SELECT u.userName, u.role, u.address, u.phone, u.bought_sold FROM users u, relaciones r, sucursales s WHERE u.user_id = r.user_child_id AND r.user_parent_id = 7 AND s.sucursal_id = r.sucursal_id;\r\n    `,\r\n      [userId]\r\n    );\r\n\r\n    return Response.json(users);\r\n  } catch (error) {\r\n    return Response.json({ error: error.message }, { status: 500 });\r\n  }\r\n} */"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;;;;;;;;EAqBE"}},
+    {"offset": {"line": 69, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}

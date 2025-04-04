@@ -2,12 +2,12 @@
   "pages": {
     "/page": [
       "static/chunks/[root of the server]__7c1192._.css",
-      "static/chunks/node_modules_next_dist_6b829c._.js",
-      "static/chunks/src_1dc1c5._.js",
+      "static/chunks/node_modules_c90a35._.js",
+      "static/chunks/src_a8b3b1._.js",
       "static/chunks/src_app_layout_61af54.js",
       "static/chunks/src_styles_36db1b._.css",
-      "static/chunks/_851269._.js",
-      "static/chunks/src_app_page_jsx_9fbfb4._.js",
+      "static/chunks/_8103f0._.js",
+      "static/chunks/src_app_page_jsx_87370d._.js",
       "static/chunks/node_modules_next_dist_compiled_react-dom_1f56dc._.js",
       "static/chunks/node_modules_next_dist_compiled_107ce8._.js",
       "static/chunks/node_modules_next_dist_client_523921._.js",

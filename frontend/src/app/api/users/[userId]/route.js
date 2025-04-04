@@ -1,8 +1,9 @@
 import pool from '@/lib/db';
+import { queryDB } from '@/lib/dbUtils';
 
 export async function GET(_, { params }) {
   try {
-    const [users] = await pool.query('SELECT * FROM users WHERE id = ?', [params.iduser]);
+    const [users] = await queryDB('SELECT * FROM users WHERE id = ?', [params.iduser]);
     if (users.length === 0) return Response.json({ error: 'Usuario no encontrado' }, { status: 404 });
 
     return Response.json(users[0]);

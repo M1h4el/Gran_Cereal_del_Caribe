@@ -20,7 +20,24 @@ section {
     .TitleSection {
         @include logbar.flexing(column, center, flex-start);
         width: 97%;
-        
+        .routeIndexContainer {
+            @include logbar.flexing(row, center, center);
+            gap: 20px;
+            .index {
+                width: auto;
+                cursor: pointer;
+                hr {
+                    border: "1px solid black";
+                    opacity: 0;
+                }
+                &:hover{
+                    hr {
+                        opacity: 1;
+                    }
+                }
+                
+            }
+        }
     }
     .MenuProjectSection {
         height: 100%;

@@ -1,5 +1,5 @@
 import React from 'react'
-import ProjectContent from '../SucursalContent'
+import ProjectContent from '../../../components/SucursalCards'
 
 function page() {
   return (

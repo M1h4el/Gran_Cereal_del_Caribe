@@ -351,7 +351,7 @@ async function GET(req) {
     }
     try {
         const user_id = session.user.id;
-        const sucursales = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("SELECT * FROM sucursales WHERE user_id = ?", [
+        const sucursales = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("SELECT * FROM sucursales s WHERE user_id = ? ORDER BY s.sucursal_id DESC", [
             user_id
         ]);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(sucursales, {

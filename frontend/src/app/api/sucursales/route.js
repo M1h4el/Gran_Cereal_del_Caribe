@@ -20,7 +20,7 @@ export async function GET(req) {
   try {
 
     const user_id = session.user.id;
-    const sucursales = await queryDB("SELECT * FROM sucursales WHERE user_id = ?", [user_id]);
+    const sucursales = await queryDB("SELECT * FROM sucursales s WHERE user_id = ? ORDER BY s.sucursal_id DESC", [user_id]);
 
     return NextResponse.json(sucursales, { status: 200 });
   } catch (error) {

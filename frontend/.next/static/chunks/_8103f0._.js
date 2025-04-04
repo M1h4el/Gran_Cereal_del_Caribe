@@ -52,9 +52,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/navigation.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/utils/api.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next-auth/react/index.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_refresh__.signature();
 'use client';
+;
 ;
 ;
 ;
@@ -74,30 +76,18 @@ const LoginForm = ()=>{
         }
         setLoading(true);
         try {
-            const response = await fetch("http://localhost:3000/api/auth/signin", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email,
-                    password
-                })
+            const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["signIn"])('credentials', {
+                redirect: false,
+                email,
+                password
             });
-            const data = await response.json();
-            setEmail('');
-            setPassword('');
-            setError('');
-            if (response.ok) {
-                console.log('Login exitoso');
-                localStorage.setItem('jwt', data.access_token);
-                router.push('/dashboard');
+            if (result.error) {
+                setError('Usuario o contraseña incorrectos.');
             } else {
-                console.error('Error al iniciar sesión:', data.message);
-                setError('Hubo un error al iniciar sesión. Intenta nuevamente.');
+                router.push('/dashboard'); // Redirige al dashboard tras login exitoso
             }
         } catch (err) {
-            console.error('Error al enviar los datos:', err);
+            console.error('Error en el login:', err);
             setError('Hubo un error al iniciar sesión. Intenta nuevamente.');
         } finally{
             setLoading(false);
@@ -111,7 +101,7 @@ const LoginForm = ()=>{
                 children: "LOGO"
             }, void 0, false, {
                 fileName: "[project]/src/app/LogBar.jsx",
-                lineNumber: 58,
+                lineNumber: 51,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -128,7 +118,7 @@ const LoginForm = ()=>{
                             onChange: (e)=>setEmail(e.target.value)
                         }, void 0, false, {
                             fileName: "[project]/src/app/LogBar.jsx",
-                            lineNumber: 61,
+                            lineNumber: 54,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -139,7 +129,7 @@ const LoginForm = ()=>{
                             onChange: (e)=>setPassword(e.target.value)
                         }, void 0, false, {
                             fileName: "[project]/src/app/LogBar.jsx",
-                            lineNumber: 68,
+                            lineNumber: 61,
                             columnNumber: 11
                         }, this),
                         error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -147,7 +137,7 @@ const LoginForm = ()=>{
                             children: error
                         }, void 0, false, {
                             fileName: "[project]/src/app/LogBar.jsx",
-                            lineNumber: 75,
+                            lineNumber: 68,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -157,24 +147,24 @@ const LoginForm = ()=>{
                             children: loading ? 'Cargando...' : 'Login'
                         }, void 0, false, {
                             fileName: "[project]/src/app/LogBar.jsx",
-                            lineNumber: 76,
+                            lineNumber: 69,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/LogBar.jsx",
-                    lineNumber: 60,
+                    lineNumber: 53,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/LogBar.jsx",
-                lineNumber: 59,
+                lineNumber: 52,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/LogBar.jsx",
-        lineNumber: 57,
+        lineNumber: 50,
         columnNumber: 5
     }, this);
 };

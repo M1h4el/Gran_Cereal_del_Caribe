@@ -1,8 +1,8 @@
-import pool from '@/lib/db';
+import { queryDB } from '@/lib/dbUtils';
 
 export async function GET() {
   try {
-    const [users] = await pool.query('SELECT * FROM users');
+    const [users] = await queryDB('SELECT * FROM users');
     return Response.json(users);
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
@@ -12,7 +12,7 @@ export async function GET() {
 export async function POST(req) {
   try {
     const { name, email, password, role } = await req.json();
-    const [result] = await pool.query('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?)', [name, email, password, role]);
+    const [result] = await queryDB('INSERT INTO users (name, email, password, role) VALUES (?, ?, ?)', [name, email, password, role]);
 
     return Response.json({ id: result.insertId, name, email, role });
   } catch (error) {
