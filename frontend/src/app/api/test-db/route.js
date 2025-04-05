@@ -1,8 +1,8 @@
-import pool from '@/lib/db.js';
+import { queryDB } from '@/lib/dbUtils';
 
 export async function GET() {
   try {
-    const [rows] = await pool.query('SELECT NOW() AS now');
+    const [rows] = await queryDB('SELECT NOW() AS now');
     return Response.json({ 
       message: 'Conexión exitosa', 
       serverTime: rows[0].now 

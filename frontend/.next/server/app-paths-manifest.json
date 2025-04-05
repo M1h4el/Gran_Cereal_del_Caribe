@@ -1,5 +1,8 @@
 {
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/api/sucursales/route": "app/api/sucursales/route.js"
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/sucursales/route": "app/api/sucursales/route.js",
+  "/api/users/[userId]/sucursales/[sucursalId]/children/route": "app/api/users/[userId]/sucursales/[sucursalId]/children/route.js",
+  "/api/users/[userId]/collaborators/[collaboratorId]/invoices/route": "app/api/users/[userId]/collaborators/[collaboratorId]/invoices/route.js",
+  "/_not-found/page": "app/_not-found/page.js"
 }

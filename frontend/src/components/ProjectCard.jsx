@@ -1,18 +1,17 @@
 import React from "react";
 import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, Button } from "@mui/material";
 
-const ProjectCard = ({ title, description, image, alt }) => {
+const ProjectCard = ({ title, description}) => {
   return (
     <Card
       sx={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        height: "100%", // Ajusta al tamaño del contenedor
+        height: "150px",
       }}
     >
-      <CardActionArea>
-        <CardMedia component="img" height="140" image={image} alt={alt} />
+      <CardActionArea sx={{height: "100%"}}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {title}

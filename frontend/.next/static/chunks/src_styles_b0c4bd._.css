@@ -1,0 +1,516 @@
+/* [project]/src/styles/HeaderDash.scss.css [app-client] (css) */
+input {
+  background-color: #f5f5f5;
+  color: #000;
+  padding: 8px;
+  border: 1px solid #726e6e;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.header-container {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #4d4d60;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-container .Logo {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.header-container .login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.header-container .login-title {
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.header-container .login-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-container .login-form .login-button {
+  background-color: #856825;
+  color: #fff;
+  border: none;
+  padding: 8px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color .3s;
+}
+
+.header-container .login-form .login-button:hover {
+  background-color: #684f1f;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #bdb9b9;
+  height: 100px;
+}
+
+header .menuBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 0;
+  width: auto;
+}
+
+header .menuBar div {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color .3s;
+  height: 100%;
+  width: 100px;
+}
+
+header .menuBar div svg {
+  transition: transform .3s;
+}
+
+header .menuBar div:hover svg {
+  transform: scale(1.5);
+}
+
+header .menuBar div.active {
+  background-color: gray;
+}
+
+header .menuBar div.active svg {
+  transform: scale(1.5);
+}
+
+
+/* [project]/src/styles/bodyDashboard.scss.css [app-client] (css) */
+section {
+  width: 100%;
+}
+
+.bodyDashboard {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: auto;
+}
+
+.menuSide {
+  background-color: #f1f1f1;
+  min-width: 5%;
+  position: relative;
+}
+
+.displaySide {
+  background-color: #ddd;
+  min-width: 5%;
+  padding: 80px 50px;
+  height: auto;
+}
+
+.resizer {
+  cursor: ew-resize;
+  background-color: #aaa;
+  width: 5px;
+}
+
+
+/* [project]/src/styles/SucursalCards.scss.css [app-client] (css) */
+input {
+  background-color: #f5f5f5;
+  color: #000;
+  padding: 8px;
+  border: 1px solid #726e6e;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.header-container {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #4d4d60;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-container .Logo {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.header-container .login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.header-container .login-title {
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.header-container .login-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-container .login-form .login-button {
+  background-color: #856825;
+  color: #fff;
+  border: none;
+  padding: 8px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color .3s;
+}
+
+.header-container .login-form .login-button:hover {
+  background-color: #684f1f;
+}
+
+h1 {
+  font-size: 60px;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+h4 {
+  margin-bottom: 5px;
+}
+
+hr {
+  width: 100%;
+}
+
+section {
+  height: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+section .TitleSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 97%;
+}
+
+section .TitleSection .routeIndexContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+section .TitleSection .routeIndexContainer .index {
+  width: auto;
+  cursor: pointer;
+}
+
+section .TitleSection .routeIndexContainer .index hr {
+  border: "1px solid black";
+  opacity: 0;
+}
+
+section .TitleSection .routeIndexContainer .index:hover hr {
+  opacity: 1;
+}
+
+section .MenuProjectSection {
+  height: 100%;
+  width: 100%;
+}
+
+
+/* [project]/src/styles/SellersScreen.scss.css [app-client] (css) */
+input {
+  background-color: #f5f5f5;
+  color: #000;
+  padding: 8px;
+  border: 1px solid #726e6e;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.header-container {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #4d4d60;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-container .Logo {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.header-container .login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.header-container .login-title {
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.header-container .login-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-container .login-form .login-button {
+  background-color: #856825;
+  color: #fff;
+  border: none;
+  padding: 8px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color .3s;
+}
+
+.header-container .login-form .login-button:hover {
+  background-color: #684f1f;
+}
+
+.sellers-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.sellers-screen section {
+  width: 100%;
+  background-color: #f0f0f0;
+  box-shadow: 0 0 10px #0000001a;
+  margin-top: 20px;
+}
+
+.sellers-screen .section1 {
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+}
+
+.sellers-screen .section1 .MenuProjectSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #4d4d6052;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #0000001a;
+}
+
+.sellers-screen .section1 .MenuProjectSection .infoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+.sellers-screen .section1 .MenuProjectSection .infoContainer h2 {
+  margin-bottom: 40px;
+}
+
+.sellers-screen .section1 .MenuProjectSection .infoContainer .infoBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.sellers-screen .section1 .MenuProjectSection .codingContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.sellers-screen .section2 {
+  width: 100%;
+}
+
+.sellers-screen .section2 .table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.sellers-screen .section2 .table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sellers-screen .section2 .table-container table thead {
+  background-color: #f0f0f0;
+}
+
+.sellers-screen .section2 .table-container table thead th {
+  top: 0;
+  z-index: 1;
+  background-color: #f0f0f0;
+  padding: 18px 30px;
+}
+
+.sellers-screen .section2 .table-container table thead th .sort-arrow {
+  position: absolute;
+  right: 30px;
+  font-size: 12px;
+  bottom: 22px;
+}
+
+.sellers-screen .section2 .table-container table thead th .sort-arrow.asc:after {
+  content: "▲";
+  color: #4e5a698c;
+}
+
+.sellers-screen .section2 .table-container table thead th .sort-arrow.desc:after {
+  content: "▼";
+  color: #4e5a698c;
+}
+
+.sellers-screen .section2 .table-container table tbody tr td {
+  cursor: pointer;
+}
+
+.sellers-screen .section2 .table-container table th, .sellers-screen .section2 .table-container table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.sellers-screen .section2 .table-container table th a, .sellers-screen .section2 .table-container table td a {
+  text-decoration: none;
+  color: #0b4085;
+}
+
+.sellers-screen .section2 .table-container table th a:hover, .sellers-screen .section2 .table-container table td a:hover {
+  text-decoration: underline;
+}
+
+.sellers-screen .section2 .table-container table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.sellers-screen .section2 .table-container .filter-input {
+  margin-bottom: 10px;
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+
+/* [project]/src/styles/InvoicesSellerScreen.scss.css [app-client] (css) */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container table thead {
+  background-color: #f0f0f0;
+}
+
+.table-container table thead th {
+  top: 0;
+  z-index: 1;
+  background-color: #f0f0f0;
+  padding: 18px 30px;
+}
+
+.table-container table thead th .sort-arrow {
+  position: absolute;
+  right: 30px;
+  font-size: 12px;
+  bottom: 22px;
+}
+
+.table-container table thead th .sort-arrow.asc:after {
+  content: "▲";
+  color: #4e5a698c;
+}
+
+.table-container table thead th .sort-arrow.desc:after {
+  content: "▼";
+  color: #4e5a698c;
+}
+
+.table-container table tbody tr td {
+  cursor: pointer;
+}
+
+.table-container table th, .table-container table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.table-container table th a, .table-container table td a {
+  text-decoration: none;
+  color: #0b4085;
+}
+
+.table-container table th a:hover, .table-container table td a:hover {
+  text-decoration: underline;
+}
+
+.table-container table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.table-container .filter-input {
+  margin-bottom: 10px;
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+
+/*# sourceMappingURL=src_styles_b0c4bd._.css.map*/

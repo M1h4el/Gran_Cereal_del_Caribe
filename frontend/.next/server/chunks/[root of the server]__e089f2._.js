@@ -205,9 +205,9 @@ async function GET(req, { params }) {
             });
         }
         const { userId, sucursalId } = params;
-        if (!userId) {
+        if (!userId || !sucursalId) {
             return Response.json({
-                error: "Usuario no especificado"
+                error: "Usuario o sucursalId no especificado"
             }, {
                 status: 400
             });

@@ -740,22 +740,54 @@ var _s = __turbopack_refresh__.signature();
 function SucursalContent() {
     _s();
     const [routes, setRoutes] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
-    const [idSucursalSelected, setIdSucursalSelected] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [collaboratorSellected, setCollaboratorSellected] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [invoicesSellected, setInvoicesSellected] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const handlecollaboratorSellected = (collaborator)=>{
-        setCollaboratorSellected(collaborator);
-    };
+    const [selection, setSelection] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
+        sucursalId: null,
+        collaborator: null,
+        invoices: null
+    });
+    console.log("Cambiando ruta a:", routes);
+    console.log("Cambiando seleccion a:", selection);
     const handleRoute = (route)=>{
-        console.log("Cambiando ruta a:", route.title);
         setRoutes((prevRoutes)=>[
                 ...prevRoutes,
                 route?.title
             ]);
-        setIdSucursalSelected(route.id);
+        setSelection((prev)=>({
+                ...prev,
+                sucursalId: route.id
+            }));
+    };
+    const handlecollaboratorSellected = (collaborator)=>{
+        setSelection((prev)=>({
+                ...prev,
+                collaborator
+            }));
+    };
+    const handleInvoiceSelected = (collaborator)=>{
+        setSelection((prev)=>({
+                ...prev,
+                invoices
+            }));
     };
     const removeRoute = (index)=>{
-        setRoutes(routes.slice(0, index));
+        setRoutes((prevRoutes)=>prevRoutes.slice(0, index));
+        setSelection((prev)=>{
+            const newSelection = {
+                ...prev
+            };
+            // Dependiendo del nivel, limpiamos valores
+            if (index === 0) {
+                newSelection.sucursalId = null;
+                newSelection.collaborator = null;
+                newSelection.invoices = null;
+            } else if (index === 1) {
+                newSelection.collaborator = null;
+                newSelection.invoices = null;
+            } else if (index === 2) {
+                newSelection.invoices = null;
+            }
+            return newSelection;
+        });
     };
     const renderComponent = ()=>{
         switch(routes.length){
@@ -764,31 +796,31 @@ function SucursalContent() {
                     handleRoute: handleRoute
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                    lineNumber: 34,
+                    lineNumber: 70,
                     columnNumber: 11
                 }, this);
             case 1:
                 return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SellersScreen$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    sucursalId: idSucursalSelected,
+                    sucursalId: selection.sucursalId,
                     collaborator: handlecollaboratorSellected
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                    lineNumber: 38,
+                    lineNumber: 74,
                     columnNumber: 11
                 }, this);
             case 2:
-                if (!collaboratorSellected) console.log("Colaborador no seleccionado");
-                return collaboratorSellected.role === "Vendedor" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$InvoicesSellerScreen$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    data: collaboratorSellected
+                if (!selection.collaborator) console.log("Colaborador no seleccionado");
+                return selection.collaborator.role === "Vendedor" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$InvoicesSellerScreen$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                    data: selection.collaborator
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                    lineNumber: 46,
+                    lineNumber: 82,
                     columnNumber: 11
-                }, this) : collaboratorSellected.role === "Cliente" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$InvoicesCustomerScreen$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    data: collaboratorSellected
+                }, this) : selection.collaborator.role === "Cliente" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$InvoicesCustomerScreen$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                    data: selection.collaborator
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                    lineNumber: 48,
+                    lineNumber: 84,
                     columnNumber: 11
                 }, this) : console.log("Rol no reconocido");
             case 3:
@@ -799,7 +831,7 @@ function SucursalContent() {
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                    lineNumber: 53,
+                    lineNumber: 89,
                     columnNumber: 16
                 }, this);
             default:
@@ -810,7 +842,7 @@ function SucursalContent() {
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                    lineNumber: 55,
+                    lineNumber: 91,
                     columnNumber: 16
                 }, this);
         }
@@ -831,13 +863,13 @@ function SucursalContent() {
                                         "Sucursales ",
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("hr", {}, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                                            lineNumber: 65,
+                                            lineNumber: 101,
                                             columnNumber: 26
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                                    lineNumber: 64,
+                                    lineNumber: 100,
                                     columnNumber: 13
                                 }, this),
                                 routes.map((route, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].Fragment, {
@@ -850,61 +882,61 @@ function SucursalContent() {
                                                     route,
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("hr", {}, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                                                        lineNumber: 72,
+                                                        lineNumber: 108,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                                                lineNumber: 70,
+                                                lineNumber: 106,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, index, true, {
                                         fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                                        lineNumber: 68,
+                                        lineNumber: 104,
                                         columnNumber: 15
                                     }, this))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                            lineNumber: 63,
+                            lineNumber: 99,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
                             children: "Crea las sucursales de tu Empresa"
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                            lineNumber: 77,
+                            lineNumber: 113,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("hr", {}, void 0, false, {
                             fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                            lineNumber: 78,
+                            lineNumber: 114,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                    lineNumber: 62,
+                    lineNumber: 98,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                lineNumber: 61,
+                lineNumber: 97,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
                 children: renderComponent()
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/SucursalContent.jsx",
-                lineNumber: 81,
+                lineNumber: 117,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true);
 }
-_s(SucursalContent, "sHVWFMB8YldamwLusErJxNxr2EY=");
+_s(SucursalContent, "ECBcmNbuk0khvj8oIExwqWBpiA8=");
 _c = SucursalContent;
 const __TURBOPACK__default__export__ = SucursalContent;
 var _c;

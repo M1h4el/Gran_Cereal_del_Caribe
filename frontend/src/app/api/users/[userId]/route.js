@@ -1,4 +1,3 @@
-import pool from '@/lib/db';
 import { queryDB } from '@/lib/dbUtils';
 
 export async function GET(_, { params }) {
@@ -15,7 +14,7 @@ export async function GET(_, { params }) {
 export async function PUT(req, { params }) {
   try {
     const { name, email, role } = await req.json();
-    await pool.query('UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?', [name, email, role, params.iduser]);
+    await queryDB('UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?', [name, email, role, params.iduser]);
 
     return Response.json({ message: 'Usuario actualizado' });
   } catch (error) {
@@ -25,7 +24,7 @@ export async function PUT(req, { params }) {
 
 export async function DELETE(_, { params }) {
   try {
-    await pool.query('DELETE FROM users WHERE id = ?', [params.iduser]);
+    await queryDB('DELETE FROM users WHERE id = ?', [params.iduser]);
 
     return Response.json({ message: 'Usuario eliminado' });
   } catch (error) {

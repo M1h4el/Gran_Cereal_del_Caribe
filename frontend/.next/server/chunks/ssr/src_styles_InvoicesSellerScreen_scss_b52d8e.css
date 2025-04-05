@@ -1,0 +1,72 @@
+/* [project]/src/styles/InvoicesSellerScreen.scss.css [app-client] (css) */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container table thead {
+  background-color: #f0f0f0;
+}
+
+.table-container table thead th {
+  top: 0;
+  z-index: 1;
+  background-color: #f0f0f0;
+  padding: 18px 30px;
+}
+
+.table-container table thead th .sort-arrow {
+  position: absolute;
+  right: 30px;
+  font-size: 12px;
+  bottom: 22px;
+}
+
+.table-container table thead th .sort-arrow.asc:after {
+  content: "▲";
+  color: #4e5a698c;
+}
+
+.table-container table thead th .sort-arrow.desc:after {
+  content: "▼";
+  color: #4e5a698c;
+}
+
+.table-container table tbody tr td {
+  cursor: pointer;
+}
+
+.table-container table th, .table-container table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.table-container table th a, .table-container table td a {
+  text-decoration: none;
+  color: #0b4085;
+}
+
+.table-container table th a:hover, .table-container table td a:hover {
+  text-decoration: underline;
+}
+
+.table-container table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.table-container .filter-input {
+  margin-bottom: 10px;
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/*# sourceMappingURL=src_styles_InvoicesSellerScreen_scss_b52d8e.css.map*/

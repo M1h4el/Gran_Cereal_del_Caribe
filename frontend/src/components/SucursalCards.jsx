@@ -1,16 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
 import "@/styles/SucursalCards.scss";
+import React, { useState, useEffect } from "react";
 import { fetchData } from "../../utils/api";
 import ProjectCard from "@/components/ProjectCard";
 import { useSession } from "next-auth/react";
+import { showSwal } from '@/components/Swal/Swal';
+import CreateSucursal from "@/components/Swal/CreateSucursal";
 
 function SucursalCards({handleRoute}) { 
 
   const [cardData, setCardData] = useState([]);
+  const [nuevaSucursal, setNuevaSucursal] = useState(null);
   const { data: session } = useSession();
   
+  const handleNuevaSucursal = (sucursal) => {
+    setNuevaSucursal(sucursal);
+  };
 
   useEffect(() => {
     async function fetchSucursales() {
@@ -31,22 +37,16 @@ function SucursalCards({handleRoute}) {
     }
 
     fetchSucursales();
-  }, [session]);
+  }, [session, cardData]);
 
   const handleCreateSucursal = async () => {
-    try {
-      const nuevaSucursal = {
-        title: "Nueva Sucursal",
-        description: "Sucursal creada automáticamente",
-      };
 
-      const res = await fetchData(`/sucursales?userId=${session.user.id}`, "POST", nuevaSucursal);
-      if (res && res.message) {
-        setCardData([...cardData, nuevaSucursal]);
-      }
-    } catch (error) {
-      console.error("Error creando sucursal:", error);
-    }
+    if (!session?.user) return;
+    showSwal(() => <CreateSucursal sucursal={handleNuevaSucursal} userId={session.user.id}/> , {
+    });
+
+    setCardData([...cardData, nuevaSucursal]);
+
   };
 
   const rotatedData = cardData.length > 1 ? [...cardData.slice(1), cardData[0]] : cardData;
@@ -109,8 +109,8 @@ function SucursalCards({handleRoute}) {
                 onClick={() => handleCardClick(card)}
               >
                 <ProjectCard
-                  title={card.title}
-                  description={card.description}
+                  title={card?.title}
+                  description={card?.description}
                   /* image={card.image}
                   alt={card.alt} */
                 />
