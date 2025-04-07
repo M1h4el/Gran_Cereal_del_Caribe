@@ -5,8 +5,9 @@ import { useSession } from "next-auth/react";
 import { fetchData } from "../../utils/api";
 import { useReactTable, getCoreRowModel, getPaginationRowModel, getFilteredRowModel, getSortedRowModel, flexRender } from "@tanstack/react-table";
 import "@/styles/SellersScreen.scss";
+import ProductsComponent from "./ProductsComponent";
 
-const SellersScreen = ({ sucursalId, collaborator }) => {
+const SellersScreen = ({ sucursalId, collaborator, totalProducts }) => {
   const { data: session, status } = useSession();
   const [colaboradores, setColaboradores] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -110,12 +111,7 @@ const SellersScreen = ({ sucursalId, collaborator }) => {
               </div>
             </div>
           </div>
-          <div className="codingContainer">
-            <div className="codingBox">
-              <h2>Invitar Colaborador</h2>
-
-            </div>
-          </div>
+          <ProductsComponent sucursalId={sucursalId} totalProducts={totalProducts} />
         </div>
       </section>
 

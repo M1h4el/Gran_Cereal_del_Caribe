@@ -344,7 +344,7 @@ input {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 50%;
+  width: 800px;
   height: 100%;
 }
 
@@ -374,7 +374,7 @@ input {
   justify-content: flex-start;
   align-items: flex-start;
   width: 50%;
-  gap: 10px;
+  gap: 22px;
 }
 
 .sellers-screen .section1 .MenuProjectSection .infoContainer .infoBox .infoRow h3 {
@@ -387,7 +387,7 @@ input {
   justify-content: flex-start;
   align-items: flex-end;
   width: 50%;
-  gap: 10px;
+  gap: 22px;
 }
 
 .sellers-screen .section1 .MenuProjectSection .codingContainer {

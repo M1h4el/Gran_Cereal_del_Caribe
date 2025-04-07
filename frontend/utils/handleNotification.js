@@ -10,12 +10,20 @@ function handleNotification({notifications}) {
         },
         1: {
             title: "Nuevo Colaborador",
-            description: "El usuario {user} con código {code} está solicitando unirse como colaborador.",
+            description: "El usuario {userName} con código {userCode} está solicitando unirse como colaborador.",
         },
         2: {
             title: "Nueva Sucursal",
             description: "Has creado la sucursal {branch}, ahora puedes agregar colaboradores y registrar tus productos.",
         },
+        3: {
+          title: "Nueva venta registrada",
+          description: "Se ha creado una nueva venta asociada al cliente {userName}, registrado con code {userCode} con fecha de entrega {date}."
+        },
+        4: {
+          title:"Venta Entregada",
+          description: "Se ha registrado la entrega de la venta {Ventacode} al cliente"
+        }
     }
 
     return notifications.map((element) => {
@@ -29,8 +37,8 @@ function handleNotification({notifications}) {
     
         // Reemplazar variables dinámicas en la descripción
         let description = base.description
-          .replace("{user}", element.user || "(user)")
-          .replace("{code}", element.code || "(code)")
+          .replace("{userName}", element.user || "(user)")
+          .replace("{userCode}", element.code || "(code)")
           .replace("{branch}", element.branch || "(branch)");
     
         return {

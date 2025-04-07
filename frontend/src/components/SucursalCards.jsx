@@ -14,10 +14,6 @@ function SucursalCards({ handleRoute }) {
   const [reloadTrigger, setReloadTrigger] = useState(0);
   const { data: session } = useSession();
 
-  /* const handleNuevaSucursal = (sucursal) => {
-    setNuevaSucursal(sucursal);
-  }; */
-
   const handleReloadTrigger = () => {
     setReloadTrigger((prev) => prev + 1);
   };
@@ -73,6 +69,7 @@ function SucursalCards({ handleRoute }) {
       const cardObject = {
         id: card?.sucursal_id,
         title: card?.title,
+        total_products: card?.total_products
       };
       handleRoute(cardObject);
     } else {

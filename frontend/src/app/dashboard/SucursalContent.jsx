@@ -10,6 +10,7 @@ import InvoiceScreen from "@/components/InvoiceScreen";
 
 function SucursalContent() {
   const [routes, setRoutes] = useState([]);
+  const [totalProducts, setTotalProducts] = useState(0)
   const [selection, setSelection] = useState({
     sucursalId: null,
     collaborator: null,
@@ -25,6 +26,7 @@ function SucursalContent() {
       ...prev,
       sucursalId: route.id,
     }));
+    setTotalProducts(route.total_products)
   };
 
   const handlecollaboratorSellected = (collaborator) => {
@@ -89,6 +91,7 @@ function SucursalContent() {
           <SellersScreen
             sucursalId={selection.sucursalId}
             collaborator={handlecollaboratorSellected}
+            totalProducts={totalProducts}
           />
         );
       case 2:

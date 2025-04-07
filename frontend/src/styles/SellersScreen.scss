@@ -23,7 +23,7 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       .infoContainer {
         @include v.flexing(column, flex-start, center);
-        width: 50%;
+        width: 800px;
         height: 100%;
         hr {
           margin-bottom: 20px;
@@ -42,7 +42,7 @@
           .infoRow {
             @include v.flexing(column, flex-start, flex-start);
             width: 50%;
-            gap: 10px;
+            gap: 22px;
             h3 {
               color: #333;
             }
@@ -50,7 +50,7 @@
           .valueRow {
             @include v.flexing(column, flex-start, flex-end);
             width: 50%;
-            gap: 10px;
+            gap: 22px;
           }
         }
       }
