@@ -1,18 +1,40 @@
+@use "./LogBar.scss" as v;
+
 .table-container {
+  @include v.flexing(column, center, center);
   width: 100%;
   overflow-x: auto;
+  background-color: #f0f0f0;
+  margin-top: 40px;
+  border-radius: 20px;
+  padding: 20px 40px;
+  gap: 40px;
+
+  .title_tools {
+    @include v.flexing(column, center, flex-start);
+    width: 100%;
+
+    .header {
+      @include v.flexing(row, flex-start, center);
+      width: 550px;
+      gap: 55px;
+      margin: 10px 0;
+
+      input {
+        padding: "4px";
+        width: "200px";
+      }
+    }
+  }
 
   table {
     width: 100%;
     border-collapse: collapse;
 
     thead {
-      background-color: #f0f0f0;
-
       th {
         top: 0;
         z-index: 1;
-        background-color: #f0f0f0;
         padding: 18px 30px;
         .sort-arrow {
           position: absolute;

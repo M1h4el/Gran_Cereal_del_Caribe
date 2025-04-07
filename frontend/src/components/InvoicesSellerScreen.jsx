@@ -32,14 +32,19 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice }) => {
         if (res.length === 0) console.log("No se encontraron facturas.");
         if (res.error) console.error("Error:", res.error);
 
+        const formatter = new Intl.DateTimeFormat("es-ES", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          timeZone: "America/Bogota",
+        });
+
         const formatted = res.map((el) => ({
           ...el,
-          created_at: new Date(el.created_at).toLocaleDateString("es-ES", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            timeZone: "America/Bogota",
-          }),
+          created_at: formatter.format(new Date(el.created_at)),
+          deliveryDate: el.deliveryDate
+            ? formatter.format(new Date(el.deliveryDate))
+            : "--",
         }));
 
         setInvoices(formatted);
@@ -108,63 +113,71 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice }) => {
   };
 
   return (
-    <div className="table-container">
-      <h2>Facturas del vendedor: {collaboratorId?.name}</h2>
+    <section>
+      <div className="table-container">
+        <div className="title_tools">
+          <div className="header">
+            <h2>Facturas de venta</h2>
+            <input
+              type="text"
+              placeholder="Buscar..."
+              value={globalFilter ?? ""}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+              className="search-input"
+            />
+          </div>
+          <div className="subheader">
+            <h5>Nombre: {collaboratorId?.name}</h5>
+          </div>
+        </div>
+        <table className="collaborators-table">
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
+                    style={{ cursor: "pointer", position: "relative" }}
+                  >
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                    {header.column.getIsSorted() && (
+                      <span
+                        className={`sort-arrow ${header.column.getIsSorted()}`}
+                      />
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} onClick={() => handleRowClick(row)}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      <input
-        type="text"
-        placeholder="Buscar..."
-        value={globalFilter ?? ""}
-        onChange={(e) => setGlobalFilter(e.target.value)}
-        className="search-input"
-      />
-
-      <table className="collaborators-table">
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  style={{ cursor: "pointer", position: "relative" }}
-                >
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                  {header.column.getIsSorted() && (
-                    <span
-                      className={`sort-arrow ${header.column.getIsSorted()}`}
-                    />
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} onClick={() => handleRowClick(row)}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div className="pagination-controls">
-        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-          Anterior
-        </button>
-        <span>
-          Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
-        </span>
-        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-          Siguiente
-        </button>
+        <div className="pagination-controls">
+          <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+            Anterior
+          </button>
+          <span>
+            Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
+          </span>
+          <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+            Siguiente
+          </button>
+        </div>
       </div>
-    </div>
+    </section>
+      
   );
 };
 

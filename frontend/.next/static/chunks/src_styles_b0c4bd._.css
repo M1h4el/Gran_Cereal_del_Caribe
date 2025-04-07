@@ -332,6 +332,7 @@ input {
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 40px;
   padding: 20px;
   background-color: #4d4d6052;
   border-radius: 10px;
@@ -341,13 +342,21 @@ input {
 .sellers-screen .section1 .MenuProjectSection .infoContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 50%;
+  height: 100%;
+}
+
+.sellers-screen .section1 .MenuProjectSection .infoContainer hr {
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 .sellers-screen .section1 .MenuProjectSection .infoContainer h2 {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: left;
 }
 
 .sellers-screen .section1 .MenuProjectSection .infoContainer .infoBox {
@@ -356,6 +365,29 @@ input {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 10px;
+}
+
+.sellers-screen .section1 .MenuProjectSection .infoContainer .infoBox .infoRow {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 50%;
+  gap: 10px;
+}
+
+.sellers-screen .section1 .MenuProjectSection .infoContainer .infoBox .infoRow h3 {
+  color: #333;
+}
+
+.sellers-screen .section1 .MenuProjectSection .infoContainer .infoBox .valueRow {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  width: 50%;
+  gap: 10px;
 }
 
 .sellers-screen .section1 .MenuProjectSection .codingContainer {
@@ -363,16 +395,56 @@ input {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
   flex: 1;
+}
+
+.sellers-screen .section1 .MenuProjectSection .codingContainer .codingBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  background-color: #5f5a5a94;
+  border-radius: 10px;
+  padding: 30px 20px;
+  box-shadow: 0 0 10px #000000b6;
+}
+
+.sellers-screen .section1 .MenuProjectSection .codingContainer .codingBox h2 {
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: center;
 }
 
 .sellers-screen .section2 {
   width: 100%;
+  border-radius: 20px;
 }
 
 .sellers-screen .section2 .table-container {
+  margin: 0;
+  display: flex;
   width: 100%;
   overflow-x: auto;
+  gap: 20px;
+}
+
+.sellers-screen .section2 .table-container .title_tools {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 55px;
+  width: 100%;
+  margin: 0;
+}
+
+.sellers-screen .section2 .table-container .title_tools input {
+  padding: "4px";
+  width: "200px";
 }
 
 .sellers-screen .section2 .table-container table {
@@ -442,9 +514,98 @@ input {
 
 
 /* [project]/src/styles/InvoicesSellerScreen.scss.css [app-client] (css) */
+input {
+  background-color: #f5f5f5;
+  color: #000;
+  padding: 8px;
+  border: 1px solid #726e6e;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.header-container {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #4d4d60;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-container .Logo {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.header-container .login-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.header-container .login-title {
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.header-container .login-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-container .login-form .login-button {
+  background-color: #856825;
+  color: #fff;
+  border: none;
+  padding: 8px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color .3s;
+}
+
+.header-container .login-form .login-button:hover {
+  background-color: #684f1f;
+}
+
 .table-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   overflow-x: auto;
+  background-color: #f0f0f0;
+  margin-top: 40px;
+  border-radius: 20px;
+  padding: 20px 40px;
+  gap: 40px;
+}
+
+.table-container .title_tools {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.table-container .title_tools .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 550px;
+  gap: 55px;
+  margin: 10px 0;
+}
+
+.table-container .title_tools .header input {
+  padding: "4px";
+  width: "200px";
 }
 
 .table-container table {
@@ -452,14 +613,9 @@ input {
   border-collapse: collapse;
 }
 
-.table-container table thead {
-  background-color: #f0f0f0;
-}
-
 .table-container table thead th {
   top: 0;
   z-index: 1;
-  background-color: #f0f0f0;
   padding: 18px 30px;
 }
 

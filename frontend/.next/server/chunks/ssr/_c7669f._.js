@@ -610,13 +610,21 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2
 ;
 ;
 const SellersScreen = ({ sucursalId, collaborator })=>{
-    const { data: session } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSession"])();
+    console.log("useSession:", (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSession"])().data.expires);
+    const { data: session, status } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSession"])();
     const [colaboradores, setColaboradores] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [globalFilter, setGlobalFilter] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [sorting, setSorting] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        if (status === "loading") return; // Wait for session to load
+        if (status === "unauthenticated") {
+            console.error("No estás autenticado.");
+            return;
+        }
         async function fetchCollaborators() {
-            if (!session?.user) return;
+            if (!session?.user || status == "unauthenticated") return;
+            if (status == "loading") return;
+            if (!sucursalId) return;
             try {
                 const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])(`/users/${session.user.id}/sucursales/${sucursalId}/children`, "GET", null);
                 if (res.length === 0) console.log("No se encontraron colaboradores.");
@@ -705,10 +713,15 @@ const SellersScreen = ({ sucursalId, collaborator })=>{
                             className: "infoContainer",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                    children: "Total"
+                                    children: "Estadísticas Generales"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                    lineNumber: 88,
+                                    lineNumber: 97,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("hr", {}, void 0, false, {
+                                    fileName: "[project]/src/components/SellersScreen.jsx",
+                                    lineNumber: 98,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -717,38 +730,38 @@ const SellersScreen = ({ sucursalId, collaborator })=>{
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "infoRow",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    children: "Compras"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                    children: "Pedidos por entregar"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                                    lineNumber: 91,
+                                                    lineNumber: 101,
                                                     columnNumber: 17
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    children: "Ventas"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                    children: "Saldo pendiente"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                                    lineNumber: 92,
+                                                    lineNumber: 102,
                                                     columnNumber: 17
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    children: "Compras"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                    children: "Promedio de pedidos por día"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                                    lineNumber: 93,
+                                                    lineNumber: 103,
                                                     columnNumber: 17
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    children: "Liquidado"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                    children: "Balance Total"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                                    lineNumber: 94,
+                                                    lineNumber: 104,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/SellersScreen.jsx",
-                                            lineNumber: 90,
+                                            lineNumber: 100,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -758,46 +771,46 @@ const SellersScreen = ({ sucursalId, collaborator })=>{
                                                     children: "$0"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                                    lineNumber: 97,
+                                                    lineNumber: 107,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     children: "$0"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                                    lineNumber: 98,
+                                                    lineNumber: 108,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     children: "$0"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                                    lineNumber: 99,
+                                                    lineNumber: 109,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     children: "$0"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                                    lineNumber: 100,
+                                                    lineNumber: 110,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/SellersScreen.jsx",
-                                            lineNumber: 96,
+                                            lineNumber: 106,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                    lineNumber: 89,
+                                    lineNumber: 99,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SellersScreen.jsx",
-                            lineNumber: 87,
+                            lineNumber: 96,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -807,31 +820,31 @@ const SellersScreen = ({ sucursalId, collaborator })=>{
                                     children: "Añadir Colaborador"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                    lineNumber: 105,
+                                    lineNumber: 115,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "codingBox"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                    lineNumber: 106,
+                                    lineNumber: 116,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SellersScreen.jsx",
-                            lineNumber: 104,
+                            lineNumber: 114,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SellersScreen.jsx",
-                    lineNumber: 86,
+                    lineNumber: 95,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/SellersScreen.jsx",
-                lineNumber: 85,
+                lineNumber: 94,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
@@ -843,7 +856,7 @@ const SellersScreen = ({ sucursalId, collaborator })=>{
                             children: "Colaboradores"
                         }, void 0, false, {
                             fileName: "[project]/src/components/SellersScreen.jsx",
-                            lineNumber: 113,
+                            lineNumber: 123,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -858,7 +871,7 @@ const SellersScreen = ({ sucursalId, collaborator })=>{
                             }
                         }, void 0, false, {
                             fileName: "[project]/src/components/SellersScreen.jsx",
-                            lineNumber: 115,
+                            lineNumber: 125,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
@@ -878,23 +891,23 @@ const SellersScreen = ({ sucursalId, collaborator })=>{
                                                             className: `sort-arrow ${header.column.getIsSorted()}`
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/SellersScreen.jsx",
-                                                            lineNumber: 131,
+                                                            lineNumber: 141,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, header.id, true, {
                                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                                    lineNumber: 128,
+                                                    lineNumber: 138,
                                                     columnNumber: 21
                                                 }, this))
                                         }, headerGroup.id, false, {
                                             fileName: "[project]/src/components/SellersScreen.jsx",
-                                            lineNumber: 126,
+                                            lineNumber: 136,
                                             columnNumber: 17
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                    lineNumber: 124,
+                                    lineNumber: 134,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -904,23 +917,23 @@ const SellersScreen = ({ sucursalId, collaborator })=>{
                                                     children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$table$2f$build$2f$lib$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["flexRender"])(cell.column.columnDef.cell, cell.getContext())
                                                 }, cell.id, false, {
                                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                                    lineNumber: 144,
+                                                    lineNumber: 154,
                                                     columnNumber: 21
                                                 }, this))
                                         }, row.id, false, {
                                             fileName: "[project]/src/components/SellersScreen.jsx",
-                                            lineNumber: 142,
+                                            lineNumber: 152,
                                             columnNumber: 17
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                    lineNumber: 140,
+                                    lineNumber: 150,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SellersScreen.jsx",
-                            lineNumber: 123,
+                            lineNumber: 133,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -932,7 +945,7 @@ const SellersScreen = ({ sucursalId, collaborator })=>{
                                     children: "Anterior"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                    lineNumber: 154,
+                                    lineNumber: 164,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -944,7 +957,7 @@ const SellersScreen = ({ sucursalId, collaborator })=>{
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                    lineNumber: 157,
+                                    lineNumber: 167,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -953,30 +966,30 @@ const SellersScreen = ({ sucursalId, collaborator })=>{
                                     children: "Siguiente"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/SellersScreen.jsx",
-                                    lineNumber: 160,
+                                    lineNumber: 170,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/SellersScreen.jsx",
-                            lineNumber: 153,
+                            lineNumber: 163,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/SellersScreen.jsx",
-                    lineNumber: 112,
+                    lineNumber: 122,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/SellersScreen.jsx",
-                lineNumber: 111,
+                lineNumber: 121,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/SellersScreen.jsx",
-        lineNumber: 84,
+        lineNumber: 93,
         columnNumber: 5
     }, this);
 };
@@ -1014,14 +1027,16 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice })=>{
                 const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])(`/users/${session.user.id}/collaborators/${collaboratorId.id}/invoices`, "GET", null);
                 if (res.length === 0) console.log("No se encontraron facturas.");
                 if (res.error) console.error("Error:", res.error);
+                const formatter = new Intl.DateTimeFormat("es-ES", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    timeZone: "America/Bogota"
+                });
                 const formatted = res.map((el)=>({
                         ...el,
-                        created_at: new Date(el.created_at).toLocaleDateString("es-ES", {
-                            day: "2-digit",
-                            month: "2-digit",
-                            year: "numeric",
-                            timeZone: "America/Bogota"
-                        })
+                        created_at: formatter.format(new Date(el.created_at)),
+                        deliveryDate: el.deliveryDate ? formatter.format(new Date(el.deliveryDate)) : "--"
                     }));
                 setInvoices(formatted);
             } catch (error) {
@@ -1096,7 +1111,7 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice })=>{
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                lineNumber: 112,
+                lineNumber: 117,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -1107,7 +1122,7 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice })=>{
                 className: "search-input"
             }, void 0, false, {
                 fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                lineNumber: 114,
+                lineNumber: 119,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
@@ -1127,23 +1142,23 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice })=>{
                                                 className: `sort-arrow ${header.column.getIsSorted()}`
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                                                lineNumber: 134,
+                                                lineNumber: 139,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, header.id, true, {
                                         fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                                        lineNumber: 127,
+                                        lineNumber: 132,
                                         columnNumber: 17
                                     }, this))
                             }, headerGroup.id, false, {
                                 fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                                lineNumber: 125,
+                                lineNumber: 130,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                        lineNumber: 123,
+                        lineNumber: 128,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -1153,23 +1168,23 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice })=>{
                                         children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$table$2f$build$2f$lib$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["flexRender"])(cell.column.columnDef.cell, cell.getContext())
                                     }, cell.id, false, {
                                         fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                                        lineNumber: 147,
+                                        lineNumber: 152,
                                         columnNumber: 17
                                     }, this))
                             }, row.id, false, {
                                 fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                                lineNumber: 145,
+                                lineNumber: 150,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                        lineNumber: 143,
+                        lineNumber: 148,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                lineNumber: 122,
+                lineNumber: 127,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1181,7 +1196,7 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice })=>{
                         children: "Anterior"
                     }, void 0, false, {
                         fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                        lineNumber: 157,
+                        lineNumber: 162,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1193,7 +1208,7 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice })=>{
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                        lineNumber: 160,
+                        lineNumber: 165,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1202,19 +1217,19 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice })=>{
                         children: "Siguiente"
                     }, void 0, false, {
                         fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                        lineNumber: 163,
+                        lineNumber: 168,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-                lineNumber: 156,
+                lineNumber: 161,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/InvoicesSellerScreen.jsx",
-        lineNumber: 111,
+        lineNumber: 116,
         columnNumber: 5
     }, this);
 };

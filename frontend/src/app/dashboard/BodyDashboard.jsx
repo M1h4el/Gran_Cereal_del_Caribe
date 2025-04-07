@@ -7,9 +7,14 @@ import ProfileContent from './ProfileContent';
 import NotificationContent from './NotificationsContent';
 import SocialContent from './SocialContent';
 import SideMenuContent from "./SideMenuContent";
+import { useSession } from "next-auth/react";
 
 const BodyDashboard = ({ handleCard, selectedTab }) => {
+  useSession({required: true});
+  const { data: session } = useSession();
   const [menuWidth, setMenuWidth] = useState(15);
+
+  const userId = session?.user?.id || null;
   
   const handleTab = (selectedTab) => {
     if (selectedTab === "projects") {
@@ -17,7 +22,7 @@ const BodyDashboard = ({ handleCard, selectedTab }) => {
     } else if (selectedTab === "social") {
       return <SocialContent />;
     } else if (selectedTab === "notifications") {
-      return <NotificationContent />;
+      return <NotificationContent userId={userId} />;
     } else if (selectedTab === "profile") {
       return <ProfileContent />;;
     }

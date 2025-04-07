@@ -7,14 +7,22 @@ import { useReactTable, getCoreRowModel, getPaginationRowModel, getFilteredRowMo
 import "@/styles/SellersScreen.scss";
 
 const SellersScreen = ({ sucursalId, collaborator }) => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [colaboradores, setColaboradores] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState([]);
 
   useEffect(() => {
+
+    if (status === "loading") return; // Wait for session to load
+    if (status === "unauthenticated") {
+      console.error("No estás autenticado.");
+      return;
+    }
     async function fetchCollaborators() {
-      if (!session?.user) return;
+      if (!session?.user || status == "unauthenticated") return;
+      if (status == "loading") return;
+      if (!sucursalId) return;
 
       try {
         const res = await fetchData(
@@ -85,13 +93,14 @@ const SellersScreen = ({ sucursalId, collaborator }) => {
       <section className="section1">
         <div className="MenuProjectSection">
           <div className="infoContainer">
-            <h2>Total</h2>
+            <h2>Estadísticas Generales</h2>
+            <hr />
             <div className="infoBox">
               <div className="infoRow">
-                <div>Compras</div>
-                <div>Ventas</div>
-                <div>Compras</div>
-                <div>Liquidado</div>
+                <h3>Pedidos por entregar</h3>
+                <h3>Saldo pendiente</h3>
+                <h3>Promedio de pedidos por día</h3>
+                <h3>Balance Total</h3>
               </div>
               <div className="valueRow">
                 <div>$0</div>
@@ -102,24 +111,26 @@ const SellersScreen = ({ sucursalId, collaborator }) => {
             </div>
           </div>
           <div className="codingContainer">
-            <h2>Añadir Colaborador</h2>
-            <div className="codingBox"></div>
+            <div className="codingBox">
+              <h2>Invitar Colaborador</h2>
+
+            </div>
           </div>
         </div>
       </section>
 
       <section className="section2">
         <div className="table-container">
-          <h2>Colaboradores</h2>
-
-          <input
-            type="text"
-            placeholder="Buscar..."
-            value={globalFilter ?? ""}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            style={{ marginBottom: "10px", padding: "4px", width: "200px" }}
-          />
-
+          <div className="title_tools">
+            <h2>Colaboradores</h2>
+            <input
+              type="text"
+              placeholder="Buscar..."
+              value={globalFilter ?? ""}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+            />
+          </div>
+          <hr />
           <table className="collaborators-table">
             <thead>
               {table.getHeaderGroups().map(headerGroup => (

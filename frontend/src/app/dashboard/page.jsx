@@ -4,6 +4,7 @@ import HeaderDash from "./HeaderDash";
 
 // Components
 import BodyDashboard from "./BodyDashboard";
+import SessionMonitor from "@/components/sessionMonitor/SessionMonitor";
 
 const Page = () => {
   const [selectedCard, setSelectedCard] = useState(null);
@@ -20,6 +21,7 @@ const Page = () => {
 
   return (
     <>
+      <SessionMonitor />
       <HeaderDash onSelect={handleSelection} />
       <BodyDashboard handleCard={handleCard} selectedTab={selectedTab}/>
     </>

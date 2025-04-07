@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { fetchData } from "../../../utils/api";
 import Swal from 'sweetalert2';
 
-export default function CreateSucursal({sucursal, userId}) {
+export default function CreateSucursal({sucursal, userId, reloadTrigger}) {
   const [formData, setFormData] = useState({
     nombre: "",
     descripcion: "",
@@ -30,13 +30,13 @@ export default function CreateSucursal({sucursal, userId}) {
       const res = await fetchData(`/sucursales?userId=${userId}`, "POST", newSucursal);
       if (res && res.message) {
         sucursal(newSucursal);
+        reloadTrigger();
       }
       Swal.close();
 
     } catch (error) {
       console.error("Error creando sucursal:", error);
     }
-    // Aquí podrías hacer una petición con fetch o axios
   };
 
   return (

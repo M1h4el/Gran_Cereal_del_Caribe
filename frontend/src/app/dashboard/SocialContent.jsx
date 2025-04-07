@@ -16,7 +16,7 @@ function SocialContent() {
       <List sx={{ width: "100%", bgcolor: "#ddd" }}>
         <ListItem alignItems="flex-start">
           <ListItemAvatar>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+            <Avatar alt="Remy Sharp" /* src={} */ />
           </ListItemAvatar>
           <ListItemText
             primary="Brunch this weekend?"
@@ -37,7 +37,7 @@ function SocialContent() {
         <Divider variant="inset" component="li" />
         <ListItem alignItems="flex-start">
           <ListItemAvatar>
-            <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+            <Avatar alt="Travis Howard" /* src={} */ />
           </ListItemAvatar>
           <ListItemText
             primary="Summer BBQ"
@@ -58,7 +58,7 @@ function SocialContent() {
         <Divider variant="inset" component="li" />
         <ListItem alignItems="flex-start">
           <ListItemAvatar>
-            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+            <Avatar alt="Cindy Baker" /* src={} */ />
           </ListItemAvatar>
           <ListItemText
             primary="Oui Oui"

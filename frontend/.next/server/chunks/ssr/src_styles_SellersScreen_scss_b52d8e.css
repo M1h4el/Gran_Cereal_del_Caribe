@@ -82,6 +82,7 @@ input {
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 40px;
   padding: 20px;
   background-color: #4d4d6052;
   border-radius: 10px;
@@ -91,13 +92,21 @@ input {
 .sellers-screen .section1 .MenuProjectSection .infoContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 50%;
+  height: 100%;
+}
+
+.sellers-screen .section1 .MenuProjectSection .infoContainer hr {
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 .sellers-screen .section1 .MenuProjectSection .infoContainer h2 {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: left;
 }
 
 .sellers-screen .section1 .MenuProjectSection .infoContainer .infoBox {
@@ -106,6 +115,29 @@ input {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 10px;
+}
+
+.sellers-screen .section1 .MenuProjectSection .infoContainer .infoBox .infoRow {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 50%;
+  gap: 10px;
+}
+
+.sellers-screen .section1 .MenuProjectSection .infoContainer .infoBox .infoRow h3 {
+  color: #333;
+}
+
+.sellers-screen .section1 .MenuProjectSection .infoContainer .infoBox .valueRow {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  width: 50%;
+  gap: 10px;
 }
 
 .sellers-screen .section1 .MenuProjectSection .codingContainer {
@@ -113,16 +145,56 @@ input {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
   flex: 1;
+}
+
+.sellers-screen .section1 .MenuProjectSection .codingContainer .codingBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  background-color: #5f5a5a94;
+  border-radius: 10px;
+  padding: 30px 20px;
+  box-shadow: 0 0 10px #000000b6;
+}
+
+.sellers-screen .section1 .MenuProjectSection .codingContainer .codingBox h2 {
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: center;
 }
 
 .sellers-screen .section2 {
   width: 100%;
+  border-radius: 20px;
 }
 
 .sellers-screen .section2 .table-container {
+  margin: 0;
+  display: flex;
   width: 100%;
   overflow-x: auto;
+  gap: 20px;
+}
+
+.sellers-screen .section2 .table-container .title_tools {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 55px;
+  width: 100%;
+  margin: 0;
+}
+
+.sellers-screen .section2 .table-container .title_tools input {
+  padding: "4px";
+  width: "200px";
 }
 
 .sellers-screen .section2 .table-container table {

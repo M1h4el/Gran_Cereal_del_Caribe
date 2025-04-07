@@ -16,33 +16,87 @@
     border-radius: 10px;
     .MenuProjectSection {
       @include v.flexing(row, space-between, flex-start);
+      gap: 40px;
       padding: 20px;
       background-color: #4d4d6052;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       .infoContainer {
-        @include v.flexing(column, center, center);
+        @include v.flexing(column, flex-start, center);
         width: 50%;
-        h2 {
-          margin-bottom: 40px;
+        height: 100%;
+        hr {
+          margin-bottom: 20px;
+          width: 100%;
         }
+        h2 {
+          margin-bottom: 20px;
+          width: 100%;
+          text-align: left;
+        }
+
         .infoBox {
           @include v.flexing(row, space-between, center);
           width: 100%;
+          padding: 10px;
+          .infoRow {
+            @include v.flexing(column, flex-start, flex-start);
+            width: 50%;
+            gap: 10px;
+            h3 {
+              color: #333;
+            }
+          }
+          .valueRow {
+            @include v.flexing(column, flex-start, flex-end);
+            width: 50%;
+            gap: 10px;
+          }
         }
       }
       .codingContainer {
         @include v.flexing(column, center, center);
+        width: 100%;
+        height: 100%;
         flex: 1;
+        .codingBox {
+          @include v.flexing(column, flex-start, flex-start);
+          width: 100%;
+          height: 100%;
+          background-color: #5f5a5a94;
+          border-radius: 10px;
+          padding: 30px 20px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.712);
+          h2 {
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: center;
+          }
+        }
       }
     }
   }
   .section2 {
     width: 100%;
+    border-radius: 20px;
+
     .table-container {
+      margin: 0;
+      display: flex;
       width: 100%;
       overflow-x: auto;
+      gap: 20px;
+      .title_tools {
+        @include v.flexing(row, flex-start, center);
+        gap: 55px;
+        width: 100%;
+        margin: 0;
 
+        input {
+          padding: "4px";
+          width: "200px";
+        }
+      }
       table {
         width: 100%;
         border-collapse: collapse;

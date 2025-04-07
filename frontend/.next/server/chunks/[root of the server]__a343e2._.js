@@ -215,10 +215,15 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js_
 ;
 ;
 ;
+// Función para generar código único para el nuevo usuario
+function generateCode(length = 8) {
+    return Math.random().toString(36).substr(2, length).toUpperCase();
+}
 async function POST(req) {
     try {
-        const { userName, email, password } = await req.json();
-        // Validar datos
+        let body = await req.json();
+        console.log("data:", body);
+        const { userName, email, password, role, codeCollaborator } = body;
         if (!userName || !email || !password) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 error: "Todos los campos son obligatorios"
@@ -226,8 +231,11 @@ async function POST(req) {
                 status: 400
             });
         }
-        // Verificar si el email ya existe en la base de datos
-        const existingUser = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("SELECT * FROM users WHERE email = ?", [
+        let finalRole = role;
+        if (!codeCollaborator) {
+            finalRole = "Admin";
+        }
+        const existingUser = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("SELECT user_id, userName FROM users WHERE email = ?", [
             email
         ]);
         if (existingUser.length > 0) {
@@ -237,17 +245,47 @@ async function POST(req) {
                 status: 400
             });
         }
-        // Hashear la contraseña
         const hashedPassword = await __TURBOPACK__imported__module__$5b$externals$5d2f$bcrypt__$5b$external$5d$__$28$bcrypt$2c$__cjs$29$__["default"].hash(password, 10);
-        // Guardar usuario en MySQL
-        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("INSERT INTO users (userName, email, password) VALUES (?, ?, ?)", [
+        let generatedCode;
+        let isUnique = false;
+        while(!isUnique){
+            generatedCode = generateCode();
+            const check = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("SELECT user_id FROM users WHERE codeCollaborator = ?", [
+                generatedCode
+            ]);
+            isUnique = check.length === 0;
+        }
+        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("INSERT INTO users (userName, email, password, role, codeCollaborator) VALUES (?, ?, ?, ?, ?)", [
             userName,
             email,
-            hashedPassword
+            hashedPassword,
+            role || null,
+            generatedCode
         ]);
+        const newUserId = result.insertId;
+        console.log("codeCollaborator::", codeCollaborator);
+        if (codeCollaborator) {
+            const parentUser = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("SELECT user_id FROM users WHERE codeCollaborator = ?", [
+                codeCollaborator
+            ]);
+            if (parentUser.length === 0) {
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                    error: "El código del colaborador no es válido."
+                }, {
+                    status: 400
+                });
+            }
+            const parentUserId = parentUser[0].user_id;
+            const newRelation = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("INSERT INTO relaciones (user_child_id, user_parent_id) VALUES (?, ?)", [
+                newUserId,
+                parentUserId
+            ]);
+            console.log("newRelation::", newRelation);
+        }
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             message: "Usuario registrado con éxito",
-            userId: result.insertId
+            userId: newUserId,
+            codeCollaborator: generatedCode
         }, {
             status: 201
         });
@@ -258,8 +296,7 @@ async function POST(req) {
                 error: "El correo ya está en uso"
             }, {
                 status: 400
-            } // 🚀 Controlando el error correctamente
-            );
+            });
         }
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             error: "Error en el servidor"
