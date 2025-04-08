@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { queryDB } from "@/lib/dbUtils";
 
 // Función para generar código único para el nuevo usuario
-function generateCode(length = 8) {
+function generateCode(length = 10) {
   return Math.random().toString(36).substr(2, length).toUpperCase();
 }
 

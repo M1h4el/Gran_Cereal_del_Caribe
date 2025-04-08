@@ -1,0 +1,41 @@
+/* [project]/src/styles/Modal.scss.css [app-client] (css) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000000c4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-overlay .modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+}
+
+.modal-overlay .modal-content .close-button {
+  color: gray;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color .3s;
+}
+
+.modal-overlay .modal-content .close-button:hover {
+  color: red;
+}
+
+/*# sourceMappingURL=src_styles_Modal_scss_b52d8e.css.map*/

@@ -2,7 +2,8 @@ import { queryDB } from '@/lib/dbUtils';
 
 export async function GET(_, { params }) {
   try {
-    const [users] = await queryDB('SELECT * FROM users WHERE id = ?', [params.iduser]);
+    const {idUser} = await params
+    const [users] = await queryDB('SELECT * FROM users WHERE id = ?', [idUser]);
     if (users.length === 0) return Response.json({ error: 'Usuario no encontrado' }, { status: 404 });
 
     return Response.json(users[0]);
@@ -13,8 +14,9 @@ export async function GET(_, { params }) {
 
 export async function PUT(req, { params }) {
   try {
+    const {idUser} = await params
     const { name, email, role } = await req.json();
-    await queryDB('UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?', [name, email, role, params.iduser]);
+    await queryDB('UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?', [name, email, role, idUser]);
 
     return Response.json({ message: 'Usuario actualizado' });
   } catch (error) {

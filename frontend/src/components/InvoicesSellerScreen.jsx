@@ -113,7 +113,7 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice }) => {
   };
 
   return (
-    <section>
+    <>
       <div className="table-container">
         <div className="title_tools">
           <div className="header">
@@ -176,7 +176,7 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice }) => {
           </button>
         </div>
       </div>
-    </section>
+    </>
       
   );
 };

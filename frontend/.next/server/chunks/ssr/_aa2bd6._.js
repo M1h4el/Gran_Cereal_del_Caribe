@@ -607,47 +607,74 @@ __turbopack_esm__({
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/utils/api.js [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sweetalert2$2f$dist$2f$sweetalert2$2e$esm$2e$all$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/sweetalert2/dist/sweetalert2.esm.all.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Swal$2f$Swal$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/components/Swal/Swal.jsx [app-ssr] (ecmascript)");
+(()=>{
+    const e = new Error("Cannot find module './ProductsTable'");
+    e.code = 'MODULE_NOT_FOUND';
+    throw e;
+})();
 "use client";
 ;
 ;
 ;
 ;
 ;
+;
 function ProductsComponent({ sucursalId, totalProducts }) {
-    const [productosBajoStock, setProductosBajoStock] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
+    const [stock, setStock] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const [ultimoUpdate, setUltimoUpdate] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("Actualizado hace 1 día");
     const [codigoBuscar, setCodigoBuscar] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const [productoEncontrado, setProductoEncontrado] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
-    async function fetchResumen() {
-        try {
-            const productos = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])(`/products?sucursalId=${sucursalId}`);
-            const bajos = productos.filter((p)=>p.stock <= 3);
-            setProductosBajoStock(bajos.length);
-            if (productos.length > 0) {
-                const ultima = productos.reduce((a, b)=>new Date(a.updatedAt) > new Date(b.updatedAt) ? a : b);
-                setUltimoUpdate(new Date(ultima.updatedAt).toLocaleDateString());
+    const [arrayProducts, setArrayProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [handleRefresh, setHandleRefresh] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
+    let fetchProductos = async ()=>{
+        let data = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])(`/products?sucursalId=${sucursalId}`);
+        return data;
+    };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        async function fetchResumen() {
+            try {
+                const productos = await fetchProductos();
+                if (productos.length > 0) {
+                    const ultima = productos.reduce((a, b)=>new Date(a.updatedAt) > new Date(b.updatedAt) ? a : b);
+                    setUltimoUpdate(new Date(ultima.updatedAt).toLocaleDateString());
+                    setArrayProducts(productos);
+                } else {
+                    console.log("No se encontraron productos:", productos);
+                }
+            } catch (error) {
+                console.error("Error cargando productos:", error);
             }
-        } catch (error) {
-            console.error("Error cargando productos:", error);
         }
-    }
+        fetchResumen();
+    }, [
+        sucursalId,
+        handleRefresh
+    ]);
+    console.log("111111111111:", arrayProducts);
+    const handleReFetch = ()=>{
+        setHandleRefresh((prev)=>prev + 1);
+    };
     async function handleBuscarProducto() {
         if (!codigoBuscar) return;
         try {
             const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])(`/products/searchByCode?code=${codigoBuscar}&sucursalId=${sucursalId}`);
+            setStock(result?.inventory);
             setProductoEncontrado(result || null);
         } catch (error) {
             console.error("Error al buscar producto:", error);
         }
     }
-    const handleGestionarProductos = ()=>{
-        fetchResumen();
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sweetalert2$2f$dist$2f$sweetalert2$2e$esm$2e$all$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].fire({
-            title: "Gestión de Productos",
-            text: "Aquí podrías abrir un formulario o panel completo",
-            icon: "info"
-        });
+    const handleGestionarProductos = (arrayProducts)=>{
+        setCodigoBuscar("");
+        (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Swal$2f$Swal$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["showSwal"])(()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ProductsTable, {
+                arrayProducts: arrayProducts,
+                handleRefresh: handleReFetch
+            }, void 0, false, {
+                fileName: "[project]/src/components/ProductsComponent.jsx",
+                lineNumber: 67,
+                columnNumber: 13
+            }, this));
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "codingContainer",
@@ -658,7 +685,7 @@ function ProductsComponent({ sucursalId, totalProducts }) {
                     children: "Productos"
                 }, void 0, false, {
                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                    lineNumber: 55,
+                    lineNumber: 75,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -671,13 +698,13 @@ function ProductsComponent({ sucursalId, totalProducts }) {
                                     children: totalProducts ? totalProducts : 0
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                                    lineNumber: 58,
+                                    lineNumber: 78,
                                     columnNumber: 30
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 57,
+                            lineNumber: 77,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -687,19 +714,19 @@ function ProductsComponent({ sucursalId, totalProducts }) {
                                     children: ultimoUpdate
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                                    lineNumber: 62,
+                                    lineNumber: 82,
                                     columnNumber: 35
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 61,
+                            lineNumber: 81,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                    lineNumber: 56,
+                    lineNumber: 76,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -712,7 +739,7 @@ function ProductsComponent({ sucursalId, totalProducts }) {
                             onChange: (e)=>setCodigoBuscar(e.target.value)
                         }, void 0, false, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 67,
+                            lineNumber: 87,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -720,29 +747,29 @@ function ProductsComponent({ sucursalId, totalProducts }) {
                             children: "Buscar"
                         }, void 0, false, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 73,
+                            lineNumber: 93,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                    lineNumber: 66,
+                    lineNumber: 86,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     children: [
                         "Inventario: ",
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                            children: productosBajoStock
+                            children: stock
                         }, void 0, false, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 77,
+                            lineNumber: 97,
                             columnNumber: 25
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                    lineNumber: 76,
+                    lineNumber: 96,
                     columnNumber: 9
                 }, this),
                 productoEncontrado && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
@@ -755,32 +782,32 @@ function ProductsComponent({ sucursalId, totalProducts }) {
                                         children: "Código"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/ProductsComponent.jsx",
-                                        lineNumber: 84,
+                                        lineNumber: 104,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
                                         children: "Nombre"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/ProductsComponent.jsx",
-                                        lineNumber: 85,
+                                        lineNumber: 105,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
                                         children: "Stock"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/ProductsComponent.jsx",
-                                        lineNumber: 86,
+                                        lineNumber: 106,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/ProductsComponent.jsx",
-                                lineNumber: 83,
+                                lineNumber: 103,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 82,
+                            lineNumber: 102,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -790,64 +817,64 @@ function ProductsComponent({ sucursalId, totalProducts }) {
                                         children: productoEncontrado.code
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/ProductsComponent.jsx",
-                                        lineNumber: 91,
+                                        lineNumber: 111,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                         children: productoEncontrado.name
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/ProductsComponent.jsx",
-                                        lineNumber: 92,
+                                        lineNumber: 112,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                         children: productoEncontrado.stock
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/ProductsComponent.jsx",
-                                        lineNumber: 93,
+                                        lineNumber: 113,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/ProductsComponent.jsx",
-                                lineNumber: 90,
+                                lineNumber: 110,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 89,
+                            lineNumber: 109,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                    lineNumber: 81,
+                    lineNumber: 101,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "boton-gestionar",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: handleGestionarProductos,
+                        onClick: ()=>handleGestionarProductos(arrayProducts),
                         children: "Gestionar productos"
                     }, void 0, false, {
                         fileName: "[project]/src/components/ProductsComponent.jsx",
-                        lineNumber: 100,
+                        lineNumber: 120,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                    lineNumber: 99,
+                    lineNumber: 119,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/ProductsComponent.jsx",
-            lineNumber: 54,
+            lineNumber: 74,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/ProductsComponent.jsx",
-        lineNumber: 53,
+        lineNumber: 73,
         columnNumber: 5
     }, this);
 }

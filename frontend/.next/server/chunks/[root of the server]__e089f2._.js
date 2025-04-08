@@ -197,17 +197,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js_
 ;
 async function GET(req, { params }) {
     try {
-        if (!params || !params.userId || !params.sucursalId) {
-            return Response.json({
-                error: "Usuario o sucursal no especificados"
-            }, {
-                status: 400
-            });
-        }
-        const { userId, sucursalId } = params;
+        const { userId, sucursalId } = await params;
         if (!userId || !sucursalId) {
             return Response.json({
-                error: "Usuario o sucursalId no especificado"
+                error: "Usuario o sucursal no especificados"
             }, {
                 status: 400
             });

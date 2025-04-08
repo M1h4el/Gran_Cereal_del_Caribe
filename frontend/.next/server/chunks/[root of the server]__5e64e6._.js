@@ -197,17 +197,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js_
 ;
 async function GET(req, { params }) {
     try {
-        if (!params || !params.collaboratorId) {
+        const { collaboratorId } = await params;
+        if (!params || !collaboratorId) {
             return Response.json({
                 error: "Usuario o sucursal no especificados"
-            }, {
-                status: 400
-            });
-        }
-        const { collaboratorId } = params;
-        if (!collaboratorId) {
-            return Response.json({
-                error: "Usuario no especificado"
             }, {
                 status: 400
             });

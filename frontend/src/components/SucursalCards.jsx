@@ -10,7 +10,6 @@ import CreateSucursal from "@/components/Swal/CreateSucursal";
 
 function SucursalCards({ handleRoute }) {
   const [cardData, setCardData] = useState([]);
-  const [nuevaSucursal, setNuevaSucursal] = useState(null);
   const [reloadTrigger, setReloadTrigger] = useState(0);
   const { data: session } = useSession();
 

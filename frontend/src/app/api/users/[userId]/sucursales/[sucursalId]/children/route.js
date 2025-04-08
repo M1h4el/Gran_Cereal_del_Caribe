@@ -2,19 +2,16 @@ import { queryDB } from "@/lib/dbUtils";
 
 export async function GET(req, { params }) {
   try {
-    if (!params || !params.userId || !params.sucursalId) {
+    const {userId, sucursalId} = await params
+
+    if ( !userId || !sucursalId) {
       return Response.json(
         { error: "Usuario o sucursal no especificados" },
         { status: 400 }
       );
+
     }
-    const { userId, sucursalId } = params;
-    if (!userId || !sucursalId) {
-      return Response.json(
-        { error: "Usuario o sucursalId no especificado" },
-        { status: 400 }
-      );
-    }
+  
     const users = await queryDB(
         `SELECT 
             u.user_id, u.userName, u.role, u.address, u.phone, u.bought_sold
