@@ -1,4 +1,5 @@
 @use "./LogBar.scss" as v;
+@use "./mixins.scss" as mixinTable;
 
 .sellers-screen {
   @include v.flexing(column, center, center);
@@ -97,70 +98,7 @@
           width: "200px";
         }
       }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-
-        thead {
-          background-color: #f0f0f0;
-
-          th {
-            top: 0;
-            z-index: 1;
-            background-color: #f0f0f0;
-            padding: 18px 30px;
-            .sort-arrow {
-              position: absolute;
-              right: 30px;
-              font-size: 12px;
-              bottom: 22px;
-              &.asc::after {
-                content: "▲";
-                color: #4e5a698c;
-              }
-              &.desc::after {
-                content: "▼";
-                color: #4e5a698c;
-              }
-            }
-          }
-        }
-
-        tbody {
-          tr {
-            td {
-              cursor: pointer;
-            }
-          }
-        }
-
-        th,
-        td {
-          padding: 12px;
-          text-align: center;
-          border-bottom: 1px solid #ccc;
-          a {
-            text-decoration: none;
-            color: #0b4085;
-            &:hover {
-              text-decoration: underline;
-            }
-          }
-        }
-
-        tr:hover {
-          background-color: #f9f9f9;
-        }
-      }
-
-      .filter-input {
-        margin-bottom: 10px;
-        padding: 8px;
-        width: 100%;
-        max-width: 300px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-      }
+      @include mixinTable.product-table;
     }
   }
 }

@@ -7,7 +7,7 @@ import { useReactTable, getCoreRowModel, getPaginationRowModel, getFilteredRowMo
 import "@/styles/SellersScreen.scss";
 import ProductsComponent from "./ProductsComponent";
 
-const SellersScreen = ({ sucursalId, collaborator, totalProducts }) => {
+const SellersScreen = ({ sucursalId, collaborator, totalProducts, handleGetProducts }) => {
   const { data: session, status } = useSession();
   const [colaboradores, setColaboradores] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -111,7 +111,7 @@ const SellersScreen = ({ sucursalId, collaborator, totalProducts }) => {
               </div>
             </div>
           </div>
-          <ProductsComponent sucursalId={sucursalId} totalProducts={totalProducts} />
+          <ProductsComponent sucursalId={sucursalId} totalProducts={totalProducts} handleGetProducts={handleGetProducts} />
         </div>
       </section>
 

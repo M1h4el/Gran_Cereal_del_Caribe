@@ -45,7 +45,7 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
     inventory: "",
     basePricing: "",
     BaseSellerPricing: "",
-    detalSellPrice: "",
+    price: "",
     MayorSellPrice: "",
     updated_at: "----------------------------------"
   });
@@ -67,13 +67,8 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
         cell: ({ getValue }) => formatCurrency(getValue()),
       },
       {
-        accessorKey: "detalSellPrice",
-        header: "Precio (U)",
-        cell: ({ getValue }) => formatCurrency(getValue()),
-      },
-      {
-        accessorKey: "MayorSellPrice",
-        header: "Precio (U/P)",
+        accessorKey: "price",
+        header: "Valor",
         cell: ({ getValue }) => formatCurrency(getValue()),
       },
       {
@@ -134,8 +129,7 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
           inventory: "",
           basePricing: "",
           BaseSellerPricing: "",
-          detalSellPrice: "",
-          MayorSellPrice: "",
+          price: "",
           updated_at: "----------------------------------"
         });
 

@@ -11,14 +11,15 @@ import InvoiceScreen from "@/components/InvoiceScreen";
 function SucursalContent() {
   const [routes, setRoutes] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0)
+  const [products, setProducts] = useState([])
   const [selection, setSelection] = useState({
     sucursalId: null,
     collaborator: null,
     invoices: null,
   });
+  console.log("selection", selection)
 
   console.log("Cambiando ruta a:", routes);
-  console.log("Cambiando seleccion a:", selection);
   const handleRoute = (route) => {
     setRoutes((prevRoutes) => [...prevRoutes, route?.title]);
 
@@ -28,6 +29,10 @@ function SucursalContent() {
     }));
     setTotalProducts(route.total_products)
   };
+
+  const handleGetProducts = (products) => {
+    setProducts(products);
+  }
 
   const handlecollaboratorSellected = (collaborator) => {
     if (!collaborator || !collaborator.id) {
@@ -53,7 +58,6 @@ function SucursalContent() {
 
   const handleInvoiceSelected = (invoice) => {
     setRoutes((prevRoutes) => [...prevRoutes, "Detalles de Venta"]);
-
     setSelection((prev) => ({
       ...prev,
       invoices: invoice,
@@ -92,6 +96,7 @@ function SucursalContent() {
             sucursalId={selection.sucursalId}
             collaborator={handlecollaboratorSellected}
             totalProducts={totalProducts}
+            handleGetProducts={handleGetProducts}
           />
         );
       case 2:
@@ -104,7 +109,7 @@ function SucursalContent() {
           console.log("Rol no reconocido")
         );
       case 3:
-        return <InvoiceScreen data={selection.invoices} />;
+        return <InvoiceScreen data={selection.invoices} products={products} />;
       default:
         return <div>🔍 Vista profunda en {routes[routes.length - 1]}</div>;
     }

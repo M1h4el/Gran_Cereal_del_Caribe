@@ -8,7 +8,7 @@ import ProductsTable from "./Swal/ProductsTable";
 import Swal from "sweetalert2";
 import Modal from "./Modal";
 
-function ProductsComponent({ sucursalId, totalProducts }) {
+function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
   const [stock, setStock] = useState(0);
   const [ultimoUpdate, setUltimoUpdate] = useState("Actualizado hace 1 día");
   const [codigoBuscar, setCodigoBuscar] = useState("");
@@ -40,6 +40,7 @@ function ProductsComponent({ sucursalId, totalProducts }) {
           );
           setUltimoUpdate(new Date(ultima.updatedAt).toLocaleDateString());
           setArrayProducts(productos);
+          handleGetProducts(productos);
         } else {
           console.log("No se encontraron productos:", productos);
         }

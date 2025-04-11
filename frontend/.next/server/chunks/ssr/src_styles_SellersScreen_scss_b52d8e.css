@@ -202,14 +202,14 @@ input {
   border-collapse: collapse;
 }
 
-.sellers-screen .section2 .table-container table thead {
-  background-color: #f0f0f0;
+.sellers-screen .section2 .table-container table thead th, .sellers-screen .section2 .table-container table thead td, .sellers-screen .section2 .table-container table tbody th, .sellers-screen .section2 .table-container table tbody td {
+  text-align: left;
+  padding: 18px 0 !important;
 }
 
 .sellers-screen .section2 .table-container table thead th {
   top: 0;
   z-index: 1;
-  background-color: #f0f0f0;
   padding: 18px 30px;
 }
 

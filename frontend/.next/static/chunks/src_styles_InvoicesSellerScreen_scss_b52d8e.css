@@ -98,6 +98,11 @@ input {
   border-collapse: collapse;
 }
 
+.table-container table thead th, .table-container table thead td, .table-container table tbody th, .table-container table tbody td {
+  text-align: left;
+  padding: 18px 0 !important;
+}
+
 .table-container table thead th {
   top: 0;
   z-index: 1;
