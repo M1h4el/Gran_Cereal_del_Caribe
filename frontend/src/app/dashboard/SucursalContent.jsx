@@ -13,7 +13,7 @@ function SucursalContent() {
   const [totalProducts, setTotalProducts] = useState(0)
   const [products, setProducts] = useState([])
   const [selection, setSelection] = useState({
-    sucursalId: null,
+    sucursal: null,
     collaborator: null,
     invoices: null,
   });
@@ -25,7 +25,7 @@ function SucursalContent() {
 
     setSelection((prev) => ({
       ...prev,
-      sucursalId: route.id,
+      sucursal: route,
     }));
     setTotalProducts(route.total_products)
   };
@@ -72,7 +72,7 @@ function SucursalContent() {
 
       // Dependiendo del nivel, limpiamos valores
       if (index === 0) {
-        newSelection.sucursalId = null;
+        newSelection.sucursal = null;
         newSelection.collaborator = null;
         newSelection.invoices = null;
       } else if (index === 1) {
@@ -93,7 +93,7 @@ function SucursalContent() {
       case 1:
         return (
           <SellersScreen
-            sucursalId={selection.sucursalId}
+            sucursal={selection.sucursal}
             collaborator={handlecollaboratorSellected}
             totalProducts={totalProducts}
             handleGetProducts={handleGetProducts}

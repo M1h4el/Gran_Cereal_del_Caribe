@@ -194,7 +194,7 @@ if (!global._pool) {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         waitForConnections: true,
-        connectionLimit: 10,
+        connectionLimit: 20,
         queueLimit: 0
     });
 }
@@ -216,6 +216,8 @@ async function queryDB(query, params = []) {
     try {
         connection = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["pool"].getConnection();
         const [results] = await connection.execute(query, params);
+        const [rows] = await connection.query('SHOW STATUS WHERE `variable_name` = "Threads_connected"');
+        console.log("Conexiones activas:", rows[0]);
         return results;
     } catch (error) {
         console.error("Database error:", error);

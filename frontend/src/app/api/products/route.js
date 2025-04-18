@@ -30,7 +30,6 @@ export async function GET(req) {
          ORDER BY p.created_at DESC`,
         [sucursalId]
       );
-      console.log("productos", result);
     }
 
     return NextResponse.json(result, { status: 200 });

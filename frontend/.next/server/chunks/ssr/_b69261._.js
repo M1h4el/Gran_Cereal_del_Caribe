@@ -950,9 +950,7 @@ __turbopack_esm__({
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/utils/api.js [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Swal$2f$Swal$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/components/Swal/Swal.jsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Swal$2f$ProductsTable$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/components/Swal/ProductsTable.jsx [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sweetalert2$2f$dist$2f$sweetalert2$2e$esm$2e$all$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/sweetalert2/dist/sweetalert2.esm.all.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Modal$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/components/Modal.jsx [app-ssr] (ecmascript)");
 "use client";
 ;
@@ -961,9 +959,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Modal$2
 ;
 ;
 ;
-;
-;
-function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
+function ProductsComponent({ sucursal, totalProducts, handleGetProducts }) {
     const [stock, setStock] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const [ultimoUpdate, setUltimoUpdate] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("Actualizado hace 1 día");
     const [codigoBuscar, setCodigoBuscar] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
@@ -978,7 +974,7 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
         setIsModalOpen(false);
     };
     let fetchProductos = async ()=>{
-        let data = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])(`/products?sucursalId=${sucursalId}`);
+        let data = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])(`/products?sucursalId=${sucursal.id}`);
         return data;
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
@@ -999,7 +995,7 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
         }
         fetchResumen();
     }, [
-        sucursalId,
+        sucursal.id,
         handleRefresh
     ]);
     console.log("111111111111:", arrayProducts);
@@ -1009,7 +1005,7 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
     async function handleBuscarProducto() {
         if (!codigoBuscar) return;
         try {
-            const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])(`/products/searchByCode?code=${codigoBuscar}&sucursalId=${sucursalId}`);
+            const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])(`/products/searchByCode?code=${codigoBuscar}&sucursalId=${sucursal.id}`);
             setStock(result?.inventory);
             setProductoEncontrado(result || null);
         } catch (error) {
@@ -1032,7 +1028,7 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
                             children: "Productos"
                         }, void 0, false, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 82,
+                            lineNumber: 80,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1046,13 +1042,13 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
                                             children: totalProducts ? totalProducts : 0
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                                            lineNumber: 86,
+                                            lineNumber: 84,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                                    lineNumber: 84,
+                                    lineNumber: 82,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1062,19 +1058,19 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
                                             children: ultimoUpdate
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                                            lineNumber: 90,
+                                            lineNumber: 88,
                                             columnNumber: 39
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                                    lineNumber: 89,
+                                    lineNumber: 87,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 83,
+                            lineNumber: 81,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1087,7 +1083,7 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
                                     onChange: (e)=>setCodigoBuscar(e.target.value)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                                    lineNumber: 95,
+                                    lineNumber: 93,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1095,13 +1091,13 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
                                     children: "Buscar"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                                    lineNumber: 101,
+                                    lineNumber: 99,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 94,
+                            lineNumber: 92,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1111,13 +1107,13 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
                                     children: stock
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                                    lineNumber: 105,
+                                    lineNumber: 103,
                                     columnNumber: 27
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 104,
+                            lineNumber: 102,
                             columnNumber: 13
                         }, this),
                         productoEncontrado && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
@@ -1130,32 +1126,32 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
                                                 children: "Código"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/ProductsComponent.jsx",
-                                                lineNumber: 112,
+                                                lineNumber: 110,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
                                                 children: "Nombre"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/ProductsComponent.jsx",
-                                                lineNumber: 113,
+                                                lineNumber: 111,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
                                                 children: "Stock"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/ProductsComponent.jsx",
-                                                lineNumber: 114,
+                                                lineNumber: 112,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/ProductsComponent.jsx",
-                                        lineNumber: 111,
+                                        lineNumber: 109,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                                    lineNumber: 110,
+                                    lineNumber: 108,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -1165,38 +1161,38 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
                                                 children: productoEncontrado.code
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/ProductsComponent.jsx",
-                                                lineNumber: 119,
+                                                lineNumber: 117,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                                 children: productoEncontrado.name
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/ProductsComponent.jsx",
-                                                lineNumber: 120,
+                                                lineNumber: 118,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                                 children: productoEncontrado.stock
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/ProductsComponent.jsx",
-                                                lineNumber: 121,
+                                                lineNumber: 119,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/ProductsComponent.jsx",
-                                        lineNumber: 118,
+                                        lineNumber: 116,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                                    lineNumber: 117,
+                                    lineNumber: 115,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 109,
+                            lineNumber: 107,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1206,23 +1202,23 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
                                 children: "Gestionar productos"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ProductsComponent.jsx",
-                                lineNumber: 128,
+                                lineNumber: 126,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/ProductsComponent.jsx",
-                            lineNumber: 127,
+                            lineNumber: 125,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                    lineNumber: 81,
+                    lineNumber: 79,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/ProductsComponent.jsx",
-                lineNumber: 80,
+                lineNumber: 78,
                 columnNumber: 9
             }, this),
             isModalOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Modal$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1232,15 +1228,15 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
                     arrayProducts: arrayProducts,
                     setArrayProducts: handleSetArray,
                     handleRefresh: handleReFetch,
-                    sucursalId: sucursalId
+                    sucursalId: sucursal.id
                 }, void 0, false, {
                     fileName: "[project]/src/components/ProductsComponent.jsx",
-                    lineNumber: 136,
+                    lineNumber: 134,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/ProductsComponent.jsx",
-                lineNumber: 135,
+                lineNumber: 133,
                 columnNumber: 9
             }, this)
         ]
@@ -1271,7 +1267,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2
 ;
 ;
 ;
-const SellersScreen = ({ sucursalId, collaborator, totalProducts, handleGetProducts })=>{
+const SellersScreen = ({ sucursal, collaborator, totalProducts, handleGetProducts })=>{
     const { data: session, status } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSession"])();
     const [colaboradores, setColaboradores] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [globalFilter, setGlobalFilter] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
@@ -1285,9 +1281,9 @@ const SellersScreen = ({ sucursalId, collaborator, totalProducts, handleGetProdu
         async function fetchCollaborators() {
             if (!session?.user || status == "unauthenticated") return;
             if (status == "loading") return;
-            if (!sucursalId) return;
+            if (!sucursal) return;
             try {
-                const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])(`/users/${session.user.id}/sucursales/${sucursalId}/children`, "GET", null);
+                const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])(`/users/${session.user.id}/sucursales/${sucursal.id}/children`, "GET", null);
                 if (res.length === 0) console.log("No se encontraron colaboradores.");
                 if (res.error) console.error("Error:", res.error);
                 setColaboradores(res);
@@ -1475,7 +1471,7 @@ const SellersScreen = ({ sucursalId, collaborator, totalProducts, handleGetProdu
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ProductsComponent$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                            sucursalId: sucursalId,
+                            sucursal: sucursal,
                             totalProducts: totalProducts,
                             handleGetProducts: handleGetProducts
                         }, void 0, false, {
@@ -1969,27 +1965,82 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$x$2
 ;
 ;
 ;
-function DataTable({ rows, columns }) {
+function DataTable({ rows, columns, options }) {
     const [tableRows, setTableRows] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(rows);
-    const [selectionModel, setSelectionModel] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
-    console.log("rows", tableRows);
+    const [selectedRows, setSelectedRows] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        console.log("tabla actualizada", tableRows);
+    }, [
+        tableRows
+    ]);
     const handleAdd = ()=>{
-        const newRow = {
-            id: Date.now(),
-            product: "",
-            quantity: "",
-            subTotal: ""
-        };
         setTableRows((prev)=>[
                 ...prev,
-                newRow
+                {
+                    id: `temp-${Date.now()}-${prev.length}`,
+                    product: "",
+                    quantity: 0,
+                    unitPrice: 0,
+                    subTotal: 0
+                }
             ]);
     };
     const handleDelete = ()=>{
-        const filteredRows = tableRows.filter((row)=>!selectionModel.includes(row.id));
-        setTableRows(filteredRows);
-        setSelectionModel([]);
+        const newRows = tableRows.filter((row)=>!selectedRows.some((sel)=>sel.id === row.id));
+        setTableRows(newRows);
+        setSelectedRows([]);
     };
+    const handleRowChange = (rowIndex, field, value)=>{
+        const updatedRows = [
+            ...tableRows
+        ];
+        updatedRows[rowIndex] = {
+            ...updatedRows[rowIndex],
+            [field]: value
+        };
+        if (field === "quantity" || field === "unitPrice") {
+            const qty = Number(updatedRows[rowIndex].quantity) || 0;
+            const price = Number(updatedRows[rowIndex].unitPrice) || 0;
+            updatedRows[rowIndex].subTotal = qty * price;
+        }
+        setTableRows(updatedRows);
+    };
+    const customColumns = columns.map((col)=>({
+            name: col.headerName,
+            selector: (row)=>row[col.field],
+            sortable: true,
+            grow: col.flex || 1,
+            cell: (row, rowIndex)=>col.editable ? col.type === "autocomplete" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Autocomplete, {
+                    value: row[col.field] || "",
+                    onChange: (_, newValue)=>handleRowChange(rowIndex, col.field, newValue),
+                    options: options || [],
+                    renderInput: (params)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(TextField, {
+                            ...params,
+                            variant: "standard"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/MUI/DataTable.jsx",
+                            lineNumber: 72,
+                            columnNumber: 15
+                        }, void 0),
+                    size: "small"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/MUI/DataTable.jsx",
+                    lineNumber: 65,
+                    columnNumber: 11
+                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                    type: col.type === "number" ? "number" : "text",
+                    value: row[col.field],
+                    onChange: (e)=>handleRowChange(rowIndex, col.field, e.target.value),
+                    style: {
+                        width: "100%",
+                        padding: "4px"
+                    }
+                }, void 0, false, {
+                    fileName: "[project]/src/components/MUI/DataTable.jsx",
+                    lineNumber: 77,
+                    columnNumber: 11
+                }, this) : row[col.field]
+        }));
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Paper$2f$Paper$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
         sx: {
             height: "auto",
@@ -2011,7 +2062,7 @@ function DataTable({ rows, columns }) {
                         children: "Agregar"
                     }, void 0, false, {
                         fileName: "[project]/src/components/MUI/DataTable.jsx",
-                        lineNumber: 119,
+                        lineNumber: 94,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -2022,23 +2073,24 @@ function DataTable({ rows, columns }) {
                         children: "Eliminar seleccionados"
                     }, void 0, false, {
                         fileName: "[project]/src/components/MUI/DataTable.jsx",
-                        lineNumber: 122,
+                        lineNumber: 97,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/MUI/DataTable.jsx",
-                lineNumber: 118,
+                lineNumber: 93,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$x$2d$data$2d$grid$2f$DataGrid$2f$DataGrid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DataGrid"], {
                 rows: tableRows,
                 columns: columns,
                 checkboxSelection: true,
+                getRowId: (row)=>row.id ?? row.idinvoice_detail ?? `temp-${row.product}-${row.quantity}-${row.unitPrice}`,
                 disableRowSelectionOnClick: true,
                 onRowSelectionModelChange: (newSelection)=>setSelectionModel(newSelection),
                 rowSelectionModel: selectionModel,
-                /* localeText={localeText} */ pageSizeOptions: [
+                pageSizeOptions: [
                     10,
                     20
                 ],
@@ -2052,13 +2104,13 @@ function DataTable({ rows, columns }) {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/MUI/DataTable.jsx",
-                lineNumber: 131,
+                lineNumber: 106,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/MUI/DataTable.jsx",
-        lineNumber: 117,
+        lineNumber: 92,
         columnNumber: 5
     }, this);
 }
@@ -2075,8 +2127,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/utils/api.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$MUI$2f$DataTable$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/components/MUI/DataTable.jsx [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Autocomplete$2f$Autocomplete$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Autocomplete$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/Autocomplete/Autocomplete.js [app-ssr] (ecmascript) <locals> <export default as Autocomplete>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TextField$2f$TextField$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/TextField/TextField.js [app-ssr] (ecmascript) <export default as TextField>");
 "use client";
 ;
 ;
@@ -2100,15 +2150,16 @@ function InvoiceScreen({ data, products }) {
                 if (!invoiceId) return;
                 const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fetchData"])(`invoices/${invoiceId}/details`, "GET");
                 const formatted = res.map((item, index)=>({
-                        id: item?.idinvoice_detail ?? index,
+                        id: item?.idinvoice_detail ?? `temp-${Date.now()}-${index}`,
                         idinvoice_detail: item?.idinvoice_detail,
                         product: `${item?.productCode} - ${item?.name}`,
                         quantity: item?.quantity,
-                        unitPrice: item?.unitPrice,
+                        unitPrice: item?.price,
                         subTotal: item?.subTotal,
                         created_at: formatter.format(new Date(item.created_at)),
                         updated_at: formatter.format(new Date(item.updated_at))
                     }));
+                console.log("Productos desde InvoiceScreen:", products);
                 setInvoiceDetails(formatted);
             } catch (error) {
                 console.error("Error al obtener detalles de factura:", error);
@@ -2118,115 +2169,305 @@ function InvoiceScreen({ data, products }) {
     }, [
         data
     ]);
-    const productOptions = products.map((p)=>({
-            ...p,
-            label: `${p.productCode} - ${p.name}`
-        }));
     const columns = [
         {
             field: "product",
             headerName: "Producto",
-            width: 400,
             editable: true,
-            flex: 1,
-            renderEditCell: (params)=>{
-                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Autocomplete$2f$Autocomplete$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Autocomplete$3e$__["Autocomplete"], {
-                    options: productOptions,
-                    value: productOptions.find((opt)=>opt.label === params.value) || null,
-                    onChange: (event, newValue)=>{
-                        params.api.setEditCellValue({
-                            id: params.id,
-                            field: params.field,
-                            value: newValue?.label || ""
-                        });
-                    },
-                    renderInput: (paramsInput)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TextField$2f$TextField$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
-                            ...paramsInput,
-                            variant: "standard",
-                            fullWidth: true,
-                            sx: {
-                                "& .MuiInputBase-root": {
-                                    padding: "0 20px",
-                                    height: "100%",
-                                    fontSize: "1rem"
-                                },
-                                "& input": {
-                                    padding: "4px 8px",
-                                    fontSize: "0.85rem"
-                                }
-                            }
-                        }, void 0, false, {
-                            fileName: "[project]/src/components/InvoiceScreen.jsx",
-                            lineNumber: 76,
-                            columnNumber: 15
-                        }, void 0),
-                    fullWidth: true,
-                    disableClearable: true,
-                    sx: {
-                        marginTop: "10px",
-                        width: "100%",
-                        height: "100%",
-                        fontSize: "1rem",
-                        "& .MuiAutocomplete-inputRoot": {
-                            padding: "0 10px !important"
-                        },
-                        "& .MuiAutocomplete-option": {
-                            fontSize: "1rem"
-                        }
-                    }
-                }, void 0, false, {
-                    fileName: "[project]/src/components/InvoiceScreen.jsx",
-                    lineNumber: 63,
-                    columnNumber: 11
-                }, this);
-            }
+            type: "autocomplete"
         },
         {
             field: "quantity",
             headerName: "Cantidad",
-            width: 200,
-            editable: true,
-            type: "number",
             editable: true
         },
         {
             field: "unitPrice",
             headerName: "Precio Unitario",
-            width: 200,
-            editable: false,
-            type: "number"
+            editable: false
         },
         {
             field: "subTotal",
-            headerName: "SubTotal",
-            width: 300,
-            editable: false,
-            type: "number",
-            valueGetter: (value, row)=>{
-                value = row.unitPrice * row.quantity;
-                return value;
-            }
+            headerName: "Subtotal",
+            editable: false
         }
     ];
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+    const productOptions = products.map((p)=>({
+            ...p,
+            label: `${p.productCode} - ${p.name}`
+        }));
+    let unitPriceProduct = (code)=>{
+        const productFound = products.find((product)=>product.productCode === code);
+        return productFound?.price || 0;
+    };
+    /*
+
+  const columns = [
+    {
+      field: "product",
+      headerName: "Producto",
+      width: 400,
+      editable: true,
+      flex: 1,
+      renderEditCell: (params) => {
+        return (
+          <Autocomplete
+            options={productOptions}
+            value={
+              productOptions.find((opt) => opt.label === params.value) || null
+            }
+            onChange={(event, newValue) => {
+              params.api.setEditCellValue({
+                id: params.id,
+                field: params.field,
+                value: newValue?.label ?? "",
+              });
+            }}
+            renderInput={(paramsInput) => (
+              <TextField
+                {...paramsInput}
+                variant="standard"
+                fullWidth
+                sx={{
+                  "& .MuiInputBase-root": {
+                    padding: "0 20px",
+                    height: "100%",
+                    fontSize: "1rem", // 👈 tamaño de fuente aquí
+                  },
+                  "& input": {
+                    padding: "4px 8px",
+                    fontSize: "0.85rem", // 👈 tamaño de fuente input
+                  },
+                }}
+              />
+            )}
+            fullWidth
+            disableClearable
+            sx={{
+              marginTop: "10px",
+              width: "100%",
+              height: "100%",
+              fontSize: "1rem", // 👈 tamaño de fuente del dropdown
+              "& .MuiAutocomplete-inputRoot": {
+                padding: "0 10px !important",
+              },
+              "& .MuiAutocomplete-option": {
+                fontSize: "1rem", // 👈 tamaño de fuente de cada opción del dropdown
+              },
+            }}
+          />
+        );
+      },
+      valueSetter: (params) => {
+        if (!params.id) {
+          console.error("Fila sin ID, no se puede editar correctamente:", params);
+          return { ...params.row }; // Evita el error
+        }
+        console.log("parammmmmmms", params.value)
+        const newLabel = params.value;
+        if (!newLabel || typeof newLabel !== "string") {
+          return { ...params.row };
+        }
+        const codeSelectedProduct = params?.row.product?.split(" ")[0];
+        const unitPrice = unitPriceProduct(codeSelectedProduct);
+      
+        return {
+          ...params.row,
+          product: newLabel,
+          unitPrice: unitPrice,
+        };
+      }
+    },
+    {
+      field: "quantity",
+      headerName: "Cantidad",
+      width: 200,
+      editable: true,
+      type: "number",
+      editable: true,
+      valueSetter: (params) => {
+        if (!params.id) {
+          console.error("Fila sin ID, no se puede editar correctamente:", params);
+          return { ...params.row }; // Evita el error
+        }
+        const quantity = Number(params.value) || 0;
+        const unitPrice = params.row.unitPrice || 0;
+        return {
+          ...params.row,
+          quantity,
+          subTotal: quantity * unitPrice,
+        };
+      },
+    },
+    {
+      field: "unitPrice",
+      headerName: "Precio Unitario",
+      width: 200,
+      editable: false,
+      type: "number",
+      valueGetter: (value, row) => {
+        let codeSelectedProduct = row.product.split(' ')[0];
+        value = unitPriceProduct(codeSelectedProduct);
+        return value;
+      },
+      valueSetter: (value, row) => {
+        return {...row, unitPrice}
+      },
+    },
+    {
+      field: "subTotal",
+      headerName: "SubTotal",
+      width: 300,
+      editable: false,
+      type: "number",
+      valueGetter: (value, row) => {
+        let sub_total = row.unitPrice * row.quantity;
+        return sub_total;
+      },
+      valueSetter: (value, row) => {
+        return {...row, subTotal: value}
+      }
+    },
+  ];
+
+  */ return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "table-container",
-        children: invoiceDetails.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$MUI$2f$DataTable$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-            rows: invoiceDetails,
-            columns: columns
-        }, void 0, false, {
-            fileName: "[project]/src/components/InvoiceScreen.jsx",
-            lineNumber: 142,
-            columnNumber: 9
-        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-            children: "Cargando datos..."
-        }, void 0, false, {
-            fileName: "[project]/src/components/InvoiceScreen.jsx",
-            lineNumber: 144,
-            columnNumber: 9
-        }, this)
-    }, void 0, false, {
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "generalInfo",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "infoInvoice",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                className: "TitleScreen",
+                                children: "Factura de Ventas"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                lineNumber: 222,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                children: "# de Invoice"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                lineNumber: 225,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                        lineNumber: 221,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "infoCustomer",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "infoKey",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        children: "A Nombre de: "
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                        lineNumber: 229,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        children: "Dirección: "
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                        lineNumber: 230,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        children: "Teléfono: "
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                        lineNumber: 231,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        children: "Fecha: "
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                        lineNumber: 232,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                lineNumber: 228,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "infoValue",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        children: "Nombre del cliente"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                        lineNumber: 235,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        children: "Dirección de entrega"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                        lineNumber: 236,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        children: "# de teléfono"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                        lineNumber: 237,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        children: "Fecha de creación"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                        lineNumber: 238,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                lineNumber: 234,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                        lineNumber: 227,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/InvoiceScreen.jsx",
+                lineNumber: 220,
+                columnNumber: 7
+            }, this),
+            invoiceDetails.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$MUI$2f$DataTable$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                rows: invoiceDetails,
+                columns: columns,
+                options: productOptions
+            }, void 0, false, {
+                fileName: "[project]/src/components/InvoiceScreen.jsx",
+                lineNumber: 243,
+                columnNumber: 9
+            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                children: "Cargando datos..."
+            }, void 0, false, {
+                fileName: "[project]/src/components/InvoiceScreen.jsx",
+                lineNumber: 245,
+                columnNumber: 9
+            }, this)
+        ]
+    }, void 0, true, {
         fileName: "[project]/src/components/InvoiceScreen.jsx",
-        lineNumber: 140,
+        lineNumber: 219,
         columnNumber: 5
     }, this);
 }
@@ -2261,7 +2502,7 @@ function SucursalContent() {
     const [totalProducts, setTotalProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const [products, setProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [selection, setSelection] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
-        sucursalId: null,
+        sucursal: null,
         collaborator: null,
         invoices: null
     });
@@ -2274,7 +2515,7 @@ function SucursalContent() {
             ]);
         setSelection((prev)=>({
                 ...prev,
-                sucursalId: route.id
+                sucursal: route
             }));
         setTotalProducts(route.total_products);
     };
@@ -2318,7 +2559,7 @@ function SucursalContent() {
             };
             // Dependiendo del nivel, limpiamos valores
             if (index === 0) {
-                newSelection.sucursalId = null;
+                newSelection.sucursal = null;
                 newSelection.collaborator = null;
                 newSelection.invoices = null;
             } else if (index === 1) {
@@ -2342,7 +2583,7 @@ function SucursalContent() {
                 }, this);
             case 1:
                 return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$SellersScreen$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                    sucursalId: selection.sucursalId,
+                    sucursal: selection.sucursal,
                     collaborator: handlecollaboratorSellected,
                     totalProducts: totalProducts,
                     handleGetProducts: handleGetProducts

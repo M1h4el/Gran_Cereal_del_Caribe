@@ -154,7 +154,7 @@ if (!global._pool) {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         waitForConnections: true,
-        connectionLimit: 10,
+        connectionLimit: 20,
         queueLimit: 0
     });
 }
@@ -176,6 +176,8 @@ async function queryDB(query, params = []) {
     try {
         connection = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["pool"].getConnection();
         const [results] = await connection.execute(query, params);
+        const [rows] = await connection.query('SHOW STATUS WHERE `variable_name` = "Threads_connected"');
+        console.log("Conexiones activas:", rows[0]);
         return results;
     } catch (error) {
         console.error("Database error:", error);
@@ -199,9 +201,7 @@ module.exports = mod;
 var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_import__, s: __turbopack_esm__, v: __turbopack_export_value__, n: __turbopack_export_namespace__, c: __turbopack_cache__, M: __turbopack_modules__, l: __turbopack_load__, j: __turbopack_dynamic__, P: __turbopack_resolve_absolute_path__, U: __turbopack_relative_url__, R: __turbopack_resolve_module_id_path__, b: __turbopack_worker_blob_url__, g: global, __dirname, x: __turbopack_external_require__, y: __turbopack_external_import__, z: __turbopack_require_stub__ } = __turbopack_context__;
 {
 __turbopack_esm__({
-    "DELETE": (()=>DELETE),
     "GET": (()=>GET),
-    "POST": (()=>POST),
     "PUT": (()=>PUT)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/lib/dbUtils.js [app-route] (ecmascript)");
@@ -212,9 +212,10 @@ async function GET(req, { params }) {
     const { invoiceId } = await params;
     try {
         if (invoiceId) {
-            const details = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`SELECT p.productCode, p.name, p.price, ind.idinvoice_detail, ind.idproduct, ind.quantity, ind.unitPrice, ind.subTotal, p.created_at, p.updated_at  FROM invoice_details ind, products p WHERE ind.idinvoice = 2 AND ind.idproduct = p.idproduct;`, [
+            const details = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`SELECT p.productCode, p.name, p.price, ind.idinvoice_detail, ind.quantity, ind.unitPrice, ind.total, p.created_at, p.updated_at  FROM invoice_details ind, products p WHERE ind.idinvoice = ? AND ind.productCode = p.productCode;`, [
                 invoiceId
             ]);
+            console.log("detailllllls", details);
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(details);
         } else {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
@@ -231,78 +232,131 @@ async function GET(req, { params }) {
         });
     }
 }
-async function POST(request, { params }) {
-    const { invoiceId } = params;
-    const body = await request.json();
-    const { idproduct, quantity, productType, unitPrice, subTotal } = body;
+async function PUT(req, { params }) {
+    const { invoiceId } = await params;
+    console.log("InvoiceId", invoiceId);
     try {
-        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`INSERT INTO invoice_details (idinvoice, idproduct, quantity, productType, unitPrice, subTotal, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())`, [
-            invoiceId,
-            idproduct,
-            quantity,
-            productType,
-            unitPrice,
-            subTotal
-        ]);
+        const body = await req.json();
+        const { data } = body;
+        if (!Array.isArray(data)) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: "Formato inválido"
+            }, {
+                status: 400
+            });
+        }
+        console.log("data", data);
+        const newRows = [];
+        const existingRows = [];
+        for (const row of data){
+            const { idinvoice_detail, product, quantity, unitPrice, total } = row;
+            if (!product || !quantity || !unitPrice || !total) {
+                console.log("Fila incompleta, ignorada:", row);
+                continue;
+            }
+            const productCode = product.split(" - ")[0];
+            if (!idinvoice_detail || idinvoice_detail.toString().startsWith("temp-")) {
+                newRows.push([
+                    invoiceId,
+                    productCode,
+                    quantity,
+                    unitPrice,
+                    total
+                ]);
+            } else {
+                existingRows.push({
+                    idinvoice_detail,
+                    productCode,
+                    quantity,
+                    unitPrice,
+                    total
+                });
+            }
+        }
+        const updated = [];
+        // INSERT individual evitando duplicados
+        if (newRows.length > 0) {
+            console.log("Insertando nuevas filas sin duplicar productCode por invoiceId...");
+            for (const row of newRows){
+                const [idinvoice, productCode, quantity, unitPrice, total] = row;
+                const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`INSERT INTO invoice_details (idinvoice, productCode, quantity, unitPrice, total)
+           SELECT ?, ?, ?, ?, ?
+           FROM DUAL
+           WHERE NOT EXISTS (
+             SELECT 1 FROM invoice_details WHERE idinvoice = ? AND productCode = ?
+           )`, [
+                    idinvoice,
+                    productCode,
+                    quantity,
+                    unitPrice,
+                    total,
+                    idinvoice,
+                    productCode
+                ]);
+                if (result.affectedRows > 0) {
+                    updated.push({
+                        idinvoice_detail: result.insertId,
+                        idproduct: productCode,
+                        quantity,
+                        unitPrice,
+                        total
+                    });
+                } else {
+                    console.log(`Producto duplicado no insertado: ${productCode} para invoice ${idinvoice}`);
+                }
+            }
+        }
+        // UPDATE múltiples usando CASE WHEN
+        if (existingRows.length > 0) {
+            const ids = existingRows.map((r)=>r.idinvoice_detail);
+            const updateQuery = `
+        UPDATE invoice_details
+        SET
+          productCode = CASE idinvoice_detail
+            ${existingRows.map((r)=>`WHEN ${r.idinvoice_detail} THEN ${JSON.stringify(r.productCode)}`).join("\n")}
+          END,
+          quantity = CASE idinvoice_detail
+            ${existingRows.map((r)=>`WHEN ${r.idinvoice_detail} THEN ${r.quantity}`).join("\n")}
+          END,
+          unitPrice = CASE idinvoice_detail
+            ${existingRows.map((r)=>`WHEN ${r.idinvoice_detail} THEN ${r.unitPrice}`).join("\n")}
+          END,
+          total = CASE idinvoice_detail
+            ${existingRows.map((r)=>`WHEN ${r.idinvoice_detail} THEN ${r.total}`).join("\n")}
+          END
+        WHERE idinvoice_detail IN (${ids.join(", ")}) AND idinvoice = ?
+      `;
+            const responseUpdate = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(updateQuery, [
+                invoiceId
+            ]);
+            console.log("Response de actualización:", responseUpdate);
+            updated.push(...existingRows);
+        }
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            message: "Detalle creado",
-            id: result.insertId
-        }, {
-            status: 201
+            updated
         });
     } catch (error) {
+        console.error(error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: "Error al crear detalle"
+            error: "Error al actualizar detalles"
         }, {
             status: 500
         });
     }
-}
-async function PUT(request, { params }) {
-    const { invoiceId } = params;
-    const body = await request.json();
-    const { id, idproduct, quantity, productType, unitPrice, subTotal } = body;
-    try {
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`UPDATE invoice_details
-       SET idinvoice = ?, idproduct = ?, quantity = ?, productType = ?, unitPrice = ?, subTotal = ?, updated_at = NOW()
-       WHERE id = ?`, [
-            invoiceId,
-            idproduct,
-            quantity,
-            productType,
-            unitPrice,
-            subTotal,
-            id
-        ]);
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            message: "Detalle actualizado"
-        });
-    } catch (error) {
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: "Error al actualizar detalle"
-        }, {
-            status: 500
-        });
-    }
-}
-async function DELETE(request, { params }) {
-    const { id } = await request.json();
-    try {
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`DELETE FROM invoice_details WHERE id = ?`, [
-            id
-        ]);
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            message: "Detalle eliminado correctamente."
-        });
-    } catch (error) {
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: "Error al eliminar detalle"
-        }, {
-            status: 500
-        });
-    }
-}
+} // ✅ DELETE: Eliminar un detalle
+ /* export async function DELETE(request, { params }) {
+  const { id } = await request.json();
+
+  try {
+    await queryDB(`DELETE FROM invoice_details WHERE id = ?`, [id]);
+    return NextResponse.json({ message: "Detalle eliminado correctamente." });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Error al eliminar detalle" },
+      { status: 500 }
+    );
+  }
+} */ 
 }}),
 "[project]/ (server-utils)": ((__turbopack_context__) => {
 

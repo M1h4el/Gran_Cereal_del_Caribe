@@ -7,7 +7,7 @@ import { useReactTable, getCoreRowModel, getPaginationRowModel, getFilteredRowMo
 import "@/styles/SellersScreen.scss";
 import ProductsComponent from "./ProductsComponent";
 
-const SellersScreen = ({ sucursalId, collaborator, totalProducts, handleGetProducts }) => {
+const SellersScreen = ({ sucursal, collaborator, totalProducts, handleGetProducts }) => {
   const { data: session, status } = useSession();
   const [colaboradores, setColaboradores] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -23,11 +23,11 @@ const SellersScreen = ({ sucursalId, collaborator, totalProducts, handleGetProdu
     async function fetchCollaborators() {
       if (!session?.user || status == "unauthenticated") return;
       if (status == "loading") return;
-      if (!sucursalId) return;
+      if (!sucursal) return;
 
       try {
         const res = await fetchData(
-          `/users/${session.user.id}/sucursales/${sucursalId}/children`,
+          `/users/${session.user.id}/sucursales/${sucursal.id}/children`,
           "GET",
           null
         );
@@ -111,7 +111,7 @@ const SellersScreen = ({ sucursalId, collaborator, totalProducts, handleGetProdu
               </div>
             </div>
           </div>
-          <ProductsComponent sucursalId={sucursalId} totalProducts={totalProducts} handleGetProducts={handleGetProducts} />
+          <ProductsComponent sucursal={sucursal} totalProducts={totalProducts} handleGetProducts={handleGetProducts} />
         </div>
       </section>
 

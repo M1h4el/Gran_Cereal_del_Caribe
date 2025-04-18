@@ -3,12 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { fetchData } from "../../utils/api";
 import "@/styles/ProductsComponent.scss";
-import { showSwal } from "./Swal/Swal";
 import ProductsTable from "./Swal/ProductsTable";
-import Swal from "sweetalert2";
 import Modal from "./Modal";
 
-function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
+function ProductsComponent({ sucursal, totalProducts, handleGetProducts }) {
   const [stock, setStock] = useState(0);
   const [ultimoUpdate, setUltimoUpdate] = useState("Actualizado hace 1 día");
   const [codigoBuscar, setCodigoBuscar] = useState("");
@@ -26,7 +24,7 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
   };
 
   let fetchProductos = async () => {
-    let data = await fetchData(`/products?sucursalId=${sucursalId}`);
+    let data = await fetchData(`/products?sucursalId=${sucursal.id}`);
     return data;
   };
 
@@ -49,7 +47,7 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
       }
     }
     fetchResumen();
-  }, [sucursalId, handleRefresh]);
+  }, [sucursal.id, handleRefresh]);
 
   console.log("111111111111:", arrayProducts);
 
@@ -61,7 +59,7 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
     if (!codigoBuscar) return;
     try {
       const result = await fetchData(
-        `/products/searchByCode?code=${codigoBuscar}&sucursalId=${sucursalId}`
+        `/products/searchByCode?code=${codigoBuscar}&sucursalId=${sucursal.id}`
       );
       setStock(result?.inventory);
       setProductoEncontrado(result || null);
@@ -137,7 +135,7 @@ function ProductsComponent({ sucursalId, totalProducts, handleGetProducts }) {
             arrayProducts={arrayProducts}
             setArrayProducts={handleSetArray}
             handleRefresh={handleReFetch}
-            sucursalId={sucursalId}
+            sucursalId={sucursal.id}
           />
         </Modal>}
       </>

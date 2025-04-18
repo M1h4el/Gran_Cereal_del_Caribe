@@ -81,12 +81,12 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice }) => {
     },
     {
       accessorKey: "deliveryDate",
-      header: "Fecha de Entrega",
+      header: "Entrega",
       cell: (info) => info.getValue() ?? "--",
     },
     {
       accessorKey: "sold_out",
-      header: "Liquidado",
+      header: "Liquidado (S/N)",
       cell: (info) => (info.getValue() === "pending" ? "N" : "S"),
     },
   ];

@@ -8,9 +8,10 @@ export async function GET(req, { params }) {
   try {
     if (invoiceId) {
       const details = await queryDB(
-        `SELECT p.productCode, p.name, p.price, ind.idinvoice_detail, ind.idproduct, ind.quantity, ind.unitPrice, ind.subTotal, p.created_at, p.updated_at  FROM invoice_details ind, products p WHERE ind.idinvoice = 2 AND ind.idproduct = p.idproduct;`,
+        `SELECT p.productCode, p.name, p.price, ind.idinvoice_detail, ind.quantity, ind.unitPrice, ind.total, p.created_at, p.updated_at  FROM invoice_details ind, products p WHERE ind.idinvoice = ? AND ind.productCode = p.productCode; AND ind.state = 0`,
         [invoiceId]
       );
+      console.log("detailllllls", details)
       return NextResponse.json(details);
     } else {
       return NextResponse.json(
@@ -26,56 +27,113 @@ export async function GET(req, { params }) {
   }
 }
 
-// ✅ POST: Crear un nuevo detalle
-export async function POST(request, { params }) {
-  const { invoiceId } = params;
-  const body = await request.json();
-  const { idproduct, quantity, productType, unitPrice, subTotal } = body;
-
-  try {
-    const result = await queryDB(
-      `INSERT INTO invoice_details (idinvoice, idproduct, quantity, productType, unitPrice, subTotal, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())`,
-      [invoiceId, idproduct, quantity, productType, unitPrice, subTotal]
-    );
-
-    return NextResponse.json(
-      { message: "Detalle creado", id: result.insertId },
-      { status: 201 }
-    );
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Error al crear detalle" },
-      { status: 500 }
-    );
-  }
-}
-
 // ✅ PUT: Actualizar un detalle existente
-export async function PUT(request, { params }) {
-  const { invoiceId } = params;
-  const body = await request.json();
-  const { id, idproduct, quantity, productType, unitPrice, subTotal } = body;
+export async function PUT(req, { params }) {
+  const { invoiceId } = await params;
+
+  console.log("InvoiceId", invoiceId)
 
   try {
-    await queryDB(
-      `UPDATE invoice_details
-       SET idinvoice = ?, idproduct = ?, quantity = ?, productType = ?, unitPrice = ?, subTotal = ?, updated_at = NOW()
-       WHERE id = ?`,
-      [invoiceId, idproduct, quantity, productType, unitPrice, subTotal, id]
-    );
+    const body = await req.json();
+    const { data } = body;
 
-    return NextResponse.json({ message: "Detalle actualizado" });
+    if (!Array.isArray(data)) {
+      return NextResponse.json({ error: "Formato inválido" }, { status: 400 });
+    }
+
+    console.log("data", data)
+
+    const newRows = [];
+    const existingRows = [];
+
+    for (const row of data) {
+      const { idinvoice_detail, product, quantity, unitPrice, total } = row;
+
+      if (!product || !quantity || !unitPrice || !total) {
+        console.log("Fila incompleta, ignorada:", row);
+        continue;
+      }
+
+      const productCode = product.split(" - ")[0];
+
+      if (!idinvoice_detail || idinvoice_detail.toString().startsWith("temp-")) {
+        newRows.push([invoiceId, productCode, quantity, unitPrice, total]);
+      } else {
+        existingRows.push({ idinvoice_detail, productCode, quantity, unitPrice, total });
+      }
+    }
+
+    const updated = [];
+
+    // INSERT individual evitando duplicados
+    if (newRows.length > 0) {
+      console.log("Insertando nuevas filas sin duplicar productCode por invoiceId...");
+
+      for (const row of newRows) {
+        const [idinvoice, productCode, quantity, unitPrice, total] = row;
+
+        const result = await queryDB(
+          `INSERT INTO invoice_details (idinvoice, productCode, quantity, unitPrice, total)
+           SELECT ?, ?, ?, ?, ?
+           FROM DUAL
+           WHERE NOT EXISTS (
+             SELECT 1 FROM invoice_details WHERE idinvoice = ? AND productCode = ?
+           )`,
+          [idinvoice, productCode, quantity, unitPrice, total, idinvoice, productCode]
+        );
+
+        if (result.affectedRows > 0) {
+          updated.push({
+            idinvoice_detail: result.insertId,
+            idproduct: productCode,
+            quantity,
+            unitPrice,
+            total,
+          });
+        } else {
+          console.log(`Producto duplicado no insertado: ${productCode} para invoice ${idinvoice}`);
+        }
+      }
+    }
+
+    // UPDATE múltiples usando CASE WHEN
+    if (existingRows.length > 0) {
+      const ids = existingRows.map((r) => r.idinvoice_detail);
+
+      const updateQuery = `
+        UPDATE invoice_details
+        SET
+          productCode = CASE idinvoice_detail
+            ${existingRows.map((r) => `WHEN ${r.idinvoice_detail} THEN ${JSON.stringify(r.productCode)}`).join("\n")}
+          END,
+          quantity = CASE idinvoice_detail
+            ${existingRows.map((r) => `WHEN ${r.idinvoice_detail} THEN ${r.quantity}`).join("\n")}
+          END,
+          unitPrice = CASE idinvoice_detail
+            ${existingRows.map((r) => `WHEN ${r.idinvoice_detail} THEN ${r.unitPrice}`).join("\n")}
+          END,
+          total = CASE idinvoice_detail
+            ${existingRows.map((r) => `WHEN ${r.idinvoice_detail} THEN ${r.total}`).join("\n")}
+          END
+        WHERE idinvoice_detail IN (${ids.join(", ")}) AND idinvoice = ?
+      `;
+
+      const responseUpdate = await queryDB(updateQuery, [invoiceId]);
+      console.log("Response de actualización:", responseUpdate);
+      updated.push(...existingRows);
+    }
+
+    return NextResponse.json({ updated });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Error al actualizar detalle" },
-      { status: 500 }
-    );
+    console.error(error);
+    return NextResponse.json({ error: "Error al actualizar detalles" }, { status: 500 });
   }
 }
+
+
 
 // ✅ DELETE: Eliminar un detalle
-export async function DELETE(request, { params }) {
+/* export async function DELETE(request, { params }) {
   const { id } = await request.json();
 
   try {
@@ -87,4 +145,4 @@ export async function DELETE(request, { params }) {
       { status: 500 }
     );
   }
-}
+} */

@@ -12,6 +12,34 @@
   padding: 20px 40px;
   gap: 40px;
 
+  .generalInfo {
+    @include v.flexing(row, space-between, center);
+    width: 100%;
+    height: 190px;
+    
+    .infoInvoice {
+      @include v.flexing(column, flex-start, flex-start);
+      width: 50%;
+    }
+    .infoCustomer {
+      @include v.flexing(row, space-between, flex-start);
+      flex: 1;
+      gap: 10px;
+
+      .infoKey, .infoValue {
+        gap: 10px
+      }
+
+      .infoKey {
+        @include v.flexing(column, flex-start, flex-start);
+      }
+
+      .infoValue {
+        @include v.flexing(column, flex-start, flex-end);
+      }
+    }
+  }
+
   .title_tools {
     @include v.flexing(column, center, flex-start);
     width: 100%;
@@ -74,6 +102,30 @@
         background-color: rgb(209, 36, 36);
 
         }
+    }
+  }
+
+  .childrenModal {
+    width: 400px;
+    height: 150px;
+    @include v.flexing(column, center, center);
+
+    h2 {
+      text-align: center;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    h4 {
+      text-align: center;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .modal-actions {
+      @include v.flexing(row, center, center);
+      width: 100%;
+      gap: 20px;
     }
   }
 }
