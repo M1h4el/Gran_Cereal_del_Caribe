@@ -8,7 +8,7 @@ export async function GET(req, { params }) {
   try {
     if (invoiceId) {
       const details = await queryDB(
-        `SELECT p.productCode, p.name, p.price, ind.idinvoice_detail, ind.quantity, ind.unitPrice, ind.total, p.created_at, p.updated_at  FROM invoice_details ind, products p WHERE ind.idinvoice = ? AND ind.productCode = p.productCode; AND ind.state = 0`,
+        `SELECT p.productCode, p.name, p.price, ind.idinvoice_detail, ind.quantity, ind.unitPrice, ind.total, p.created_at, p.updated_at  FROM invoice_details ind, products p WHERE ind.idinvoice = ? AND ind.productCode = p.productCode AND ind.state = 0;`,
         [invoiceId]
       );
       console.log("detailllllls", details)
@@ -130,19 +130,43 @@ export async function PUT(req, { params }) {
   }
 }
 
-
-
-// ✅ DELETE: Eliminar un detalle
-/* export async function DELETE(request, { params }) {
-  const { id } = await request.json();
+export async function DELETE(req, { params }) {
+  const { invoiceId } = await params;
 
   try {
-    await queryDB(`DELETE FROM invoice_details WHERE id = ?`, [id]);
-    return NextResponse.json({ message: "Detalle eliminado correctamente." });
+    const body = await req.json();
+    const { data } = body;
+
+    if (!Array.isArray(data)) {
+      return NextResponse.json({ error: "Formato inválido" }, { status: 400 });
+    }
+
+    console.log("Data from DELETE", data);
+
+    if (data.length === 0) {
+      return NextResponse.json({ error: "No se proporcionaron filas para eliminar" }, { status: 400 });
+    }
+
+    const validIds = data.filter((id) => !isNaN(id));
+    if (validIds.length === 0) {
+      return NextResponse.json({ error: "IDs inválidos" }, { status: 400 });
+    }
+
+    const placeholders = validIds.map(() => "?").join(", ");
+    const query = `
+      DELETE FROM invoice_details
+      WHERE idinvoice_detail IN (${placeholders}) AND idinvoice = ?
+    `;
+
+    const result = await queryDB(query, [...validIds, invoiceId]);
+
+    return NextResponse.json({
+      deletedCount: result.affectedRows,
+      deletedIds: validIds,
+    });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Error al eliminar detalle" },
-      { status: 500 }
-    );
+    console.error("Error en DELETE invoice_details:", error);
+    return NextResponse.json({ error: "Error al eliminar detalles" }, { status: 500 });
   }
-} */
+}
+

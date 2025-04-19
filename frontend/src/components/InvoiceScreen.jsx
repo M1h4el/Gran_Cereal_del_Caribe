@@ -5,7 +5,7 @@ import { fetchData } from "../../utils/api";
 import "@/styles/InvoiceScreen.scss";
 import DataTable from "./MUI/DataTable";
 import Modal from "./Modal";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { Button } from "@mui/material";
 
 const formatter = new Intl.DateTimeFormat("es-ES", {
   day: "2-digit",
@@ -16,11 +16,19 @@ const formatter = new Intl.DateTimeFormat("es-ES", {
 });
 
 function InvoiceScreen({ data, products }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [invoiceDetails, setInvoiceDetails] = useState([]);
   const [infoCustomer, setInfoCustomer] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [onConfirmAction, setOnConfirmAction] = useState(() => () => {});
+
+  console.log("data de InvoiceScreen",data);
+
+  let handleTotalData = (newTot) => {
+    data.total_net = newTot;
+  };
+
 
   const handleOpenModal = (content, action) => {
     setModalContent(content);
@@ -42,12 +50,12 @@ function InvoiceScreen({ data, products }) {
   const invoiceId = data?.invoice_id;
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchInvoiceDetails = async () => {
       try {
         if (!invoiceId) return;
 
         const res = await fetchData(`invoices/${invoiceId}/details`, "GET");
-        console.log("formattttttttted", res);
 
         const formatted = res.map((item, index) => ({
           id: item?.idinvoice_detail ?? `temp-${Date.now()}-${index}`,
@@ -71,7 +79,6 @@ function InvoiceScreen({ data, products }) {
     const fetchinfoCustomer = async () => {
       try {
         const userBuyerId = data?.user_buyer_id;
-        console.log("userBuyerId", userBuyerId);
         if (!userBuyerId) return;
 
         const res = await fetchData(`users/${userBuyerId}`, "GET");
@@ -92,6 +99,7 @@ function InvoiceScreen({ data, products }) {
 
     fetchinfoCustomer();
     fetchInvoiceDetails();
+    setIsLoading(false);
   }, [data]);
 
   const columns = [
@@ -135,8 +143,6 @@ function InvoiceScreen({ data, products }) {
     label: `${p.productCode} - ${p.name}`,
   }));
 
-  console.log("productOptions", productOptions);
-
   /* let unitPriceProduct = (code) => {
     const productFound = products.find(product => product.productCode === code);
     return productFound?.price || 0;
@@ -157,30 +163,31 @@ function InvoiceScreen({ data, products }) {
             <h3>Fecha: </h3>
           </div>
           <div className="infoValue">
-            <h3>{infoCustomer?.userName}</h3>
-            <h3>{infoCustomer?.address}</h3>
-            <h3>{infoCustomer?.phone}</h3>
-            <h3>{data?.created_at}</h3>
+            <h3>{infoCustomer?.userName || " "}</h3>
+            <h3>{infoCustomer?.address || " "}</h3>
+            <h3>{infoCustomer?.phone || " "}</h3>
+            <h3>{data?.created_at || " "}</h3>
           </div>
         </div>
       </div>
-      {invoiceDetails.length > 0 ? (
-        <DataTable
-          rows={invoiceDetails}
-          columns={columns}
-          options={productOptions}
-          dataInvoice={data}
-          openModal={handleOpenModal}
-          closeModal={handleCloseModal}
-        />
-      ) : (
-        <p>Cargando datos...</p>
-      )}
-      <Modal
-        open={isModalOpen}
-        onClose={handleCloseModal}
-      >
-        <div open={isModalOpen} onClose={handleCloseModal} className="childrenModal">
+
+      <DataTable
+        rows={invoiceDetails}
+        columns={columns}
+        options={productOptions}
+        dataInvoice={data}
+        openModal={handleOpenModal}
+        closeModal={handleCloseModal}
+        loadingDetails={isLoading}
+        updating={handleTotalData}
+      />
+
+      <Modal open={isModalOpen} onClose={handleCloseModal}>
+        <div
+          open={isModalOpen}
+          onClose={handleCloseModal}
+          className="childrenModal"
+        >
           <h2 className="title">Confirmación</h2>
           <h4>{modalContent}</h4>
           <div className="modal-actions">
@@ -190,7 +197,7 @@ function InvoiceScreen({ data, products }) {
             <Button onClick={handleConfirm} variant="contained" color="primary">
               Confirmar
             </Button>
-          </div >
+          </div>
         </div>
       </Modal>
     </div>

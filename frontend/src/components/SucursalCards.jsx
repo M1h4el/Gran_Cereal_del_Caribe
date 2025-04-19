@@ -56,7 +56,6 @@ function SucursalCards({ handleRoute }) {
       {}
     );
 
-    setCardData([...cardData, nuevaSucursal]);
   };
 
   const rotatedData =

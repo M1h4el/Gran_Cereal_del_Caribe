@@ -154,7 +154,7 @@ if (!global._pool) {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         waitForConnections: true,
-        connectionLimit: 20,
+        connectionLimit: 100,
         queueLimit: 0
     });
 }
@@ -201,6 +201,7 @@ module.exports = mod;
 var { r: __turbopack_require__, f: __turbopack_module_context__, i: __turbopack_import__, s: __turbopack_esm__, v: __turbopack_export_value__, n: __turbopack_export_namespace__, c: __turbopack_cache__, M: __turbopack_modules__, l: __turbopack_load__, j: __turbopack_dynamic__, P: __turbopack_resolve_absolute_path__, U: __turbopack_relative_url__, R: __turbopack_resolve_module_id_path__, b: __turbopack_worker_blob_url__, g: global, __dirname, x: __turbopack_external_require__, y: __turbopack_external_import__, z: __turbopack_require_stub__ } = __turbopack_context__;
 {
 __turbopack_esm__({
+    "DELETE": (()=>DELETE),
     "GET": (()=>GET),
     "PUT": (()=>PUT)
 });
@@ -212,7 +213,7 @@ async function GET(req, { params }) {
     const { invoiceId } = await params;
     try {
         if (invoiceId) {
-            const details = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`SELECT p.productCode, p.name, p.price, ind.idinvoice_detail, ind.quantity, ind.unitPrice, ind.total, p.created_at, p.updated_at  FROM invoice_details ind, products p WHERE ind.idinvoice = ? AND ind.productCode = p.productCode;`, [
+            const details = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`SELECT p.productCode, p.name, p.price, ind.idinvoice_detail, ind.quantity, ind.unitPrice, ind.total, p.created_at, p.updated_at  FROM invoice_details ind, products p WHERE ind.idinvoice = ? AND ind.productCode = p.productCode AND ind.state = 0;`, [
                 invoiceId
             ]);
             console.log("detailllllls", details);
@@ -343,20 +344,57 @@ async function PUT(req, { params }) {
             status: 500
         });
     }
-} // ✅ DELETE: Eliminar un detalle
- /* export async function DELETE(request, { params }) {
-  const { id } = await request.json();
-
-  try {
-    await queryDB(`DELETE FROM invoice_details WHERE id = ?`, [id]);
-    return NextResponse.json({ message: "Detalle eliminado correctamente." });
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Error al eliminar detalle" },
-      { status: 500 }
-    );
-  }
-} */ 
+}
+async function DELETE(req, { params }) {
+    const { invoiceId } = await params;
+    try {
+        const body = await req.json();
+        const { data } = body;
+        if (!Array.isArray(data)) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: "Formato inválido"
+            }, {
+                status: 400
+            });
+        }
+        console.log("Data from DELETE", data);
+        if (data.length === 0) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: "No se proporcionaron filas para eliminar"
+            }, {
+                status: 400
+            });
+        }
+        const validIds = data.filter((id)=>!isNaN(id));
+        if (validIds.length === 0) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: "IDs inválidos"
+            }, {
+                status: 400
+            });
+        }
+        const placeholders = validIds.map(()=>"?").join(", ");
+        const query = `
+      DELETE FROM invoice_details
+      WHERE idinvoice_detail IN (${placeholders}) AND idinvoice = ?
+    `;
+        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(query, [
+            ...validIds,
+            invoiceId
+        ]);
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            deletedCount: result.affectedRows,
+            deletedIds: validIds
+        });
+    } catch (error) {
+        console.error("Error en DELETE invoice_details:", error);
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            error: "Error al eliminar detalles"
+        }, {
+            status: 500
+        });
+    }
+}
 }}),
 "[project]/ (server-utils)": ((__turbopack_context__) => {
 

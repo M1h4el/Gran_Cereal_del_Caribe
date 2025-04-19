@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { queryDB } from "@/lib/dbUtils";
+import generateCode from "../../../../utils/generateCode";
+
 
 export async function GET(req) {
   try {
@@ -55,19 +57,36 @@ export async function POST(req) {
       );
     }
 
-    const {
-      productCode,
+    console.log("data desde el POST", data);
+
+    let {
       name,
       description,
       inventory,
       basePricing,
       BaseSellerPricing,
-      detalSellPrice,
-      MayorSellPrice,
       updated_at,
+      price,
     } = data;
 
-    console.log("data", data);
+    // 💡 Generar código único
+    let productCode;
+    let isUnique = false;
+
+    while (!isUnique) {
+      productCode = generateCode();
+
+      const [existing] = await queryDB(
+        `SELECT productCode FROM products WHERE productCode = ?`,
+        [productCode]
+      );
+
+      if (!existing) {
+        isUnique = true;
+      }
+    }
+
+    console.log("Código generado único:", productCode);
 
     const result = await queryDB(
       `INSERT INTO products (
@@ -77,11 +96,10 @@ export async function POST(req) {
         inventory,
         basePricing,
         BaseSellerPricing,
-        detalSellPrice,
-        MayorSellPrice,
         updated_at,
-        sucursal_id
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        sucursal_id,
+        price
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         productCode || null,
         name || null,
@@ -89,14 +107,11 @@ export async function POST(req) {
         inventory || 0,
         basePricing || null,
         BaseSellerPricing || null,
-        detalSellPrice || null,
-        MayorSellPrice || null,
         updated_at,
         sucursalId,
+        price || null,
       ]
     );
-
-    console.log("result", result);
 
     return NextResponse.json(
       { message: "Producto insertado correctamente", result },

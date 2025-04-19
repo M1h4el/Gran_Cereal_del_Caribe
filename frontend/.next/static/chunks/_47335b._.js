@@ -538,10 +538,6 @@ function SucursalCards({ handleRoute }) {
                 lineNumber: 48,
                 columnNumber: 9
             }, this), {});
-        setCardData([
-            ...cardData,
-            nuevaSucursal
-        ]);
     };
     const rotatedData = cardData.length > 1 ? [
         ...cardData.slice(1),
@@ -588,12 +584,12 @@ function SucursalCards({ handleRoute }) {
                             isFeatured: true
                         }, void 0, false, {
                             fileName: "[project]/src/components/SucursalCards.jsx",
-                            lineNumber: 102,
+                            lineNumber: 101,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/SucursalCards.jsx",
-                        lineNumber: 93,
+                        lineNumber: 92,
                         columnNumber: 11
                     }, this),
                     rotatedData.map((card, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -609,23 +605,23 @@ function SucursalCards({ handleRoute }) {
                                 description: card?.description
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SucursalCards.jsx",
-                                lineNumber: 123,
+                                lineNumber: 122,
                                 columnNumber: 15
                             }, this)
                         }, index, false, {
                             fileName: "[project]/src/components/SucursalCards.jsx",
-                            lineNumber: 113,
+                            lineNumber: 112,
                             columnNumber: 13
                         }, this))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/SucursalCards.jsx",
-                lineNumber: 82,
+                lineNumber: 81,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/SucursalCards.jsx",
-            lineNumber: 80,
+            lineNumber: 79,
             columnNumber: 7
         }, this)
     }, void 0, false);
@@ -653,18 +649,19 @@ __turbopack_esm__({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$data$2d$table$2d$component$2f$dist$2f$index$2e$cjs$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/react-data-table-component/dist/index.cjs.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/utils/api.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$table$2f$build$2f$lib$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_import__("[project]/node_modules/@tanstack/react-table/build/lib/index.mjs [app-client] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$table$2d$core$2f$build$2f$lib$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/@tanstack/table-core/build/lib/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/TextField/TextField.js [app-client] (ecmascript) <export default as TextField>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Paper$2f$Paper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Paper$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/Paper/Paper.js [app-client] (ecmascript) <export default as Paper>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Stack$2f$Stack$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Stack$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/Stack/Stack.js [app-client] (ecmascript) <export default as Stack>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/Button/Button.js [app-client] (ecmascript) <export default as Button>");
 ;
 var _s = __turbopack_refresh__.signature();
 ;
 ;
 ;
 ;
-function generateCode(length = 10) {
-    return Math.random().toString(36).substr(2, length).toUpperCase();
-}
+;
 const formatCurrency = (value)=>{
     if (!value && value !== 0) return "";
     return `$ ${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
@@ -676,7 +673,9 @@ function formatToMySQLTimestamp(date) {
 function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProducts }) {
     _s();
     const [globalFilter, setGlobalFilter] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
-    const [adding, setAdding] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [isEditing, setIsEditing] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false); // Nuevo estado para manejar la edición
+    const [originalRows, setOriginalRows] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [selectedRows, setSelectedRows] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]); // Para seleccionar filas
     const [newProduct, setNewProduct] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         productCode: "",
         name: "",
@@ -685,106 +684,118 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
         basePricing: "",
         BaseSellerPricing: "",
         price: "",
-        MayorSellPrice: "",
         updated_at: "----------------------------------"
     });
-    const columns = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
-        "ProductsTable.useMemo[columns]": ()=>[
-                {
-                    accessorKey: "productCode",
-                    header: "Código"
-                },
-                {
-                    accessorKey: "name",
-                    header: "Nombre"
-                },
-                {
-                    accessorKey: "description",
-                    header: "Descripción"
-                },
-                {
-                    accessorKey: "inventory",
-                    header: "Inventario"
-                },
-                {
-                    accessorKey: "basePricing",
-                    header: "Precio Base",
-                    cell: {
-                        "ProductsTable.useMemo[columns]": ({ getValue })=>formatCurrency(getValue())
-                    }["ProductsTable.useMemo[columns]"]
-                },
-                {
-                    accessorKey: "BaseSellerPricing",
-                    header: "Precio Base Vendedor",
-                    cell: {
-                        "ProductsTable.useMemo[columns]": ({ getValue })=>formatCurrency(getValue())
-                    }["ProductsTable.useMemo[columns]"]
-                },
-                {
-                    accessorKey: "price",
-                    header: "Valor",
-                    cell: {
-                        "ProductsTable.useMemo[columns]": ({ getValue })=>formatCurrency(getValue())
-                    }["ProductsTable.useMemo[columns]"]
-                },
-                {
-                    accessorKey: "updated_at",
-                    header: "Última Actualización",
-                    cell: {
-                        "ProductsTable.useMemo[columns]": ({ getValue })=>{
-                            const date = getValue();
-                            return date ? new Date(date).toLocaleDateString("es-ES") : "";
-                        }
-                    }["ProductsTable.useMemo[columns]"]
-                }
-            ]
-    }["ProductsTable.useMemo[columns]"], []);
-    const data = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
-        "ProductsTable.useMemo[data]": ()=>{
-            return adding ? [
-                ...arrayProducts,
-                newProduct
-            ] : arrayProducts;
-        }
-    }["ProductsTable.useMemo[data]"], [
-        arrayProducts,
-        adding,
-        newProduct
-    ]);
-    const table = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$table$2f$build$2f$lib$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["useReactTable"])({
-        data,
-        columns,
-        state: {
-            globalFilter
-        },
-        onGlobalFilterChange: setGlobalFilter,
-        getCoreRowModel: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$table$2d$core$2f$build$2f$lib$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getCoreRowModel"])(),
-        getFilteredRowModel: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$table$2d$core$2f$build$2f$lib$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getFilteredRowModel"])(),
-        getPaginationRowModel: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$table$2d$core$2f$build$2f$lib$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getPaginationRowModel"])()
-    });
-    const handleInputChange = (key, value)=>{
-        setNewProduct((prev)=>({
-                ...prev,
-                [key]: value
-            }));
+    console.log("arrayProducts", arrayProducts);
+    console.log("originalRows", originalRows);
+    console.log("selectedRows", selectedRows);
+    console.log("isEditing", isEditing);
+    console.log("newProduct", newProduct);
+    const validateRows = (rows)=>{
+        return rows.every((row)=>row.productCode && row.name && row.description && row.inventory !== "" && row.basePricing !== "" && row.BaseSellerPricing !== "" && row.price !== "");
     };
-    const handleAddOrSave = async ()=>{
-        if (adding) {
-            const now = formatToMySQLTimestamp(new Date());
-            const codeGenerated = generateCode();
-            const productToSave = {
-                ...newProduct,
-                updated_at: now,
-                productCode: codeGenerated
+    const getModifiedRows = ()=>{
+        return arrayProducts.filter((row)=>{
+            const original = originalRows.find((orig)=>String(orig.id) === String(row.id));
+            // Si no existe en originalRows, es nuevo
+            if (!original) return true;
+            // Verificar si algún campo cambió
+            for(let key in row){
+                const currentValue = row[key];
+                const originalValue = original[key];
+                const isObject = currentValue !== null && typeof currentValue === "object" && originalValue !== null && typeof originalValue === "object";
+                if (isObject) {
+                    if (JSON.stringify(currentValue) !== JSON.stringify(originalValue)) {
+                        return true;
+                    }
+                } else {
+                    if (currentValue !== originalValue) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        });
+    };
+    const handleRowChange = (rowIndex, field, value)=>{
+        setArrayProducts((prevRows)=>{
+            const updatedRows = [
+                ...prevRows
+            ];
+            const updatedRow = {
+                ...updatedRows[rowIndex]
             };
+            updatedRow[field] = value;
+            updatedRows[rowIndex] = updatedRow;
+            return updatedRows;
+        });
+    };
+    const handleEdit = ()=>{
+        if (!isEditing) {
+            setOriginalRows(JSON.parse(JSON.stringify(arrayProducts))); // Guardamos una copia profunda
+            setIsEditing(true);
+            setSelectedRows([]); // Limpiamos selección
+        } else {
+            setArrayProducts(originalRows); // Restauramos si se cancela edición
+            setIsEditing(false);
+            setSelectedRows([]);
+        }
+    };
+    const handleSave = async ()=>{
+        const isValid = validateRows(arrayProducts);
+        if (!isValid) {
+            alert("Por favor, completa todos los campos obligatorios antes de guardar.");
+            return;
+        }
+        const modifiedRows = getModifiedRows();
+        const now = formatToMySQLTimestamp(new Date());
+        const rowsToSend = modifiedRows.map((row)=>({
+                ...row,
+                updated_at: now
+            }));
+        const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["fetchData"])(`products?sucursalId=${sucursalId}`, "PUT", {
+            data: rowsToSend
+        });
+        if (res.error) {
+            console.error("Error al guardar productos:", res.error);
+            return;
+        }
+        handleRefresh(); // Asume que esto recarga desde el servidor
+        setIsEditing(false);
+        setSelectedRows([]);
+        setOriginalRows([]); // Actualizará con los nuevos datos desde handleRefresh
+    };
+    const handleDelete = async ()=>{
+        const tempRows = selectedRows.filter((row)=>row.id?.startsWith("temp-"));
+        const realRows = selectedRows.filter((row)=>!row.id?.startsWith("temp-"));
+        // Eliminamos todas visualmente
+        const newRows = tableRows.filter((row)=>!selectedRows.some((sel)=>sel.id === row.id));
+        setTableRows(newRows);
+        setSelectedRows([]);
+        // Solo eliminamos en backend las que son reales
+        const idsToDelete = realRows.map((row)=>row.id);
+        if (idsToDelete.length > 0) {
             try {
-                const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["fetchData"])(`products?sucursalId=${sucursalId}`, "POST", productToSave);
-                console.log(res);
-                setArrayProducts((prev)=>[
-                        ...prev,
-                        productToSave
-                    ]);
-                setNewProduct({
+                const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["fetchData"])(`products?sucursalId=${sucursalId}`, "DELETE", {
+                    data: idsToDelete
+                });
+                if (res.error) {
+                    console.error("Error al eliminar en el backend:", res.error);
+                } else {
+                    const updatedOriginalRows = originalRows.filter((row)=>!idsToDelete.includes(row.id));
+                    setOriginalRows(updatedOriginalRows);
+                    console.log("Filas eliminadas en el backend:", idsToDelete);
+                }
+            } catch (error) {
+                console.error("Error al eliminar productos:", error.message);
+            }
+        }
+    };
+    const handleAdd = ()=>{
+        setArrayProducts((prev)=>[
+                ...prev,
+                {
+                    id: `temp-${Date.now()}`,
                     productCode: "",
                     name: "",
                     description: "",
@@ -793,16 +804,119 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                     BaseSellerPricing: "",
                     price: "",
                     updated_at: "----------------------------------"
-                });
-                setAdding(false);
-                handleRefresh();
-            } catch (error) {
-                console.error("Error al guardar el producto:", error.message);
-                alert("Hubo un error al guardar el producto. Intenta nuevamente.");
-            }
-        } else {
-            setAdding(true);
+                }
+            ]);
+        setNewProduct({
+            productCode: "",
+            name: "",
+            description: "",
+            inventory: "",
+            basePricing: "",
+            BaseSellerPricing: "",
+            price: "",
+            updated_at: "----------------------------------"
+        });
+    };
+    const columns = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
+        "ProductsTable.useMemo[columns]": ()=>[
+                {
+                    name: "Código",
+                    field: "productCode",
+                    editable: false
+                },
+                {
+                    name: "Nombre",
+                    field: "name",
+                    editable: true
+                },
+                {
+                    name: "Descripción",
+                    field: "description",
+                    editable: true
+                },
+                {
+                    name: "Inventario",
+                    field: "inventory",
+                    editable: true,
+                    type: "number"
+                },
+                {
+                    name: "Precio Base",
+                    field: "basePricing",
+                    editable: true,
+                    format: formatCurrency,
+                    type: "number"
+                },
+                {
+                    name: "Precio Base Vendedor",
+                    field: "BaseSellerPricing",
+                    editable: true,
+                    format: formatCurrency,
+                    type: "number"
+                },
+                {
+                    name: "Valor",
+                    field: "price",
+                    editable: true,
+                    format: formatCurrency,
+                    type: "number"
+                },
+                {
+                    name: "Última Actualización",
+                    field: "updated_at",
+                    editable: false,
+                    format: {
+                        "ProductsTable.useMemo[columns]": (value)=>new Date(value).toLocaleDateString("es-ES")
+                    }["ProductsTable.useMemo[columns]"]
+                }
+            ]
+    }["ProductsTable.useMemo[columns]"], []);
+    const customColumns = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
+        "ProductsTable.useMemo[customColumns]": ()=>{
+            return columns.map({
+                "ProductsTable.useMemo[customColumns]": (col)=>({
+                        name: col.name,
+                        selector: ({
+                            "ProductsTable.useMemo[customColumns]": (row)=>row[col.field]
+                        })["ProductsTable.useMemo[customColumns]"],
+                        sortable: true,
+                        grow: col.flex || 1,
+                        right: col.right,
+                        width: col.width || "auto",
+                        grow: col.grow || 1,
+                        cell: ({
+                            "ProductsTable.useMemo[customColumns]": (row, rowIndex)=>col.editable && isEditing ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
+                                    type: col.type === "number" ? "number" : "text",
+                                    value: row[col.field],
+                                    onChange: {
+                                        "ProductsTable.useMemo[customColumns]": (e)=>handleRowChange(rowIndex, col.field, e.target.value)
+                                    }["ProductsTable.useMemo[customColumns]"],
+                                    variant: "outlined",
+                                    size: "small",
+                                    sx: {
+                                        input: {
+                                            padding: "4px",
+                                            width: "100%"
+                                        }
+                                    }
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/Swal/ProductsTable.jsx",
+                                    lineNumber: 290,
+                                    columnNumber: 11
+                                }, this) : col.format ? col.format(row[col.field]) : typeof row[col.field] === "object" && row[col.field] !== null ? row[col.field].label || row[col.field].name || JSON.stringify(row[col.field]) : row[col.field]
+                        })["ProductsTable.useMemo[customColumns]"]
+                    })
+            }["ProductsTable.useMemo[customColumns]"]);
         }
+    }["ProductsTable.useMemo[customColumns]"], [
+        columns,
+        isEditing
+    ]);
+    // Función para guardar los cambios después de editar
+    const handleSaveChanges = ()=>{
+        setIsEditing(false);
+    // Lógica para guardar cambios en el backend si es necesario
+    // ...
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "containerSwal",
@@ -814,7 +928,7 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                         children: "Tabla de Productos"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                        lineNumber: 151,
+                        lineNumber: 322,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -824,142 +938,212 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                         className: "inputSearch"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                        lineNumber: 152,
+                        lineNumber: 323,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                lineNumber: 150,
+                lineNumber: 321,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Paper$2f$Paper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Paper$3e$__["Paper"], {
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
-                        children: table.getHeaderGroups().map((hg)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
-                                children: hg.headers.map((header, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                        style: index === 0 ? {
-                                            width: "100px"
-                                        } : index === 1 ? {
-                                            width: "420px"
-                                        } : undefined,
-                                        children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$table$2f$build$2f$lib$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["flexRender"])(header.column.columnDef.header, header.getContext())
-                                    }, header.id, false, {
-                                        fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                        lineNumber: 165,
-                                        columnNumber: 17
-                                    }, this))
-                            }, hg.id, false, {
-                                fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                lineNumber: 163,
-                                columnNumber: 13
-                            }, this))
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                        lineNumber: 161,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
-                        children: table.getRowModel().rows.map((row, rowIndex)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
-                                children: row.getVisibleCells().map((cell, cellIndex)=>{
-                                    const key = cell.column.id;
-                                    const isNewRow = adding && rowIndex === data.length - 1;
-                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                        style: cell.id.includes("name") ? {
-                                            textAlign: "left"
-                                        } : null,
-                                        children: isNewRow && key !== "productCode" ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                            type: "text",
-                                            value: newProduct[key],
-                                            onChange: (e)=>handleInputChange(key, e.target.value),
-                                            disabled: key === "updated_at"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                            lineNumber: 191,
-                                            columnNumber: 23
-                                        }, this) : (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$table$2f$build$2f$lib$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["flexRender"])(cell.column.columnDef.cell, cell.getContext())
-                                    }, cell.id, false, {
-                                        fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                        lineNumber: 189,
-                                        columnNumber: 19
-                                    }, this);
-                                })
-                            }, row.id, false, {
-                                fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                lineNumber: 183,
-                                columnNumber: 13
-                            }, this))
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                        lineNumber: 181,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                lineNumber: 160,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "paginacion",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: ()=>table.previousPage(),
-                        disabled: !table.getCanPreviousPage(),
-                        children: "Anterior"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                        lineNumber: 209,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Stack$2f$Stack$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Stack$3e$__["Stack"], {
+                        direction: "row",
+                        spacing: 2,
+                        sx: {
+                            width: "1600px",
+                            height: "auto",
+                            marginBottom: 2,
+                            justifyContent: "space-between"
+                        },
                         children: [
-                            "Página ",
-                            table.getState().pagination.pageIndex + 1,
-                            " de ",
-                            table.getPageCount()
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
+                                variant: "contained",
+                                color: isEditing ? "error" : "primary",
+                                onClick: handleEdit,
+                                children: isEditing ? "Cancelar" : "Editar"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/Swal/ProductsTable.jsx",
+                                lineNumber: 342,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                style: {
+                                    display: "flex",
+                                    gap: "10px"
+                                },
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
+                                        variant: "contained",
+                                        color: "success",
+                                        onClick: handleSave,
+                                        disabled: !isEditing,
+                                        children: "Guardar cambios"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/Swal/ProductsTable.jsx",
+                                        lineNumber: 350,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
+                                        variant: "contained",
+                                        onClick: handleAdd,
+                                        disabled: !isEditing,
+                                        children: "Agregar"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/Swal/ProductsTable.jsx",
+                                        lineNumber: 358,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
+                                        variant: "outlined",
+                                        color: "error",
+                                        onClick: handleDelete,
+                                        disabled: !isEditing || selectedRows.length === 0,
+                                        children: "Eliminar Seleccionados"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/Swal/ProductsTable.jsx",
+                                        lineNumber: 365,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/Swal/ProductsTable.jsx",
+                                lineNumber: 349,
+                                columnNumber: 11
+                            }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                        lineNumber: 212,
+                        lineNumber: 332,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: ()=>table.nextPage(),
-                        disabled: !table.getCanNextPage(),
-                        children: "Siguiente"
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$data$2d$table$2d$component$2f$dist$2f$index$2e$cjs$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                        columns: customColumns,
+                        data: arrayProducts,
+                        selectableRows: isEditing,
+                        onSelectedRowsChange: ({ selectedRows })=>setSelectedRows(selectedRows.map((row)=>row.index)),
+                        pagination: true,
+                        highlightOnHover: true,
+                        dense: true,
+                        fixedHeader: true,
+                        fixedHeaderScrollHeight: "400px",
+                        customStyles: {
+                            rows: {
+                                style: {
+                                    minHeight: "10px"
+                                }
+                            },
+                            headCells: {
+                                style: {
+                                    minHeight: "50px",
+                                    fontSize: "1rem",
+                                    fontWeight: "bold",
+                                    color: "#333",
+                                    backgroundColor: "#f5f5f5",
+                                    borderBottom: "1px solid #ddd",
+                                    borderTop: "1px solid #ddd",
+                                    borderLeft: "1px solid #ddd",
+                                    borderRight: "1px solid #ddd",
+                                    width: "auto",
+                                    "&:first-child": {
+                                        borderLeft: "none"
+                                    },
+                                    "&:last-child": {
+                                        borderRight: "none"
+                                    },
+                                    "&:hover": {
+                                        backgroundColor: "#e0e0e0"
+                                    },
+                                    "&:active": {
+                                        backgroundColor: "#ccc"
+                                    },
+                                    "&:focus": {
+                                        backgroundColor: "#ccc"
+                                    },
+                                    "&:focus-within": {
+                                        backgroundColor: "#ccc"
+                                    },
+                                    "&:focus-visible": {
+                                        backgroundColor: "#ccc"
+                                    },
+                                    paddingLeft: "8px",
+                                    paddingRight: "8px"
+                                }
+                            },
+                            cells: {
+                                style: {
+                                    paddingLeft: "8px",
+                                    paddingRight: "8px",
+                                    minHeight: "50px"
+                                }
+                            }
+                        },
+                        noDataComponent: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            style: {
+                                height: "400px",
+                                width: "100%",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                flexDirection: "column",
+                                gap: "30px"
+                            },
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                    style: {
+                                        textAlign: "center",
+                                        color: "GrayText"
+                                    },
+                                    children: "Registra y administra tus productos aquí."
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/Swal/ProductsTable.jsx",
+                                    lineNumber: 450,
+                                    columnNumber: 15
+                                }, void 0),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
+                                    variant: "contained",
+                                    style: {
+                                        width: "150px",
+                                        height: "50px",
+                                        fontSize: "18px"
+                                    },
+                                    onClick: ()=>{
+                                        handleAdd();
+                                        setIsEditing(true);
+                                    },
+                                    children: "Agregar"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/Swal/ProductsTable.jsx",
+                                    lineNumber: 453,
+                                    columnNumber: 15
+                                }, void 0)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/Swal/ProductsTable.jsx",
+                            lineNumber: 439,
+                            columnNumber: 13
+                        }, void 0)
                     }, void 0, false, {
                         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                        lineNumber: 215,
+                        lineNumber: 375,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                lineNumber: 208,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                className: "addButton",
-                onClick: handleAddOrSave,
-                children: adding ? "Guardar producto" : "Agregar producto"
-            }, void 0, false, {
-                fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                lineNumber: 220,
+                lineNumber: 331,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-        lineNumber: 149,
+        lineNumber: 320,
         columnNumber: 5
     }, this);
 }
-_s(ProductsTable, "JR4UFBP7RFUhO4PUJEuOXNvnsZQ=", false, function() {
-    return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$tanstack$2f$react$2d$table$2f$build$2f$lib$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["useReactTable"]
-    ];
-});
+_s(ProductsTable, "iVV0MgxE8qaeRW1NxLw0wmJEiLY=");
 _c = ProductsTable;
 const __TURBOPACK__default__export__ = ProductsTable;
 var _c;
@@ -985,7 +1169,6 @@ function Modal({ open, onClose, children, onConfirm }) {
     if (!open) return null;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "modal-overlay",
-        onClick: onClose,
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "modal-content",
             children: [
@@ -2095,11 +2278,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$data$2d$table$2d$component$2f$dist$2f$index$2e$cjs$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/react-data-table-component/dist/index.cjs.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/utils/api.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Autocomplete$2f$Autocomplete$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Autocomplete$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/Autocomplete/Autocomplete.js [app-client] (ecmascript) <locals> <export default as Autocomplete>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/TextField/TextField.js [app-client] (ecmascript) <export default as TextField>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Autocomplete$2f$Autocomplete$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__$3c$export__default__as__Autocomplete$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/Autocomplete/Autocomplete.js [app-client] (ecmascript) <locals> <export default as Autocomplete>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Paper$2f$Paper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/@mui/material/Paper/Paper.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Stack$2f$Stack$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/@mui/material/Stack/Stack.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/@mui/material/Button/Button.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/Box/Box.js [app-client] (ecmascript) <export default as Box>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$LinearProgress$2f$LinearProgress$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LinearProgress$3e$__ = __turbopack_import__("[project]/node_modules/@mui/material/LinearProgress/LinearProgress.js [app-client] (ecmascript) <export default as LinearProgress>");
 ;
 var _s = __turbopack_refresh__.signature();
 "use client";
@@ -2140,13 +2325,25 @@ const validateRows = (rows)=>{
     }
     return true;
 };
-function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal }) {
+function DataTable({ rows, columns, options, dataInvoice, openModal, loadingDetails, updating }) {
     _s();
     const [tableRows, setTableRows] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(rows);
     const [originalRows, setOriginalRows] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(rows);
     const [selectedRows, setSelectedRows] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [isEditing, setIsEditing] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    console.log("dataInvoice:", dataInvoice);
+    const style = {
+        h2: {
+            fontSize: "2rem",
+            fontWeight: "bold",
+            margin: "30px 0"
+        },
+        h3: {
+            fontSize: "1.2rem",
+            marginBottom: "10px",
+            fontWeight: "normal",
+            color: "#333"
+        }
+    };
     const getModifiedRows = ()=>{
         return tableRows.filter((row)=>{
             const original = originalRows.find((orig)=>String(orig.id) === String(row.id));
@@ -2158,7 +2355,6 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal 
                     const currentLabel = rowValue?.label || rowValue;
                     const originalLabel = originalValue?.label || originalValue;
                     if (currentLabel !== originalLabel) {
-                        console.log("Cambio detectado en product:", currentLabel, originalLabel);
                         return true;
                     }
                     continue;
@@ -2181,10 +2377,11 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal 
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "DataTable.useEffect": ()=>{
-            console.log("tabla actualizada", tableRows);
+            setTableRows(rows);
+            setOriginalRows(rows);
         }
     }["DataTable.useEffect"], [
-        tableRows
+        rows
     ]);
     const handleAdd = ()=>{
         setTableRows((prev)=>[
@@ -2202,6 +2399,7 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal 
         if (!isEditing) {
             setOriginalRows(JSON.parse(JSON.stringify(tableRows))); // Hacemos una copia profunda de las filas originales
             setIsEditing(true);
+            setSelectedRows([]); // Limpiamos la selección al entrar en modo edición
         } else {
             setTableRows(originalRows); // Restauramos si ya está en edición
             setIsEditing(false);
@@ -2238,13 +2436,37 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal 
             setSelectedRows([]);
         });
     };
-    const handleDelete = ()=>{
+    const handleDelete = async ()=>{
         if (selectedRows.length === 0) return;
-        openModal("¿Estás seguro de que deseas eliminar los elementos seleccionados?", ()=>{
+        // Filas que tienen ID temporal (no se deben enviar al backend)
+        const tempRowsToDelete = selectedRows.filter((row)=>String(row.id).startsWith("temp"));
+        // Filas originales que existen en la base de datos
+        const originalRowsToDelete = selectedRows.filter((row)=>!String(row.id).startsWith("temp") && originalRows.find((orig)=>String(orig.id) === String(row.id)));
+        const deleteSelectedRows = async ()=>{
             const newRows = tableRows.filter((row)=>!selectedRows.some((sel)=>sel.id === row.id));
             setTableRows(newRows);
             setSelectedRows([]);
-        });
+            if (originalRowsToDelete.length > 0) {
+                const idsToDelete = originalRowsToDelete.map((row)=>row.id);
+                const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["fetchData"])(`invoices/${dataInvoice?.invoice_id}/details`, "DELETE", {
+                    data: idsToDelete
+                });
+                if (res.error) {
+                    console.error("Error al eliminar en el backend:", res.error);
+                } else {
+                    // Actualizamos las filas originales
+                    const updatedOriginalRows = originalRows.filter((row)=>!idsToDelete.includes(row.id));
+                    setOriginalRows(updatedOriginalRows);
+                    setTableRows(newRows);
+                    console.log("Filas eliminadas en el backend:", idsToDelete);
+                }
+            }
+        };
+        if (originalRowsToDelete.length > 0) {
+            openModal("¿Estás seguro de que deseas eliminar los elementos seleccionados?", deleteSelectedRows);
+        } else {
+            deleteSelectedRows(); // solo hay filas temporales, no necesita confirmación
+        }
     };
     const handleRowChange = (rowIndex, field, value)=>{
         setTableRows((prevRows)=>{
@@ -2306,7 +2528,7 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal 
                                                 variant: "standard"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/MUI/DataTable.jsx",
-                                                lineNumber: 264,
+                                                lineNumber: 319,
                                                 columnNumber: 17
                                             }, void 0)
                                     }["DataTable.useMemo[customColumns]"],
@@ -2316,21 +2538,25 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal 
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/MUI/DataTable.jsx",
-                                    lineNumber: 243,
+                                    lineNumber: 298,
                                     columnNumber: 13
-                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
                                     type: col.type === "number" ? "number" : "text",
                                     value: row[col.field],
                                     onChange: {
                                         "DataTable.useMemo[customColumns]": (e)=>handleRowChange(rowIndex, col.field, e.target.value)
                                     }["DataTable.useMemo[customColumns]"],
-                                    style: {
-                                        width: "100%",
-                                        padding: "4px"
+                                    variant: "outlined",
+                                    size: "small",
+                                    sx: {
+                                        input: {
+                                            padding: "4px",
+                                            width: "70px"
+                                        }
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/MUI/DataTable.jsx",
-                                    lineNumber: 270,
+                                    lineNumber: 325,
                                     columnNumber: 13
                                 }, this) : col.format ? col.format(row[col.field]) : typeof row[col.field] === "object" && row[col.field] !== null ? row[col.field].label || row[col.field].name || JSON.stringify(row[col.field]) : row[col.field]
                         })["DataTable.useMemo[customColumns]"]
@@ -2343,6 +2569,27 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal 
         options,
         tableRows
     ]);
+    const totalSum = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
+        "DataTable.useMemo[totalSum]": ()=>{
+            let tot = tableRows.reduce({
+                "DataTable.useMemo[totalSum].tot": (sum, row)=>{
+                    const value = parseFloat(row.total);
+                    return sum + (isNaN(value) ? 0 : value);
+                }
+            }["DataTable.useMemo[totalSum].tot"], 0);
+            updating(tot);
+            const formatValue = {
+                "DataTable.useMemo[totalSum].formatValue": (value)=>`$${Number(value || 0).toLocaleString("es-CL", {
+                        minimumFractionDigits: 0
+                    })}`
+            }["DataTable.useMemo[totalSum].formatValue"];
+            const newTotal = formatValue(tot);
+            return newTotal;
+        }
+    }["DataTable.useMemo[totalSum]"], [
+        tableRows
+    ]);
+    console.log("SubTotal", totalSum);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Paper$2f$Paper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
         sx: {
             padding: 2
@@ -2362,10 +2609,11 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal 
                         variant: "contained",
                         color: isEditing ? "error" : "primary",
                         onClick: handleEdit,
+                        disabled: tableRows.length === 0 ? true : false,
                         children: isEditing ? "Cancelar" : "Editar"
                     }, void 0, false, {
                         fileName: "[project]/src/components/MUI/DataTable.jsx",
-                        lineNumber: 303,
+                        lineNumber: 381,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2382,7 +2630,7 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal 
                                 children: "Guardar cambios"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/MUI/DataTable.jsx",
-                                lineNumber: 311,
+                                lineNumber: 390,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2392,7 +2640,7 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal 
                                 children: "Agregar"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/MUI/DataTable.jsx",
-                                lineNumber: 319,
+                                lineNumber: 398,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -2400,32 +2648,47 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal 
                                 color: "error",
                                 onClick: handleDelete,
                                 disabled: !isEditing || selectedRows.length === 0,
-                                children: "Eliminar seleccionados"
+                                children: "Eliminar Seleccionados"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/MUI/DataTable.jsx",
-                                lineNumber: 322,
+                                lineNumber: 401,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/MUI/DataTable.jsx",
-                        lineNumber: 310,
+                        lineNumber: 389,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/MUI/DataTable.jsx",
-                lineNumber: 293,
+                lineNumber: 371,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$data$2d$table$2d$component$2f$dist$2f$index$2e$cjs$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                 columns: customColumns,
                 data: tableRows,
-                selectableRows: true,
+                selectableRows: isEditing,
                 onSelectedRowsChange: (state)=>setSelectedRows(state.selectedRows),
                 pagination: true,
                 highlightOnHover: true,
                 dense: true,
+                progressPending: loadingDetails,
+                progressComponent: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                    sx: {
+                        width: "100%"
+                    },
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$LinearProgress$2f$LinearProgress$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LinearProgress$3e$__["LinearProgress"], {}, void 0, false, {
+                        fileName: "[project]/src/components/MUI/DataTable.jsx",
+                        lineNumber: 423,
+                        columnNumber: 13
+                    }, void 0)
+                }, void 0, false, {
+                    fileName: "[project]/src/components/MUI/DataTable.jsx",
+                    lineNumber: 422,
+                    columnNumber: 11
+                }, void 0),
                 fixedHeader: true,
                 fixedHeaderScrollHeight: "400px",
                 customStyles: {
@@ -2477,50 +2740,103 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, closeModal 
                             minHeight: "50px"
                         }
                     }
-                }
+                },
+                noDataComponent: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    style: {
+                        height: "400px",
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        gap: "30px"
+                    },
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                            style: {
+                                textAlign: "center",
+                                color: "GrayText"
+                            },
+                            children: "Personaliza tu carrito de compras."
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/MUI/DataTable.jsx",
+                            lineNumber: 490,
+                            columnNumber: 13
+                        }, void 0),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                            variant: "contained",
+                            style: {
+                                width: "150px",
+                                height: "50px",
+                                fontSize: "18px"
+                            },
+                            onClick: ()=>{
+                                handleAdd();
+                                setIsEditing(true);
+                            },
+                            children: "Agregar"
+                        }, void 0, false, {
+                            fileName: "[project]/src/components/MUI/DataTable.jsx",
+                            lineNumber: 493,
+                            columnNumber: 13
+                        }, void 0)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/components/MUI/DataTable.jsx",
+                    lineNumber: 479,
+                    columnNumber: 11
+                }, void 0)
             }, void 0, false, {
                 fileName: "[project]/src/components/MUI/DataTable.jsx",
-                lineNumber: 333,
+                lineNumber: 412,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                style: style.h3,
                 children: [
-                    "Sub Total: $",
-                    dataInvoice.total_net
+                    "Sub Total: ",
+                    totalSum
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/MUI/DataTable.jsx",
-                lineNumber: 394,
+                lineNumber: 506,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                style: style.h3,
                 children: [
                     "Descuento: %",
-                    dataInvoice.discount || "0"
+                    0
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/MUI/DataTable.jsx",
-                lineNumber: 395,
+                lineNumber: 507,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("hr", {}, void 0, false, {
+                fileName: "[project]/src/components/MUI/DataTable.jsx",
+                lineNumber: 508,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                style: style.h2,
                 children: [
-                    "Total Neto: $",
-                    dataInvoice.total_net
+                    "Total Neto: ",
+                    totalSum
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/MUI/DataTable.jsx",
-                lineNumber: 396,
+                lineNumber: 509,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/MUI/DataTable.jsx",
-        lineNumber: 292,
+        lineNumber: 370,
         columnNumber: 5
     }, this);
 }
-_s(DataTable, "RehB5aqc6Q01twFAF3Yf96Y0YZU=");
+_s(DataTable, "vpuHjZ01igGd2UpT+m0EUrUV86I=");
 _c = DataTable;
 var _c;
 __turbopack_refresh__.register(_c, "DataTable");
@@ -2560,6 +2876,7 @@ const formatter = new Intl.DateTimeFormat("es-ES", {
 });
 function InvoiceScreen({ data, products }) {
     _s();
+    const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [invoiceDetails, setInvoiceDetails] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [infoCustomer, setInfoCustomer] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({});
     const [isModalOpen, setIsModalOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -2569,6 +2886,10 @@ function InvoiceScreen({ data, products }) {
                 "InvoiceScreen.useState": ()=>{}
             })["InvoiceScreen.useState"]
     }["InvoiceScreen.useState"]);
+    console.log("data de InvoiceScreen", data);
+    let handleTotalData = (newTot)=>{
+        data.total_net = newTot;
+    };
     const handleOpenModal = (content, action)=>{
         setModalContent(content);
         setOnConfirmAction(()=>action);
@@ -2586,12 +2907,12 @@ function InvoiceScreen({ data, products }) {
     const invoiceId = data?.invoice_id;
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "InvoiceScreen.useEffect": ()=>{
+            setIsLoading(true);
             const fetchInvoiceDetails = {
                 "InvoiceScreen.useEffect.fetchInvoiceDetails": async ()=>{
                     try {
                         if (!invoiceId) return;
                         const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["fetchData"])(`invoices/${invoiceId}/details`, "GET");
-                        console.log("formattttttttted", res);
                         const formatted = res.map({
                             "InvoiceScreen.useEffect.fetchInvoiceDetails.formatted": (item, index)=>({
                                     id: item?.idinvoice_detail ?? `temp-${Date.now()}-${index}`,
@@ -2615,7 +2936,6 @@ function InvoiceScreen({ data, products }) {
                 "InvoiceScreen.useEffect.fetchinfoCustomer": async ()=>{
                     try {
                         const userBuyerId = data?.user_buyer_id;
-                        console.log("userBuyerId", userBuyerId);
                         if (!userBuyerId) return;
                         const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["fetchData"])(`users/${userBuyerId}`, "GET");
                         const formatted = {
@@ -2634,6 +2954,7 @@ function InvoiceScreen({ data, products }) {
             }["InvoiceScreen.useEffect.fetchinfoCustomer"];
             fetchinfoCustomer();
             fetchInvoiceDetails();
+            setIsLoading(false);
         }
     }["InvoiceScreen.useEffect"], [
         data
@@ -2675,7 +2996,6 @@ function InvoiceScreen({ data, products }) {
             ...p,
             label: `${p.productCode} - ${p.name}`
         }));
-    console.log("productOptions", productOptions);
     /* let unitPriceProduct = (code) => {
     const productFound = products.find(product => product.productCode === code);
     return productFound?.price || 0;
@@ -2693,7 +3013,7 @@ function InvoiceScreen({ data, products }) {
                                 children: "Factura de Ventas"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/InvoiceScreen.jsx",
-                                lineNumber: 149,
+                                lineNumber: 155,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2703,13 +3023,13 @@ function InvoiceScreen({ data, products }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/InvoiceScreen.jsx",
-                                lineNumber: 150,
+                                lineNumber: 156,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/InvoiceScreen.jsx",
-                        lineNumber: 148,
+                        lineNumber: 154,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2722,62 +3042,25 @@ function InvoiceScreen({ data, products }) {
                                         children: "A Nombre de: "
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/InvoiceScreen.jsx",
-                                        lineNumber: 154,
+                                        lineNumber: 160,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                         children: "Dirección: "
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/InvoiceScreen.jsx",
-                                        lineNumber: 155,
+                                        lineNumber: 161,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                         children: "Teléfono: "
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/InvoiceScreen.jsx",
-                                        lineNumber: 156,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                        children: "Fecha: "
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
-                                        lineNumber: 157,
-                                        columnNumber: 13
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/src/components/InvoiceScreen.jsx",
-                                lineNumber: 153,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "infoValue",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                        children: infoCustomer?.userName
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
-                                        lineNumber: 160,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                        children: infoCustomer?.address
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
-                                        lineNumber: 161,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                        children: infoCustomer?.phone
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
                                         lineNumber: 162,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                        children: data?.created_at
+                                        children: "Fecha: "
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/InvoiceScreen.jsx",
                                         lineNumber: 163,
@@ -2788,36 +3071,69 @@ function InvoiceScreen({ data, products }) {
                                 fileName: "[project]/src/components/InvoiceScreen.jsx",
                                 lineNumber: 159,
                                 columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "infoValue",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        children: infoCustomer?.userName || " "
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                        lineNumber: 166,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        children: infoCustomer?.address || " "
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                        lineNumber: 167,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        children: infoCustomer?.phone || " "
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                        lineNumber: 168,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        children: data?.created_at || " "
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                        lineNumber: 169,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/InvoiceScreen.jsx",
+                                lineNumber: 165,
+                                columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/InvoiceScreen.jsx",
-                        lineNumber: 152,
+                        lineNumber: 158,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/InvoiceScreen.jsx",
-                lineNumber: 147,
+                lineNumber: 153,
                 columnNumber: 7
             }, this),
-            invoiceDetails.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$MUI$2f$DataTable$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$MUI$2f$DataTable$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                 rows: invoiceDetails,
                 columns: columns,
                 options: productOptions,
                 dataInvoice: data,
                 openModal: handleOpenModal,
-                closeModal: handleCloseModal
+                closeModal: handleCloseModal,
+                loadingDetails: isLoading,
+                updating: handleTotalData
             }, void 0, false, {
                 fileName: "[project]/src/components/InvoiceScreen.jsx",
-                lineNumber: 168,
-                columnNumber: 9
-            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                children: "Cargando datos..."
-            }, void 0, false, {
-                fileName: "[project]/src/components/InvoiceScreen.jsx",
-                lineNumber: 177,
-                columnNumber: 9
+                lineNumber: 174,
+                columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Modal$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                 open: isModalOpen,
@@ -2832,14 +3148,14 @@ function InvoiceScreen({ data, products }) {
                             children: "Confirmación"
                         }, void 0, false, {
                             fileName: "[project]/src/components/InvoiceScreen.jsx",
-                            lineNumber: 184,
+                            lineNumber: 191,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
                             children: modalContent
                         }, void 0, false, {
                             fileName: "[project]/src/components/InvoiceScreen.jsx",
-                            lineNumber: 185,
+                            lineNumber: 192,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2852,7 +3168,7 @@ function InvoiceScreen({ data, products }) {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/InvoiceScreen.jsx",
-                                    lineNumber: 187,
+                                    lineNumber: 194,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -2862,34 +3178,34 @@ function InvoiceScreen({ data, products }) {
                                     children: "Confirmar"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/InvoiceScreen.jsx",
-                                    lineNumber: 190,
+                                    lineNumber: 197,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/InvoiceScreen.jsx",
-                            lineNumber: 186,
+                            lineNumber: 193,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/InvoiceScreen.jsx",
-                    lineNumber: 183,
+                    lineNumber: 186,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/InvoiceScreen.jsx",
-                lineNumber: 179,
+                lineNumber: 185,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/InvoiceScreen.jsx",
-        lineNumber: 146,
+        lineNumber: 152,
         columnNumber: 5
     }, this);
 }
-_s(InvoiceScreen, "y5xpVy7fY7xyj3KF66p0o1efZt8=");
+_s(InvoiceScreen, "iS+2ln57c31x3v786c/mZ57EnTM=");
 _c = InvoiceScreen;
 const __TURBOPACK__default__export__ = InvoiceScreen;
 var _c;

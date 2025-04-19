@@ -1,61 +1,33 @@
 @use "./LogBar.scss" as v;
 
 .containerSwal {
-    padding: 20px;
-    text-align: center;
-    width: 100%;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
 
-    .topContainer{
-        @include v.flexing(row, flex-start, flex-start);
-        gap: 40px;
-        .inputSearch {
-            padding: 8px;
-            margin-bottom: 10px;
-            width: 300px;
-        }
-    }
-  
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-  
-      th, td {
-        border: 1px solid #ccc;
-        padding: 10px 15px;
-      }
-
-      tbody {
-          tr {
-            cursor: pointer;
-            transition: background-color ease 0.3s;
-            &:hover {
-                background-color: rgb(238, 235, 235);
-            }
-          }
-      }
-  
-      input {
-        width: 100%;
-        padding: 8px;
-      }
-    }
-  
-    
-  
-    .paginacion {
-      margin: 10px 0;
-      button {
-        margin: 0 10px;
-      }
-    }
-  
-    .addButton {
-      margin-top: 10px;
-      background-color: #4caf50;
-      color: white;
-      padding: 10px;
-      border: none;
-      cursor: pointer;
+  .topContainer {
+    @include v.flexing(row, flex-start, flex-start);
+    gap: 40px;
+    .inputSearch {
+      padding: 8px;
+      margin-bottom: 10px;
+      width: 300px;
     }
   }
+  
+  .paginacion {
+    margin: 10px 0;
+    button {
+      margin: 0 10px;
+    }
+  }
+
+  .addButton {
+    margin-top: 10px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+}

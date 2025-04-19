@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import DataTableBase from "react-data-table-component";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Box, LinearProgress, TextField } from "@mui/material";
 import { fetchData } from "../../../utils/api";
 
 const validateRows = (rows) => {
@@ -64,14 +64,27 @@ export default function DataTable({
   options,
   dataInvoice,
   openModal,
-  closeModal,
+  loadingDetails,
+  updating,
 }) {
   const [tableRows, setTableRows] = useState(rows);
   const [originalRows, setOriginalRows] = useState(rows);
   const [selectedRows, setSelectedRows] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
 
-  console.log("dataInvoice:", dataInvoice);
+  const style = {
+    h2: {
+      fontSize: "2rem",
+      fontWeight: "bold",
+      margin: "30px 0",
+    },
+    h3: {
+      fontSize: "1.2rem",
+      marginBottom: "10px",
+      fontWeight: "normal",
+      color: "#333",
+    },
+  };
 
   const getModifiedRows = () => {
     return tableRows.filter((row) => {
@@ -88,11 +101,6 @@ export default function DataTable({
           const currentLabel = rowValue?.label || rowValue;
           const originalLabel = originalValue?.label || originalValue;
           if (currentLabel !== originalLabel) {
-            console.log(
-              "Cambio detectado en product:",
-              currentLabel,
-              originalLabel
-            );
             return true;
           }
           continue;
@@ -122,8 +130,9 @@ export default function DataTable({
   };
 
   useEffect(() => {
-    console.log("tabla actualizada", tableRows);
-  }, [tableRows]);
+    setTableRows(rows);
+    setOriginalRows(rows);
+  }, [rows]);
 
   const handleAdd = () => {
     setTableRows((prev) => [
@@ -142,6 +151,7 @@ export default function DataTable({
     if (!isEditing) {
       setOriginalRows(JSON.parse(JSON.stringify(tableRows))); // Hacemos una copia profunda de las filas originales
       setIsEditing(true);
+      setSelectedRows([]); // Limpiamos la selección al entrar en modo edición
     } else {
       setTableRows(originalRows); // Restauramos si ya está en edición
       setIsEditing(false);
@@ -194,16 +204,61 @@ export default function DataTable({
     });
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (selectedRows.length === 0) return;
-  
-    openModal("¿Estás seguro de que deseas eliminar los elementos seleccionados?", () => {
+
+    // Filas que tienen ID temporal (no se deben enviar al backend)
+    const tempRowsToDelete = selectedRows.filter((row) =>
+      String(row.id).startsWith("temp")
+    );
+
+    // Filas originales que existen en la base de datos
+    const originalRowsToDelete = selectedRows.filter(
+      (row) =>
+        !String(row.id).startsWith("temp") &&
+        originalRows.find((orig) => String(orig.id) === String(row.id))
+    );
+
+    const deleteSelectedRows = async () => {
       const newRows = tableRows.filter(
         (row) => !selectedRows.some((sel) => sel.id === row.id)
       );
       setTableRows(newRows);
       setSelectedRows([]);
-    });
+
+      if (originalRowsToDelete.length > 0) {
+        const idsToDelete = originalRowsToDelete.map((row) => row.id);
+
+        const res = await fetchData(
+          `invoices/${dataInvoice?.invoice_id}/details`,
+          "DELETE",
+          {
+            data: idsToDelete,
+          }
+        );
+
+        if (res.error) {
+          console.error("Error al eliminar en el backend:", res.error);
+        } else {
+          // Actualizamos las filas originales
+          const updatedOriginalRows = originalRows.filter(
+            (row) => !idsToDelete.includes(row.id)
+          );
+          setOriginalRows(updatedOriginalRows);
+          setTableRows(newRows);
+          console.log("Filas eliminadas en el backend:", idsToDelete);
+        }
+      }
+    };
+
+    if (originalRowsToDelete.length > 0) {
+      openModal(
+        "¿Estás seguro de que deseas eliminar los elementos seleccionados?",
+        deleteSelectedRows
+      );
+    } else {
+      deleteSelectedRows(); // solo hay filas temporales, no necesita confirmación
+    }
   };
 
   const handleRowChange = (rowIndex, field, value) => {
@@ -267,13 +322,15 @@ export default function DataTable({
               sx={{ width: "100%" }}
             />
           ) : (
-            <input
+            <TextField
               type={col.type === "number" ? "number" : "text"}
               value={row[col.field]}
               onChange={(e) =>
                 handleRowChange(rowIndex, col.field, e.target.value)
               }
-              style={{ width: "100%", padding: "4px" }}
+              variant="outlined"
+              size="small"
+              sx={{ input: { padding: "4px", width: "70px" } }} // Para imitar el padding anterior
             />
           )
         ) : col.format ? (
@@ -287,6 +344,27 @@ export default function DataTable({
         ),
     }));
   }, [columns, isEditing, options, tableRows]);
+
+  const totalSum = useMemo(() => {
+    let tot = tableRows.reduce((sum, row) => {
+      const value = parseFloat(row.total);
+
+      return sum + (isNaN(value) ? 0 : value);
+    }, 0);
+
+    updating(tot);
+
+    const formatValue = (value) =>
+      `$${Number(value || 0).toLocaleString("es-CL", {
+        minimumFractionDigits: 0,
+      })}`;
+
+    const newTotal = formatValue(tot);
+
+    return newTotal;
+  }, [tableRows]);
+
+  console.log("SubTotal", totalSum);
 
   return (
     <Paper sx={{ padding: 2 }}>
@@ -304,6 +382,7 @@ export default function DataTable({
           variant="contained"
           color={isEditing ? "error" : "primary"}
           onClick={handleEdit}
+          disabled={tableRows.length === 0 ? true : false}
         >
           {isEditing ? "Cancelar" : "Editar"}
         </Button>
@@ -325,7 +404,7 @@ export default function DataTable({
             onClick={handleDelete}
             disabled={!isEditing || selectedRows.length === 0}
           >
-            Eliminar seleccionados
+            Eliminar Seleccionados
           </Button>
         </div>
       </Stack>
@@ -333,11 +412,17 @@ export default function DataTable({
       <DataTableBase
         columns={customColumns}
         data={tableRows}
-        selectableRows
+        selectableRows={isEditing}
         onSelectedRowsChange={(state) => setSelectedRows(state.selectedRows)}
         pagination
         highlightOnHover
         dense
+        progressPending={loadingDetails}
+        progressComponent={
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress />
+          </Box>
+        }
         fixedHeader
         fixedHeaderScrollHeight="400px"
         customStyles={{
@@ -390,10 +475,38 @@ export default function DataTable({
             },
           },
         }}
+        noDataComponent={
+          <div
+            style={{
+              height: "400px",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              gap: "30px",
+            }}
+          >
+            <h2 style={{ textAlign: "center", color: "GrayText" }}>
+              Personaliza tu carrito de compras.
+            </h2>
+            <Button
+              variant="contained"
+              style={{ width: "150px", height: "50px", fontSize: "18px" }}
+              onClick={() => {
+                handleAdd();
+                setIsEditing(true);
+              }}
+            >
+              Agregar
+            </Button>
+          </div>
+        }
       />
-      <div>Sub Total: ${dataInvoice.total_net}</div>
-      <div>Descuento: %{dataInvoice.discount || "0"}</div>
-      <div>Total Neto: ${dataInvoice.total_net}</div>
+      <h3 style={style.h3}>Sub Total: {totalSum}</h3>
+      <h3 style={style.h3}>Descuento: %{0}</h3>
+      <hr />
+      <h2 style={style.h2}>Total Neto: {totalSum}</h2>
     </Paper>
   );
 }

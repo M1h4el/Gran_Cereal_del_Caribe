@@ -36,6 +36,11 @@
 
       .infoValue {
         @include v.flexing(column, flex-start, flex-end);
+        h3 {
+          text-align: right;
+          width: 100%;
+          height: 22px
+        }
       }
     }
   }

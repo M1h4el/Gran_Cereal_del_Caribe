@@ -162,7 +162,7 @@ if (!global._pool) {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         waitForConnections: true,
-        connectionLimit: 20,
+        connectionLimit: 100,
         queueLimit: 0
     });
 }
@@ -206,6 +206,12 @@ __turbopack_esm__({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/node_modules/next/server.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_import__("[project]/src/lib/dbUtils.js [app-route] (ecmascript)");
+(()=>{
+    const e = new Error("Cannot find module '@/utils/generateCode.js'");
+    e.code = 'MODULE_NOT_FOUND';
+    throw e;
+})();
+;
 ;
 ;
 async function GET(req) {
@@ -259,8 +265,21 @@ async function POST(req) {
                 status: 400
             });
         }
-        const { productCode, name, description, inventory, basePricing, BaseSellerPricing, detalSellPrice, MayorSellPrice, updated_at } = data;
-        console.log("data", data);
+        console.log("data desde el POST", data);
+        let { name, description, inventory, basePricing, BaseSellerPricing, updated_at, price } = data;
+        // 💡 Generar código único
+        let productCode;
+        let isUnique = false;
+        while(!isUnique){
+            productCode = generateCode();
+            const [existing] = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`SELECT productCode FROM products WHERE productCode = ?`, [
+                productCode
+            ]);
+            if (!existing) {
+                isUnique = true;
+            }
+        }
+        console.log("Código generado único:", productCode);
         const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`INSERT INTO products (
         productCode,
         name,
@@ -268,23 +287,20 @@ async function POST(req) {
         inventory,
         basePricing,
         BaseSellerPricing,
-        detalSellPrice,
-        MayorSellPrice,
         updated_at,
-        sucursal_id
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [
+        sucursal_id,
+        price
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, [
             productCode || null,
             name || null,
             description || null,
             inventory || 0,
             basePricing || null,
             BaseSellerPricing || null,
-            detalSellPrice || null,
-            MayorSellPrice || null,
             updated_at,
-            sucursalId
+            sucursalId,
+            price || null
         ]);
-        console.log("result", result);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             message: "Producto insertado correctamente",
             result
