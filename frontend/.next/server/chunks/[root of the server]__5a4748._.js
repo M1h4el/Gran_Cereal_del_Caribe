@@ -285,7 +285,8 @@ const authOptions = {
                         id: user.user_id,
                         userName: user.userName,
                         email: user.email,
-                        role: user.role
+                        role: user.role,
+                        codeCollaborator: user.codeCollaborator
                     };
                 } catch (error) {
                     throw new Error("Error interno al validar la contraseña");
@@ -301,15 +302,17 @@ const authOptions = {
     callbacks: {
         async jwt ({ token, user }) {
             if (user) {
-                token.id = user.id; // Agregar el ID de usuario al token JWT
-                token.role = user.role; // Agregar el rol al token JWT
+                token.id = user.id;
+                token.role = user.role;
+                token.codeCollaborator = user.codeCollaborator; // Agregado al token
             }
             return token;
         },
         async session ({ session, token }) {
             if (token) {
                 session.user.id = token.id;
-                session.user.role = token.role; // Agregar el rol a la sesión
+                session.user.role = token.role;
+                session.user.codeCollaborator = token.codeCollaborator; // Pasado a la sesión
             }
             return session;
         }

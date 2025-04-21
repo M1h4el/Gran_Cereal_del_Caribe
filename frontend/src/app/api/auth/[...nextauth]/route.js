@@ -16,7 +16,6 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-
         const [user] = await queryDB("SELECT * FROM users WHERE email = ?", [
           credentials.email,
         ]);
@@ -26,7 +25,6 @@ export const authOptions = {
         }
 
         try {
-
           const isValidPassword = await bcrypt.compare(
             credentials.password,
             user.password
@@ -41,6 +39,7 @@ export const authOptions = {
             userName: user.userName,
             email: user.email,
             role: user.role,
+            codeCollaborator: user.codeCollaborator, // Asegurate que esta columna existe
           };
         } catch (error) {
           throw new Error("Error interno al validar la contraseña");
@@ -51,21 +50,22 @@ export const authOptions = {
   session: {
     strategy: "jwt",
     maxAge: 60 * 60 * 12,
-    updateAge: 60 * 5
+    updateAge: 60 * 5,
   },
-
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id; // Agregar el ID de usuario al token JWT
-        token.role = user.role; // Agregar el rol al token JWT
+        token.id = user.id;
+        token.role = user.role;
+        token.codeCollaborator = user.codeCollaborator; // Agregado al token
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
-        session.user.role = token.role; // Agregar el rol a la sesión
+        session.user.role = token.role;
+        session.user.codeCollaborator = token.codeCollaborator; // Pasado a la sesión
       }
       return session;
     },

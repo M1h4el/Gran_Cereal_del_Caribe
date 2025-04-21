@@ -5,6 +5,7 @@ import { fetchData } from "../../utils/api";
 import "@/styles/ProductsComponent.scss";
 import ProductsTable from "./Swal/ProductsTable";
 import Modal from "./Modal";
+import CopyCode from "../components/MUI/CopyToClipboardInput";
 
 function ProductsComponent({ sucursal, totalProducts, handleGetProducts }) {
   const [stock, setStock] = useState(0);
@@ -29,6 +30,7 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts }) {
   };
 
   useEffect(() => {
+    console.log("infoSucursal", sucursal);
     async function fetchResumen() {
       try {
         const productos = await fetchProductos();
@@ -66,7 +68,7 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts }) {
     } catch (error) {
       console.error("Error al buscar producto:", error);
     }
-  };
+  }
 
   const handleGestionarProductos = () => {
     setCodigoBuscar("");
@@ -74,62 +76,66 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts }) {
   };
 
   return (
-      <>
-        <div className="codingContainer">
-          <div className="codingBox">
-            <h2>Productos</h2>
-            <div className="resumen-productos">
-              <div>
-                Total productos:{" "}
-                <strong>{totalProducts ? totalProducts : 0}</strong>
-              </div>
-
-              <div>
-                Última actualización: <strong>{ultimoUpdate}</strong>
-              </div>
-            </div>
-
-            <div className="buscador-producto">
-              <input
-                type="text"
-                placeholder="Buscar por código"
-                value={codigoBuscar}
-                onChange={(e) => setCodigoBuscar(e.target.value)}
-              />
-              <button onClick={handleBuscarProducto}>Buscar</button>
+    <>
+      <div className="codingContainer">
+        <div className="codingBox">
+          <h2>Productos</h2>
+          <div className="resumen-productos">
+            <div>
+              Total productos:{" "}
+              <strong>{totalProducts ? totalProducts : 0}</strong>
             </div>
 
             <div>
-              Inventario: <strong>{stock}</strong>
-            </div>
-
-            {productoEncontrado && (
-              <table className="mini-tabla-producto">
-                <thead>
-                  <tr>
-                    <th>Código</th>
-                    <th>Nombre</th>
-                    <th>Stock</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{productoEncontrado.code}</td>
-                    <td>{productoEncontrado.name}</td>
-                    <td>{productoEncontrado.stock}</td>
-                  </tr>
-                </tbody>
-              </table>
-            )}
-
-            <div className="boton-gestionar">
-              <button onClick={() => handleGestionarProductos(arrayProducts)}>
-                Gestionar productos
-              </button>
+              Última actualización: <strong>{ultimoUpdate}</strong>
             </div>
           </div>
+
+          <div className="buscador-producto">
+            <input
+              type="text"
+              placeholder="Buscar por código"
+              value={codigoBuscar}
+              onChange={(e) => setCodigoBuscar(e.target.value)}
+            />
+            <button onClick={handleBuscarProducto}>Buscar</button>
+          </div>
+
+          <div>
+            Inventario: <strong>{stock}</strong>
+          </div>
+
+          {productoEncontrado && (
+            <table className="mini-tabla-producto">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nombre</th>
+                  <th>Stock</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{productoEncontrado.code}</td>
+                  <td>{productoEncontrado.name}</td>
+                  <td>{productoEncontrado.stock}</td>
+                </tr>
+              </tbody>
+            </table>
+          )}
+
+          <div className="boton-gestionar">
+            <button onClick={() => handleGestionarProductos(arrayProducts)}>
+              Gestionar productos
+            </button>
+          </div>
         </div>
-        {isModalOpen && 
+        <hr />
+        <div className="moreOptions">
+          <CopyCode valueToCopy={sucursal.codeCollaborator}/>
+        </div>
+      </div>
+      {isModalOpen && (
         <Modal open={isModalOpen} onClose={handleCloseModal}>
           <ProductsTable
             arrayProducts={arrayProducts}
@@ -137,8 +143,9 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts }) {
             handleRefresh={handleReFetch}
             sucursalId={sucursal.id}
           />
-        </Modal>}
-      </>
+        </Modal>
+      )}
+    </>
   );
 }
 

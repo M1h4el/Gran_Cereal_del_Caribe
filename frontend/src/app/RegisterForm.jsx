@@ -4,7 +4,6 @@ import { fetchData } from "../../utils/api";
 import "../styles/RegisterForm.scss";
 
 function BodyLogin() {
-  const router = useRouter();
 
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -33,8 +32,8 @@ function BodyLogin() {
     e.preventDefault();
     setFormError("");
 
-    if (hasInvite && inviteCode.trim() === "") {
-      setFormError("Por favor ingresa un código de invitación.");
+    if (hasInvite && inviteCode.trim().split("").length !== 10) {
+      setFormError("Por favor ingresa un código de invitación válido.");
       return;
     }
 
@@ -124,6 +123,7 @@ function BodyLogin() {
                     const checked = e.target.checked;
                     setHasInvite(checked);
                     if (!checked) {
+                      setHasInvite(false);
                       setInviteCode("");
                       setRole("Admin");
                       setFormError("");

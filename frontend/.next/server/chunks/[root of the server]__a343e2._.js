@@ -170,7 +170,7 @@ if (!global._pool) {
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
         waitForConnections: true,
-        connectionLimit: 10,
+        connectionLimit: 100,
         queueLimit: 0
     });
 }
@@ -192,6 +192,8 @@ async function queryDB(query, params = []) {
     try {
         connection = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["pool"].getConnection();
         const [results] = await connection.execute(query, params);
+        const [rows] = await connection.query('SHOW STATUS WHERE `variable_name` = "Threads_connected"');
+        console.log("Conexiones activas:", rows[0]);
         return results;
     } catch (error) {
         console.error("Database error:", error);
@@ -216,14 +218,14 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js_
 ;
 ;
 // Función para generar código único para el nuevo usuario
-function generateCode(length = 8) {
+function generateCode(length = 10) {
     return Math.random().toString(36).substr(2, length).toUpperCase();
 }
 async function POST(req) {
     try {
         let body = await req.json();
         console.log("data:", body);
-        const { userName, email, password, role, codeCollaborator } = body;
+        const { userName, email, password, role, codeCollaborator, description = null, user_admin_id } = body;
         if (!userName || !email || !password) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 error: "Todos los campos son obligatorios"
@@ -259,11 +261,11 @@ async function POST(req) {
             userName,
             email,
             hashedPassword,
-            role || null,
+            finalRole,
             generatedCode
         ]);
         const newUserId = result.insertId;
-        console.log("codeCollaborator::", codeCollaborator);
+        let parentUserId;
         if (codeCollaborator) {
             const parentUser = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("SELECT user_id FROM users WHERE codeCollaborator = ?", [
                 codeCollaborator
@@ -275,17 +277,37 @@ async function POST(req) {
                     status: 400
                 });
             }
-            const parentUserId = parentUser[0].user_id;
-            const newRelation = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("INSERT INTO relaciones (user_child_id, user_parent_id) VALUES (?, ?)", [
+            parentUserId = parentUser[0].user_id;
+            await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("INSERT INTO relaciones (user_child_id, user_parent_id) VALUES (?, ?)", [
                 newUserId,
                 parentUserId
             ]);
-            console.log("newRelation::", newRelation);
+        } else {
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                error: "El código del colaborador no es válido."
+            }, {
+                status: 400
+            });
+        }
+        if (finalRole === "Sucursal") {
+            const logSucursal = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("INSERT INTO sucursales (user_admin_id, title, description, user_id) VALUES (?, ?, ?, ?)", [
+                user_admin_id,
+                userName,
+                description,
+                newUserId
+            ]);
+            console.log("Sucursal registrada:", logSucursal);
         }
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             message: "Usuario registrado con éxito",
             userId: newUserId,
-            codeCollaborator: generatedCode
+            codeCollaborator: generatedCode,
+            details: {
+                parentUser: parentUserId || null,
+                parentUserCode: codeCollaborator || null,
+                state: "pending",
+                role: finalRole
+            }
         }, {
             status: 201
         });

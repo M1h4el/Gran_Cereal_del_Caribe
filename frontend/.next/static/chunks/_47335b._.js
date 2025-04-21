@@ -498,6 +498,8 @@ function SucursalCards({ handleRoute }) {
     const [cardData, setCardData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [reloadTrigger, setReloadTrigger] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
     const { data: session } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSession"])();
+    const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [openModal, setOpenModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const handleReloadTrigger = ()=>{
         setReloadTrigger((prev)=>prev + 1);
     };
@@ -535,7 +537,7 @@ function SucursalCards({ handleRoute }) {
                 reloadTrigger: handleReloadTrigger
             }, void 0, false, {
                 fileName: "[project]/src/components/SucursalCards.jsx",
-                lineNumber: 48,
+                lineNumber: 50,
                 columnNumber: 9
             }, this), {});
     };
@@ -584,12 +586,12 @@ function SucursalCards({ handleRoute }) {
                             isFeatured: true
                         }, void 0, false, {
                             fileName: "[project]/src/components/SucursalCards.jsx",
-                            lineNumber: 101,
+                            lineNumber: 103,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/SucursalCards.jsx",
-                        lineNumber: 92,
+                        lineNumber: 94,
                         columnNumber: 11
                     }, this),
                     rotatedData.map((card, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -605,28 +607,28 @@ function SucursalCards({ handleRoute }) {
                                 description: card?.description
                             }, void 0, false, {
                                 fileName: "[project]/src/components/SucursalCards.jsx",
-                                lineNumber: 122,
+                                lineNumber: 124,
                                 columnNumber: 15
                             }, this)
                         }, index, false, {
                             fileName: "[project]/src/components/SucursalCards.jsx",
-                            lineNumber: 112,
+                            lineNumber: 114,
                             columnNumber: 13
                         }, this))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/SucursalCards.jsx",
-                lineNumber: 81,
+                lineNumber: 83,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/SucursalCards.jsx",
-            lineNumber: 79,
+            lineNumber: 81,
             columnNumber: 7
         }, this)
     }, void 0, false);
 }
-_s(SucursalCards, "L9t9JDUKDR9ZCbQ1bLEp7xxduB0=", false, function() {
+_s(SucursalCards, "5eDQjh5Z6nzOGhS65WqkI02g50Y=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2d$auth$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSession"]
     ];
@@ -676,24 +678,30 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
     const [isEditing, setIsEditing] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false); // Nuevo estado para manejar la edición
     const [originalRows, setOriginalRows] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [selectedRows, setSelectedRows] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]); // Para seleccionar filas
-    const [newProduct, setNewProduct] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
-        productCode: "",
-        name: "",
-        description: "",
-        inventory: "",
-        basePricing: "",
-        BaseSellerPricing: "",
-        price: "",
-        updated_at: "----------------------------------"
-    });
+    const [newProducts, setNewProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     console.log("arrayProducts", arrayProducts);
     console.log("originalRows", originalRows);
     console.log("selectedRows", selectedRows);
     console.log("isEditing", isEditing);
-    console.log("newProduct", newProduct);
+    console.log("newProducts", newProducts);
     const validateRows = (rows)=>{
-        return rows.every((row)=>row.productCode && row.name && row.description && row.inventory !== "" && row.basePricing !== "" && row.BaseSellerPricing !== "" && row.price !== "");
+        return rows.every((row)=>row.name && row.description && row.inventory !== "" && row.basePricing !== "" && row.BaseSellerPricing !== "" && row.price !== "");
     };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "ProductsTable.useEffect": ()=>{
+            setArrayProducts({
+                "ProductsTable.useEffect": (prev)=>prev.map({
+                        "ProductsTable.useEffect": (row)=>{
+                            const modifiedRow = {
+                                ...row,
+                                id: row.idproduct
+                            };
+                            return modifiedRow;
+                        }
+                    }["ProductsTable.useEffect"])
+            }["ProductsTable.useEffect"]);
+        }
+    }["ProductsTable.useEffect"], []);
     const getModifiedRows = ()=>{
         return arrayProducts.filter((row)=>{
             const original = originalRows.find((orig)=>String(orig.id) === String(row.id));
@@ -717,18 +725,18 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
             return false;
         });
     };
-    const handleRowChange = (rowIndex, field, value)=>{
-        setArrayProducts((prevRows)=>{
-            const updatedRows = [
-                ...prevRows
-            ];
-            const updatedRow = {
-                ...updatedRows[rowIndex]
-            };
-            updatedRow[field] = value;
-            updatedRows[rowIndex] = updatedRow;
-            return updatedRows;
-        });
+    const handleRowChange = (rowId, field, value)=>{
+        setArrayProducts((prev)=>prev.map((row)=>row.id === rowId || row.idproduct === rowId ? {
+                    ...row,
+                    [field]: value
+                } : row));
+        // Si es un producto nuevo, también actualizar en newProducts
+        if (String(rowId).startsWith("temp-")) {
+            setNewProducts((prev)=>prev.map((prod)=>prod.id === rowId ? {
+                        ...prod,
+                        [field]: value
+                    } : prod));
+        }
     };
     const handleEdit = ()=>{
         if (!isEditing) {
@@ -766,14 +774,28 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
         setOriginalRows([]); // Actualizará con los nuevos datos desde handleRefresh
     };
     const handleDelete = async ()=>{
-        const tempRows = selectedRows.filter((row)=>row.id?.startsWith("temp-"));
-        const realRows = selectedRows.filter((row)=>!row.id?.startsWith("temp-"));
-        // Eliminamos todas visualmente
-        const newRows = tableRows.filter((row)=>!selectedRows.some((sel)=>sel.id === row.id));
-        setTableRows(newRows);
+        if (selectedRows.length === 0) return;
+        // ✅ Temporales: tienen `id` (string tipo temp-) y `idproduct` vacío
+        const tempRows = selectedRows.filter((row)=>typeof row.id === "string" && row.id.startsWith("temp-") && row.idproduct === "");
+        // ✅ Reales: no tienen `id`, pero sí `idproduct` numérico
+        const realRows = selectedRows.filter((row)=>typeof row.idproduct === "number" && !row.id);
+        // ✅ Eliminar visualmente todas (temp + reales)
+        const newRows = arrayProducts.filter((row)=>{
+            // Si es temporal, comparamos por `id`
+            if (typeof row.id === "string") {
+                return !selectedRows.some((sel)=>sel.id === row.id);
+            }
+            // Si es real, comparamos por `idproduct`
+            if (typeof row.idproduct === "number") {
+                return !selectedRows.some((sel)=>sel.idproduct === row.idproduct);
+            }
+            return true; // en caso de que no cumpla ninguna condición
+        });
+        setNewProducts((prev)=>prev.filter((prod)=>!tempRows.some((temp)=>temp.id === prod.id)));
+        setArrayProducts(newRows);
         setSelectedRows([]);
-        // Solo eliminamos en backend las que son reales
-        const idsToDelete = realRows.map((row)=>row.id);
+        // ✅ Enviar al backend solo los reales
+        const idsToDelete = realRows.map((row)=>row.idproduct);
         if (idsToDelete.length > 0) {
             try {
                 const res = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["fetchData"])(`products?sucursalId=${sucursalId}`, "DELETE", {
@@ -782,7 +804,7 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                 if (res.error) {
                     console.error("Error al eliminar en el backend:", res.error);
                 } else {
-                    const updatedOriginalRows = originalRows.filter((row)=>!idsToDelete.includes(row.id));
+                    const updatedOriginalRows = originalRows.filter((row)=>!idsToDelete.includes(row.idproduct));
                     setOriginalRows(updatedOriginalRows);
                     console.log("Filas eliminadas en el backend:", idsToDelete);
                 }
@@ -792,30 +814,26 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
         }
     };
     const handleAdd = ()=>{
-        setArrayProducts((prev)=>[
-                ...prev,
-                {
-                    id: `temp-${Date.now()}`,
-                    productCode: "",
-                    name: "",
-                    description: "",
-                    inventory: "",
-                    basePricing: "",
-                    BaseSellerPricing: "",
-                    price: "",
-                    updated_at: "----------------------------------"
-                }
-            ]);
-        setNewProduct({
-            productCode: "",
+        const tempId = `temp-${Date.now()}`;
+        const newProducts = {
+            id: tempId,
+            idproduct: "",
             name: "",
             description: "",
-            inventory: "",
-            basePricing: "",
-            BaseSellerPricing: "",
-            price: "",
-            updated_at: "----------------------------------"
-        });
+            inventory: 0,
+            basePricing: null,
+            BaseSellerPricing: null,
+            updated_at: new Date().toISOString(),
+            price: null
+        };
+        setArrayProducts((prev)=>[
+                ...prev,
+                newProducts
+            ]);
+        setNewProducts((prev)=>[
+                ...prev,
+                newProducts
+            ]);
     };
     const columns = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "ProductsTable.useMemo[columns]": ()=>[
@@ -887,9 +905,12 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                         cell: ({
                             "ProductsTable.useMemo[customColumns]": (row, rowIndex)=>col.editable && isEditing ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
                                     type: col.type === "number" ? "number" : "text",
-                                    value: row[col.field],
+                                    value: row[col.field] ?? (col.type === "number" ? 0 : ""),
                                     onChange: {
-                                        "ProductsTable.useMemo[customColumns]": (e)=>handleRowChange(rowIndex, col.field, e.target.value)
+                                        "ProductsTable.useMemo[customColumns]": (e)=>{
+                                            console.log("Antes:", row[col.field], "Nuevo:", e.target.value);
+                                            handleRowChange(row.id || row.idproduct, col.field, e.target.value);
+                                        }
                                     }["ProductsTable.useMemo[customColumns]"],
                                     variant: "outlined",
                                     size: "small",
@@ -901,7 +922,7 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                    lineNumber: 290,
+                                    lineNumber: 310,
                                     columnNumber: 11
                                 }, this) : col.format ? col.format(row[col.field]) : typeof row[col.field] === "object" && row[col.field] !== null ? row[col.field].label || row[col.field].name || JSON.stringify(row[col.field]) : row[col.field]
                         })["ProductsTable.useMemo[customColumns]"]
@@ -928,7 +949,7 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                         children: "Tabla de Productos"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                        lineNumber: 322,
+                        lineNumber: 349,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -938,13 +959,13 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                         className: "inputSearch"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                        lineNumber: 323,
+                        lineNumber: 350,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                lineNumber: 321,
+                lineNumber: 348,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Paper$2f$Paper$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Paper$3e$__["Paper"], {
@@ -966,7 +987,7 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                                 children: isEditing ? "Cancelar" : "Editar"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                lineNumber: 342,
+                                lineNumber: 369,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -983,7 +1004,7 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                                         children: "Guardar cambios"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                        lineNumber: 350,
+                                        lineNumber: 377,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -993,7 +1014,7 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                                         children: "Agregar"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                        lineNumber: 358,
+                                        lineNumber: 385,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -1004,26 +1025,26 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                                         children: "Eliminar Seleccionados"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                        lineNumber: 365,
+                                        lineNumber: 392,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                lineNumber: 349,
+                                lineNumber: 376,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                        lineNumber: 332,
+                        lineNumber: 359,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$data$2d$table$2d$component$2f$dist$2f$index$2e$cjs$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         columns: customColumns,
                         data: arrayProducts,
                         selectableRows: isEditing,
-                        onSelectedRowsChange: ({ selectedRows })=>setSelectedRows(selectedRows.map((row)=>row.index)),
+                        onSelectedRowsChange: (state)=>setSelectedRows(state.selectedRows),
                         pagination: true,
                         highlightOnHover: true,
                         dense: true,
@@ -1099,7 +1120,7 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                                     children: "Registra y administra tus productos aquí."
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                    lineNumber: 450,
+                                    lineNumber: 475,
                                     columnNumber: 15
                                 }, void 0),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -1116,34 +1137,34 @@ function ProductsTable({ arrayProducts, handleRefresh, sucursalId, setArrayProdu
                                     children: "Agregar"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                                    lineNumber: 453,
+                                    lineNumber: 478,
                                     columnNumber: 15
                                 }, void 0)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                            lineNumber: 439,
+                            lineNumber: 464,
                             columnNumber: 13
                         }, void 0)
                     }, void 0, false, {
                         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                        lineNumber: 375,
+                        lineNumber: 402,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-                lineNumber: 331,
+                lineNumber: 358,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Swal/ProductsTable.jsx",
-        lineNumber: 320,
+        lineNumber: 347,
         columnNumber: 5
     }, this);
 }
-_s(ProductsTable, "iVV0MgxE8qaeRW1NxLw0wmJEiLY=");
+_s(ProductsTable, "JiXzD6sWQPlFi8fElwXb3yXiwnM=");
 _c = ProductsTable;
 const __TURBOPACK__default__export__ = ProductsTable;
 var _c;
@@ -2468,26 +2489,35 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, loadingDeta
             deleteSelectedRows(); // solo hay filas temporales, no necesita confirmación
         }
     };
-    const handleRowChange = (rowIndex, field, value)=>{
-        setTableRows((prevRows)=>{
-            const updatedRows = [
-                ...prevRows
-            ];
-            const updatedRow = {
-                ...updatedRows[rowIndex]
-            };
-            updatedRow[field] = value;
-            if (field === "product") {
-                const selectedProduct = options.find((opt)=>opt.label === value?.label || opt.label === value);
-                updatedRow.unitPrice = selectedProduct?.price || 0;
-            }
-            const qty = Number(updatedRow.quantity) || 0;
-            const price = Number(updatedRow.unitPrice) || 0;
-            updatedRow.total = qty * price;
-            updatedRows[rowIndex] = updatedRow;
-            return updatedRows;
-        });
-    };
+    const handleRowChange = useCallback({
+        "DataTable.useCallback[handleRowChange]": (rowIndex, field, value)=>{
+            setTableRows({
+                "DataTable.useCallback[handleRowChange]": (prevRows)=>{
+                    const updatedRows = [
+                        ...prevRows
+                    ];
+                    const updatedRow = {
+                        ...updatedRows[rowIndex]
+                    };
+                    updatedRow[field] = value;
+                    if (field === "product") {
+                        const selectedProduct = options.find({
+                            "DataTable.useCallback[handleRowChange].selectedProduct": (opt)=>opt.label === value?.label || opt.label === value
+                        }["DataTable.useCallback[handleRowChange].selectedProduct"]);
+                        updatedRow.unitPrice = selectedProduct?.price || 0;
+                    }
+                    const qty = Number(updatedRow.quantity) || 0;
+                    const price = Number(updatedRow.unitPrice) || 0;
+                    updatedRow.total = qty * price;
+                    updatedRows[rowIndex] = updatedRow;
+                    return updatedRows;
+                }
+            }["DataTable.useCallback[handleRowChange]"]);
+        }
+    }["DataTable.useCallback[handleRowChange]"], [
+        options,
+        tableRows
+    ]);
     const customColumns = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "DataTable.useMemo[customColumns]": ()=>{
             return columns.map({
@@ -2836,7 +2866,7 @@ function DataTable({ rows, columns, options, dataInvoice, openModal, loadingDeta
         columnNumber: 5
     }, this);
 }
-_s(DataTable, "vpuHjZ01igGd2UpT+m0EUrUV86I=");
+_s(DataTable, "W0PI4vQmsSqUWu2+F27+N6NLH3c=");
 _c = DataTable;
 var _c;
 __turbopack_refresh__.register(_c, "DataTable");

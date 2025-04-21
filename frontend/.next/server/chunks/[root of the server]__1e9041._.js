@@ -285,7 +285,8 @@ const authOptions = {
                         id: user.user_id,
                         userName: user.userName,
                         email: user.email,
-                        role: user.role
+                        role: user.role,
+                        codeCollaborator: user.codeCollaborator
                     };
                 } catch (error) {
                     throw new Error("Error interno al validar la contraseña");
@@ -301,15 +302,17 @@ const authOptions = {
     callbacks: {
         async jwt ({ token, user }) {
             if (user) {
-                token.id = user.id; // Agregar el ID de usuario al token JWT
-                token.role = user.role; // Agregar el rol al token JWT
+                token.id = user.id;
+                token.role = user.role;
+                token.codeCollaborator = user.codeCollaborator; // Agregado al token
             }
             return token;
         },
         async session ({ session, token }) {
             if (token) {
                 session.user.id = token.id;
-                session.user.role = token.role; // Agregar el rol a la sesión
+                session.user.role = token.role;
+                session.user.codeCollaborator = token.codeCollaborator; // Pasado a la sesión
             }
             return session;
         }
@@ -348,8 +351,8 @@ async function GET(req) {
         });
     }
     const { searchParams } = new URL(req.url);
-    const userId = searchParams.get("userId");
-    if (!userId) {
+    const userOwnerId = searchParams.get("userOwnerId");
+    if (!userOwnerId) {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             error: "Usuario no especificado"
         }, {
@@ -357,9 +360,8 @@ async function GET(req) {
         });
     }
     try {
-        const user_id = session.user.id;
-        const sucursales = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("SELECT * FROM sucursales s WHERE user_id = ? ORDER BY s.sucursal_id DESC", [
-            user_id
+        const sucursales = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])("SELECT s.sucursal_id, s.user_admin_id, s.title, s.description, s.created_at, s.total_products, us.user_id, us.userName, us.email, us.phone, us.address, us.role, us.codeCollaborator, us.bought_sold FROM sucursales s, users us WHERE s.user_admin_id = ? AND us.user_id = s.user_id ORDER BY s.created_at DESC;", [
+            userOwnerId
         ]);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(sucursales, {
             status: 200
@@ -383,10 +385,10 @@ async function POST(req) {
         });
     }
     const { searchParams } = new URL(req.url);
-    const userId = searchParams.get("userId");
-    if (!userId) {
+    const userOwnerId = searchParams.get("userOwnerId");
+    if (!userOwnerId) {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: "Usuario no especificado"
+            error: "Usuario Admin no especificado"
         }, {
             status: 400
         });

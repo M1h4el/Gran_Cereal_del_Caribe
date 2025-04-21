@@ -27,7 +27,7 @@ export default function CreateSucursal({sucursal, userId, reloadTrigger}) {
         description: formData.descripcion,
       };
 
-      const res = await fetchData(`/sucursales?userId=${userId}`, "POST", newSucursal);
+      const res = await fetchData(`/sucursales?userOwnerId=${userId}`, "POST", newSucursal);
       if (res && res.message) {
         sucursal(newSucursal);
         reloadTrigger();

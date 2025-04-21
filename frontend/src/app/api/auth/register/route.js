@@ -11,7 +11,7 @@ export async function POST(req) {
   try {
     let body = await req.json();
     console.log("data:", body);
-    const { userName, email, password, role, codeCollaborator } = body;
+    const { userName, email, password, role, codeCollaborator, description = null, user_admin_id } = body;
 
 
     if (!userName || !email || !password) {
@@ -43,10 +43,12 @@ export async function POST(req) {
 
     const result = await queryDB(
       "INSERT INTO users (userName, email, password, role, codeCollaborator) VALUES (?, ?, ?, ?, ?)",
-      [userName, email, hashedPassword, role || null, generatedCode]
+      [userName, email, hashedPassword, finalRole, generatedCode]
     );
-    
+
     const newUserId = result.insertId;
+
+    let parentUserId
 
     if (codeCollaborator) {
       const parentUser = await queryDB(
@@ -61,13 +63,27 @@ export async function POST(req) {
         );
       }
 
-      const parentUserId = parentUser[0].user_id;
+      parentUserId = parentUser[0].user_id;
 
       await queryDB(
         "INSERT INTO relaciones (user_child_id, user_parent_id) VALUES (?, ?)",
         [newUserId, parentUserId]
       );
 
+    } else {
+      NextResponse.json(
+        { error: "El código del colaborador no es válido." },
+        { status: 400 }
+      );
+    }
+
+    if (finalRole === "Sucursal") {
+      const logSucursal = await queryDB(
+        "INSERT INTO sucursales (user_admin_id, title, description, user_id) VALUES (?, ?, ?, ?)",
+        [ user_admin_id, userName, description, newUserId]
+      );
+
+      console.log("Sucursal registrada:", logSucursal);
     }
 
     return NextResponse.json(
@@ -75,6 +91,12 @@ export async function POST(req) {
         message: "Usuario registrado con éxito",
         userId: newUserId,
         codeCollaborator: generatedCode,
+        details: {
+          parentUser: parentUserId || null,
+          parentUserCode: codeCollaborator || null,
+          state: "pending",
+          role: finalRole,
+        }
       },
       { status: 201 }
     );

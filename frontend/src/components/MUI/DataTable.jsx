@@ -261,7 +261,7 @@ export default function DataTable({
     }
   };
 
-  const handleRowChange = (rowIndex, field, value) => {
+  const handleRowChange = useCallback((rowIndex, field, value) => {
     setTableRows((prevRows) => {
       const updatedRows = [...prevRows];
       const updatedRow = { ...updatedRows[rowIndex] };
@@ -283,7 +283,7 @@ export default function DataTable({
 
       return updatedRows;
     });
-  };
+  }, [options, tableRows]);
 
   const customColumns = useMemo(() => {
     return columns.map((col) => ({

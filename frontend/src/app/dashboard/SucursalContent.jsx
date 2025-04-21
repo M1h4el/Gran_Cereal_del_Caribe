@@ -7,11 +7,13 @@ import SellersScreen from "@/components/SellersScreen";
 import InvoicesSellerScreen from "@/components/InvoicesSellerScreen";
 import InvoicesCustomerScreen from "@/components/InvoicesCustomerScreen";
 import InvoiceScreen from "@/components/InvoiceScreen";
+import Modal from "@/components/Modal";
 
 function SucursalContent() {
   const [routes, setRoutes] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0)
   const [products, setProducts] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selection, setSelection] = useState({
     sucursal: null,
     collaborator: null,
@@ -20,6 +22,15 @@ function SucursalContent() {
   console.log("selection", selection)
 
   console.log("Cambiando ruta a:", routes);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   const handleRoute = (route) => {
     setRoutes((prevRoutes) => [...prevRoutes, route?.title]);
 
@@ -138,6 +149,11 @@ function SucursalContent() {
         </div>
       </section>
       <section>{renderComponent()}</section>
+      {isModalOpen && 
+        <Modal open={isModalOpen} onClose={handleCloseModal}>
+          <FormTabModal onClose={handleCloseModal}/>
+        </Modal>
+      }
     </>
   );
 }

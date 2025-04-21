@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 import {
   TextField,
@@ -44,55 +44,58 @@ function ProductsTable({
   const [isEditing, setIsEditing] = useState(false); // Nuevo estado para manejar la edición
   const [originalRows, setOriginalRows] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]); // Para seleccionar filas
-  const [newProduct, setNewProduct] = useState({
-    productCode: "",
-    name: "",
-    description: "",
-    inventory: "",
-    basePricing: "",
-    BaseSellerPricing: "",
-    price: "",
-    updated_at: "----------------------------------",
-  });
+  const [newProducts, setNewProducts] = useState([]);
 
   console.log("arrayProducts", arrayProducts);
   console.log("originalRows", originalRows);
   console.log("selectedRows", selectedRows);
   console.log("isEditing", isEditing);
-  console.log("newProduct", newProduct);
+  console.log("newProducts", newProducts);
 
   const validateRows = (rows) => {
-    return rows.every((row) =>
-      row.productCode &&
-      row.name &&
-      row.description &&
-      row.inventory !== "" &&
-      row.basePricing !== "" &&
-      row.BaseSellerPricing !== "" &&
-      row.price !== ""
+    return rows.every(
+      (row) =>
+        row.name &&
+        row.description &&
+        row.inventory !== "" &&
+        row.basePricing !== "" &&
+        row.BaseSellerPricing !== "" &&
+        row.price !== ""
     );
   };
+
+  useEffect(() => {
+    setArrayProducts((prev) =>
+      prev.map((row) => {
+        const modifiedRow = {
+          ...row,
+          id: row.idproduct,
+        };
+        return modifiedRow;
+      })
+    );
+  }, []);
 
   const getModifiedRows = () => {
     return arrayProducts.filter((row) => {
       const original = originalRows.find(
         (orig) => String(orig.id) === String(row.id)
       );
-  
+
       // Si no existe en originalRows, es nuevo
       if (!original) return true;
-  
+
       // Verificar si algún campo cambió
       for (let key in row) {
         const currentValue = row[key];
         const originalValue = original[key];
-  
+
         const isObject =
           currentValue !== null &&
           typeof currentValue === "object" &&
           originalValue !== null &&
           typeof originalValue === "object";
-  
+
         if (isObject) {
           if (JSON.stringify(currentValue) !== JSON.stringify(originalValue)) {
             return true;
@@ -103,24 +106,30 @@ function ProductsTable({
           }
         }
       }
-  
+
       return false;
-    });
-  };  
-
-  const handleRowChange = (rowIndex, field, value) => {
-    setArrayProducts((prevRows) => {
-      const updatedRows = [...prevRows];
-      const updatedRow = { ...updatedRows[rowIndex] };
-
-      updatedRow[field] = value;
-
-      updatedRows[rowIndex] = updatedRow;
-
-      return updatedRows;
     });
   };
 
+  const handleRowChange = (rowId, field, value) => {
+    setArrayProducts((prev) =>
+      prev.map((row) =>
+        row.id === rowId || row.idproduct === rowId
+          ? { ...row, [field]: value }
+          : row
+      )
+    );
+  
+    // Si es un producto nuevo, también actualizar en newProducts
+    if (String(rowId).startsWith("temp-")) {
+      setNewProducts((prev) =>
+        prev.map((prod) =>
+          prod.id === rowId ? { ...prod, [field]: value } : prod
+        )
+      );
+    }
+  };
+  
   const handleEdit = () => {
     if (!isEditing) {
       setOriginalRows(JSON.parse(JSON.stringify(arrayProducts))); // Guardamos una copia profunda
@@ -135,50 +144,73 @@ function ProductsTable({
 
   const handleSave = async () => {
     const isValid = validateRows(arrayProducts);
-  
+
     if (!isValid) {
-      alert("Por favor, completa todos los campos obligatorios antes de guardar.");
+      alert(
+        "Por favor, completa todos los campos obligatorios antes de guardar."
+      );
       return;
     }
-      const modifiedRows = getModifiedRows();
-      const now = formatToMySQLTimestamp(new Date());
-  
-      const rowsToSend = modifiedRows.map((row) => ({
-        ...row,
-        updated_at: now,
-      }));
-  
-      const res = await fetchData(`products?sucursalId=${sucursalId}`, "PUT", {
-        data: rowsToSend,
-      });
-  
-      if (res.error) {
-        console.error("Error al guardar productos:", res.error);
-        return;
-      }
-  
-      handleRefresh(); // Asume que esto recarga desde el servidor
-      setIsEditing(false);
-      setSelectedRows([]);
-      setOriginalRows([]); // Actualizará con los nuevos datos desde handleRefresh
+    const modifiedRows = getModifiedRows();
+    const now = formatToMySQLTimestamp(new Date());
+
+    const rowsToSend = modifiedRows.map((row) => ({
+      ...row,
+      updated_at: now,
+    }));
+
+    const res = await fetchData(`products?sucursalId=${sucursalId}`, "PUT", {
+      data: rowsToSend,
+    });
+
+    if (res.error) {
+      console.error("Error al guardar productos:", res.error);
+      return;
+    }
+
+    handleRefresh(); // Asume que esto recarga desde el servidor
+    setIsEditing(false);
+    setSelectedRows([]);
+    setOriginalRows([]); // Actualizará con los nuevos datos desde handleRefresh
   };
-  
 
   const handleDelete = async () => {
-    const tempRows = selectedRows.filter((row) => row.id?.startsWith("temp-"));
-    const realRows = selectedRows.filter((row) => !row.id?.startsWith("temp-"));
-  
-    // Eliminamos todas visualmente
-    const newRows = tableRows.filter(
-      (row) => !selectedRows.some((sel) => sel.id === row.id)
+    if (selectedRows.length === 0) return;
+
+    // ✅ Temporales: tienen `id` (string tipo temp-) y `idproduct` vacío
+    const tempRows = selectedRows.filter(
+      (row) =>
+        typeof row.id === "string" &&
+        row.id.startsWith("temp-") &&
+        row.idproduct === ""
     );
-  
-    setTableRows(newRows);
+
+    // ✅ Reales: no tienen `id`, pero sí `idproduct` numérico
+    const realRows = selectedRows.filter(
+      (row) => typeof row.idproduct === "number" && !row.id
+    );
+
+    // ✅ Eliminar visualmente todas (temp + reales)
+    const newRows = arrayProducts.filter((row) => {
+      // Si es temporal, comparamos por `id`
+      if (typeof row.id === "string") {
+        return !selectedRows.some((sel) => sel.id === row.id);
+      }
+
+      // Si es real, comparamos por `idproduct`
+      if (typeof row.idproduct === "number") {
+        return !selectedRows.some((sel) => sel.idproduct === row.idproduct);
+      }
+
+      return true; // en caso de que no cumpla ninguna condición
+    });
+    setNewProducts((prev) => prev.filter((prod) => !tempRows.some((temp) => temp.id === prod.id)));
+    setArrayProducts(newRows);
     setSelectedRows([]);
-  
-    // Solo eliminamos en backend las que son reales
-    const idsToDelete = realRows.map((row) => row.id);
-  
+
+    // ✅ Enviar al backend solo los reales
+    const idsToDelete = realRows.map((row) => row.idproduct);
+
     if (idsToDelete.length > 0) {
       try {
         const res = await fetchData(
@@ -188,14 +220,14 @@ function ProductsTable({
             data: idsToDelete,
           }
         );
-  
+
         if (res.error) {
           console.error("Error al eliminar en el backend:", res.error);
         } else {
           const updatedOriginalRows = originalRows.filter(
-            (row) => !idsToDelete.includes(row.id)
+            (row) => !idsToDelete.includes(row.idproduct)
           );
-  
+
           setOriginalRows(updatedOriginalRows);
           console.log("Filas eliminadas en el backend:", idsToDelete);
         }
@@ -203,35 +235,23 @@ function ProductsTable({
         console.error("Error al eliminar productos:", error.message);
       }
     }
-  };  
-  
+  };
 
   const handleAdd = () => {
-    setArrayProducts((prev) => [
-      ...prev,
-      {
-        id: `temp-${Date.now()}`, // ID temporal para distinguir las nuevas
-        productCode: "",
-        name: "",
-        description: "",
-        inventory: "",
-        basePricing: "",
-        BaseSellerPricing: "",
-        price: "",
-        updated_at: "----------------------------------",
-      },
-    ]);
-
-    setNewProduct({
-      productCode: "",
+    const tempId = `temp-${Date.now()}`;
+    const newProducts = {
+      id: tempId,
+      idproduct: "",
       name: "",
       description: "",
-      inventory: "",
-      basePricing: "",
-      BaseSellerPricing: "",
-      price: "",
-      updated_at: "----------------------------------",
-    });
+      inventory: 0,
+      basePricing: null,
+      BaseSellerPricing: null,
+      updated_at: new Date().toISOString(),
+      price: null,
+    };
+    setArrayProducts((prev) => [...prev, newProducts]);
+    setNewProducts((prev) => [...prev, newProducts]);
   };
 
   const columns = useMemo(
@@ -289,10 +309,17 @@ function ProductsTable({
         col.editable && isEditing ? (
           <TextField
             type={col.type === "number" ? "number" : "text"}
-            value={row[col.field]}
-            onChange={(e) =>
-              handleRowChange(rowIndex, col.field, e.target.value)
+            value={
+              row[col.field] ?? (col.type === "number" ? 0 : "")
             }
+            onChange={(e) => {
+              console.log("Antes:", row[col.field], "Nuevo:", e.target.value);
+              handleRowChange(
+                row.id || row.idproduct,
+                col.field,
+                e.target.value
+              );
+            }}
             variant="outlined"
             size="small"
             sx={{ input: { padding: "4px", width: "100%" } }}
@@ -376,9 +403,7 @@ function ProductsTable({
           columns={customColumns}
           data={arrayProducts}
           selectableRows={isEditing}
-          onSelectedRowsChange={({ selectedRows }) =>
-            setSelectedRows(selectedRows.map((row) => row.index))
-          }
+          onSelectedRowsChange={(state) => setSelectedRows(state.selectedRows)}
           pagination
           highlightOnHover
           dense

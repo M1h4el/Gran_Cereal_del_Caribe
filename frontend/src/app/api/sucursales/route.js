@@ -11,16 +11,15 @@ export async function GET(req) {
   }
 
   const { searchParams } = new URL(req.url);
-  const userId = searchParams.get("userId");
+  const userOwnerId = searchParams.get("userOwnerId");
 
-  if (!userId) {
+  if (!userOwnerId) {
     return NextResponse.json({ error: "Usuario no especificado" }, { status: 400 });
   }
 
   try {
 
-    const user_id = session.user.id;
-    const sucursales = await queryDB("SELECT * FROM sucursales s WHERE user_id = ? ORDER BY s.sucursal_id DESC", [user_id]);
+    const sucursales = await queryDB("SELECT s.sucursal_id, s.user_admin_id, s.title, s.description, s.created_at, s.total_products, us.user_id, us.userName, us.email, us.phone, us.address, us.role, us.codeCollaborator, us.bought_sold FROM sucursales s, users us WHERE s.user_admin_id = ? AND us.user_id = s.user_id ORDER BY s.created_at DESC;", [userOwnerId]);
 
     return NextResponse.json(sucursales, { status: 200 });
   } catch (error) {
@@ -36,9 +35,9 @@ export async function POST(req) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
   const { searchParams } = new URL(req.url);
-  const userId = searchParams.get("userId");
-  if (!userId) {
-    return NextResponse.json({ error: "Usuario no especificado" }, { status: 400 });
+  const userOwnerId = searchParams.get("userOwnerId");
+  if (!userOwnerId) {
+    return NextResponse.json({ error: "Usuario Admin no especificado" }, { status: 400 });
   }
 
   try {

@@ -7,11 +7,17 @@ import ProjectCard from "@/components/ProjectCard";
 import { useSession } from "next-auth/react";
 import { showSwal } from "@/components/Swal/Swal";
 import CreateSucursal from "@/components/Swal/CreateSucursal";
+import CreateSucursalModal from "./Modal/CreateSucursalModal";
+import Modal from "./Modal";
 
 function SucursalCards({ handleRoute }) {
   const [cardData, setCardData] = useState([]);
   const [reloadTrigger, setReloadTrigger] = useState(0);
   const { data: session } = useSession();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  console.log("session", session);
 
   const handleReloadTrigger = () => {
     setReloadTrigger((prev) => prev + 1);
@@ -23,7 +29,7 @@ function SucursalCards({ handleRoute }) {
 
       try {
         const res = await fetchData(
-          `/sucursales?userId=${session.user.id}`,
+          `/sucursales?userOwnerId=${session.user.id}`,
           "GET",
           null
         );
@@ -43,19 +49,11 @@ function SucursalCards({ handleRoute }) {
 
   const handleCreateSucursal = async () => {
     if (!session?.user) return;
-    showSwal(
-      () => (
-        <CreateSucursal
-          sucursal={(nueva) => {
-            setCardData((prev) => [...prev, nueva]);
-          }}
-          userId={session.user.id}
-          reloadTrigger={handleReloadTrigger}
-        />
-      ),
-      {}
-    );
+    setIsModalOpen(true);
+  };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   const rotatedData =
@@ -67,7 +65,8 @@ function SucursalCards({ handleRoute }) {
       const cardObject = {
         id: card?.sucursal_id,
         title: card?.title,
-        total_products: card?.total_products
+        total_products: card?.total_products,
+        codeCollaborator: card?.codeCollaborator,
       };
       handleRoute(cardObject);
     } else {
@@ -96,7 +95,7 @@ function SucursalCards({ handleRoute }) {
               minWidth: "250px",
               boxSizing: "border-box",
             }}
-            onClick={() => handleCreateSucursal()}
+            onClick={handleCreateSucursal}
           >
             <ProjectCard
               title="Nueva Surcursal"
@@ -129,6 +128,19 @@ function SucursalCards({ handleRoute }) {
           ))}
         </div>
       </div>
+      {isModalOpen ? (
+        <Modal open={isModalOpen} onClose={handleCloseModal}>
+          <CreateSucursalModal 
+            onClose={handleCloseModal}
+            sucursal={(nueva) => {
+              setCardData((prev) => [...prev, nueva]);
+            }}
+            userId={session.user.id}
+            reloadTrigger={handleReloadTrigger}
+            inviteCode={session.user.inviteCode}
+            />
+        </Modal>
+      ) : null}
     </>
   );
 }
