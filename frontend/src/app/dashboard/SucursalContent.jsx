@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SucursalCards from "../../components/SucursalCards";
 import "@/styles/SucursalCards.scss";
 import SellersScreen from "@/components/SellersScreen";
@@ -8,20 +8,41 @@ import InvoicesSellerScreen from "@/components/InvoicesSellerScreen";
 import InvoicesCustomerScreen from "@/components/InvoicesCustomerScreen";
 import InvoiceScreen from "@/components/InvoiceScreen";
 import Modal from "@/components/Modal";
+import { useSession } from "next-auth/react";
+import FormTabModal from "@/components/Modal/FormTabModal";
 
 function SucursalContent() {
   const [routes, setRoutes] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0)
   const [products, setProducts] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [selection, setSelection] = useState({
     sucursal: null,
     collaborator: null,
     invoices: null,
   });
+  const { data: session, status } = useSession();
+
   console.log("selection", selection)
 
   console.log("Cambiando ruta a:", routes);
+
+  const confirmUser = (session) => {
+    if (!session?.user?.status) return;
+
+    if (session.user.status === "unconfirmed") {
+      handleOpenModal();
+    }
+  };
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      confirmUser(session);
+    }
+  }, [status, session]);
+  
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -150,8 +171,8 @@ function SucursalContent() {
       </section>
       <section>{renderComponent()}</section>
       {isModalOpen && 
-        <Modal open={isModalOpen} onClose={handleCloseModal}>
-          <FormTabModal onClose={handleCloseModal}/>
+        <Modal open={isModalOpen} onClose={handleCloseModal} required>
+          <FormTabModal onClose={handleCloseModal} user={session.user}/>
         </Modal>
       }
     </>

@@ -36,12 +36,22 @@ async function middleware(req) {
         secret: process.env.NEXTAUTH_SECRET
     });
     const { pathname } = req.nextUrl;
-    // Si está logueado y trata de acceder a "/"
+    // Ignorar rutas estáticas y API
+    if (pathname.startsWith("/_next") || pathname.startsWith("/api") || pathname.startsWith("/favicon.ico") || pathname.startsWith("/public")) {
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$5d$__$28$ecmascript$29$__["NextResponse"].next();
+    }
+    // Redirigir al dashboard si ya está logueado y va a la raíz
     if (token && pathname === "/") {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/dashboard", req.url));
     }
-    // Si no está logueado y trata de acceder a una ruta protegida
-    if (!token && pathname !== "/") {
+    // Si no hay token y va a rutas protegidas
+    const protectedPaths = [
+        "/dashboard",
+        "/admin",
+        "/perfil"
+    ];
+    const isProtected = protectedPaths.some((path)=>pathname.startsWith(path));
+    if (!token && isProtected) {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$5d$__$28$ecmascript$29$__["NextResponse"].redirect(new URL("/", req.url));
     }
     return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$esm$2f$server$2f$web$2f$spec$2d$extension$2f$response$2e$js__$5b$middleware$5d$__$28$ecmascript$29$__["NextResponse"].next();

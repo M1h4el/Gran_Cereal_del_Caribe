@@ -39,7 +39,8 @@ export const authOptions = {
             userName: user.userName,
             email: user.email,
             role: user.role,
-            codeCollaborator: user.codeCollaborator, // Asegurate que esta columna existe
+            codeCollaborator: user.codeCollaborator,
+            status: user.status, // 👈 añadimos el campo status aquí
           };
         } catch (error) {
           throw new Error("Error interno al validar la contraseña");
@@ -57,15 +58,19 @@ export const authOptions = {
       if (user) {
         token.id = user.id;
         token.role = user.role;
-        token.codeCollaborator = user.codeCollaborator; // Agregado al token
+        token.codeCollaborator = user.codeCollaborator;
+        token.status = user.status; // 👈 añadimos el status al token
       }
       return token;
+      
     },
     async session({ session, token }) {
-      if (token) {
+      if (token && session.user) {
         session.user.id = token.id;
+        session.user.email = token.email;
         session.user.role = token.role;
-        session.user.codeCollaborator = token.codeCollaborator; // Pasado a la sesión
+        session.user.codeCollaborator = token.codeCollaborator;
+        session.user.status = token.status; // 👈 pasamos status a la sesión
       }
       return session;
     },
