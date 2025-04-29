@@ -208,30 +208,37 @@ async function GET(req, { params }) {
             });
         }
         const users = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`SELECT 
-            u.user_id, u.userName, u.role, u.address, u.phone, u.bought_sold
-          FROM 
-            users u
-          JOIN 
-            relaciones r ON u.user_id = r.user_child_id
-          WHERE 
-            r.user_parent_id = ? AND r.sucursal_id = ?
-      
-          UNION
-      
-          SELECT 
-            u.user_id, u.userName, u.role, u.address, u.phone, u.bought_sold
-          FROM 
-            users u
-          JOIN 
-            relaciones r1 ON u.user_id = r1.user_child_id
-          JOIN 
-            relaciones r2 ON r1.user_parent_id = r2.user_child_id
-          WHERE 
-            r2.user_parent_id = ? AND r1.sucursal_id = ?;
+        u.user_id, u.userName, u.role, u.address, u.phone, u.bought_sold
+      FROM 
+        users u
+      JOIN 
+        relaciones r ON u.user_id = r.user_child_id
+      JOIN 
+        users s ON r.user_parent_id = s.user_id
+      WHERE 
+        s.role = 'Sucursal' 
+        AND r.sucursal_id = ?
+        AND u.role IN ('Cliente', 'Vendedor')
+
+      UNION
+
+      -- Nietos (usuarios hijos de hijos de 'Sucursal')
+      SELECT 
+        u.user_id, u.userName, u.role, u.address, u.phone, u.bought_sold
+      FROM 
+        users u
+      JOIN 
+        relaciones r1 ON u.user_id = r1.user_child_id
+      JOIN 
+        relaciones r2 ON r1.user_parent_id = r2.user_child_id
+      JOIN 
+        users s ON r2.user_parent_id = s.user_id
+      WHERE 
+        s.role = 'Sucursal' 
+        AND r1.sucursal_id = ?
+        AND u.role IN ('Cliente', 'Vendedor');
         `, [
-            userId,
             sucursalId,
-            userId,
             sucursalId
         ]);
         return Response.json(users);

@@ -61,7 +61,7 @@ export async function PUT(req) {
       return new Response("User not found", { status: 404 });
     }
 
-    return Response.json({ message: "Usuario actualizado" });
+    return Response.json({ message: "Usuario actualizado" }, { status: 200 });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }

@@ -12,34 +12,39 @@ import { useSession } from "next-auth/react";
 import FormTabModal from "@/components/Modal/FormTabModal";
 
 function SucursalContent() {
+  const { data: session, status } = useSession();
   const [routes, setRoutes] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0)
   const [products, setProducts] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [statusUser, setStatusUser] = useState(session?.user?.status);
   const [selection, setSelection] = useState({
     sucursal: null,
     collaborator: null,
     invoices: null,
   });
-  const { data: session, status } = useSession();
 
   console.log("selection", selection)
 
   console.log("Cambiando ruta a:", routes);
 
-  const confirmUser = (session) => {
-    if (!session?.user?.status) return;
+  const handleStatusUser = async () => {
+    setStatusUser("confirmed");
+  }
 
-    if (session.user.status === "unconfirmed") {
+  const confirmUser = () => {
+    if (!statusUser && statusUser === "confirmed") return;
+
+    if (statusUser === "unconfirmed") {
       handleOpenModal();
     }
   };
 
   useEffect(() => {
     if (status === "authenticated") {
-      confirmUser(session);
+      confirmUser();
     }
   }, [status, session]);
   
@@ -172,7 +177,7 @@ function SucursalContent() {
       <section>{renderComponent()}</section>
       {isModalOpen && 
         <Modal open={isModalOpen} onClose={handleCloseModal} required>
-          <FormTabModal onClose={handleCloseModal} user={session.user}/>
+          <FormTabModal onClose={handleCloseModal} user={session.user} statusUser={statusUser} handleStatus={handleStatusUser}/>
         </Modal>
       }
     </>

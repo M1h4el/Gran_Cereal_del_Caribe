@@ -9,10 +9,16 @@ import PhoneAndDOBForm from "../PhoneAndDOBForm";
 import AddressForm from "../AddressForm";
 import { useState } from "react";
 import { fetchData } from "../../../utils/api";
+import { useSession, signIn } from "next-auth/react";
 
 const steps = ["Verificar Email", "Datos Personales", "Localización"];
 
-export default function FormTabModal({ onClose, user }) {
+export default function FormTabModal({
+  onClose,
+  user,
+  statusUser,
+  handleStatus,
+}) {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [error, setError] = useState("");
@@ -26,19 +32,34 @@ export default function FormTabModal({ onClose, user }) {
     address: "",
   });
 
+  console.log("useState error", error);
+
   console.log("formData", formData);
 
   const saveData = async () => {
     try {
-      const res = fetchData(`users?userId=${user.id}`, "PUT", formData);
-    } catch (error) {
-      console.error("Error al guardar los datos:", error);
+      const res = await fetchData(`users?userId=${user.id}`, "PUT", formData);
+      console.log("res desde el backend", res);
+      if (res.message) {
+        console.log("res:", res.message);
+      } else {
+        console.error(
+          "Error en la respuesta del servidor:",
+          res.error,
+          res.statusText
+        );
+        setError(res.error);
+      }
+    } catch (err) {
+      const errMsg = err?.message || String(err);
+      console.error("Error al guardar los datos:", errMsg);
+      setError(errMsg);
     }
   };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setError("");
   };
 
   const handleMapClick = () => {
@@ -46,7 +67,6 @@ export default function FormTabModal({ onClose, user }) {
     // Aquí podrías abrir un modal o componente de mapa (como Google Maps)
   };
 
-  const isStepOptional = (step) => null;
   const isStepSkipped = (step) => skipped.has(step);
 
   const handleNext = (end) => {
@@ -61,6 +81,9 @@ export default function FormTabModal({ onClose, user }) {
 
     if (end) {
       saveData();
+      if (statusUser && statusUser !== "confirmed") {
+        handleStatus();
+      }
     }
   };
 
@@ -91,11 +114,6 @@ export default function FormTabModal({ onClose, user }) {
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography variant="caption">Opcional</Typography>
-            );
-          }
           if (isStepSkipped(index)) {
             stepProps.completed = false;
           }
@@ -110,9 +128,15 @@ export default function FormTabModal({ onClose, user }) {
       {activeStep === steps.length ? (
         <React.Fragment>
           <Typography sx={{ mt: 2, mb: 1 }}>
-            Registro completado correctamente 🎉
+            {!error ? "Registro completado correctamente 🎉" : error.startsWith('Duplicate entry') ? "El número telefónico digitado ya se encuentra registrado." : error}
           </Typography>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+            <Button
+              color="inherit"
+              disabled={error === ""}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+            >Atrás</Button>
             <Box sx={{ flex: "1 1 auto" }} />
             <Button variant="contained" color="primary" onClick={onClose}>
               Cerrar
@@ -125,7 +149,7 @@ export default function FormTabModal({ onClose, user }) {
             {activeStep === 0 ? (
               <Typography>Verifica tu email para continuar.</Typography>
             ) : activeStep === 1 ? (
-              <PhoneAndDOBForm formData={formData} onChange={handleChange} />
+              <PhoneAndDOBForm formData={formData} onChange={handleChange} error={error}/>
             ) : (
               <AddressForm
                 formData={formData}
@@ -138,21 +162,17 @@ export default function FormTabModal({ onClose, user }) {
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"
-              disabled={activeStep === 0}
+              disabled={activeStep === 0 || error === ""}
               onClick={handleBack}
               sx={{ mr: 1 }}
             >
               Atrás
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                Omitir
-              </Button>
-            )}
             <Button
               onClick={() => handleNext(activeStep === steps.length - 1)}
               variant="contained"
+              disabled={error !== "" && activeStep == steps.length - 1}
             >
               {activeStep === steps.length - 1 ? "Finalizar" : "Siguiente"}
             </Button>

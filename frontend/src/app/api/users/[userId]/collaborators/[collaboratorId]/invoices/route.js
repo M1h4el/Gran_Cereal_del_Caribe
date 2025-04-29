@@ -1,4 +1,5 @@
 import { queryDB } from "@/lib/dbUtils";
+import { NextResponse } from "next/server";
 
 export async function GET(req, { params }) {
   try {
@@ -6,20 +7,41 @@ export async function GET(req, { params }) {
     const {collaboratorId} = await params
 
     if (!params || !collaboratorId) {
-      return Response.json(
+      return NextResponse.json(
         { error: "Usuario o sucursal no especificados" },
         { status: 400 }
       );
     }
 
-    const users = await queryDB(
-        `SELECT * FROM invoices i WHERE user_seller_id = ?;;
-        `,
-        [collaboratorId]
+    const invoices = await queryDB(
+      `SELECT * FROM invoices i WHERE i.user_seller_id = ?;`,
+      [collaboratorId]
       );
+    if (invoices.length === 0) {
+      return NextResponse.json(
+        { error: "No se encontraron facturas" },
+        { status: 404 }
+      );
+    }
+    console.log("Invoices", invoices);
 
-    return Response.json(users);
+    const userClients = await Promise.all(
+      invoices.map(async (invoice) => {
+      const userClient = await queryDB(
+        `SELECT userName FROM users u WHERE u.user_id = ?;`,
+        [invoice.user_buyer_id]
+      );
+      return {
+        invoice,
+        userClientName: userClient[0]?.userName || null
+      };
+      })
+    );
+
+    console.log("User Clients with Invoices", userClients);
+
+    return NextResponse.json(userClients, { status: 200 });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

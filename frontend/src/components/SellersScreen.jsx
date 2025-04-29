@@ -32,10 +32,12 @@ const SellersScreen = ({ sucursal, collaborator, totalProducts, handleGetProduct
           null
         );
 
-        if (res.length === 0) console.log("No se encontraron colaboradores.");
+        console.log(res);
+
+        if (res.users.length === 0) console.log("No se encontraron colaboradores.");
         if (res.error) console.error("Error:", res.error);
 
-        setColaboradores(res);
+        setColaboradores(res.users);
       } catch (error) {
         console.error("Error cargando las sucursales:", error);
       }

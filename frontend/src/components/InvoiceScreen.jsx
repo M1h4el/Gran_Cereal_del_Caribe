@@ -153,7 +153,7 @@ function InvoiceScreen({ data, products }) {
       <div className="generalInfo">
         <div className="infoInvoice">
           <h1 className="TitleScreen">Factura de Ventas</h1>
-          <h2>Code: {data?.invoice_id}</h2>
+          <h2>Código de Factura: {data?.invoiceCode}</h2>
         </div>
         <div className="infoCustomer">
           <div className="infoKey">
@@ -163,10 +163,10 @@ function InvoiceScreen({ data, products }) {
             <h3>Fecha: </h3>
           </div>
           <div className="infoValue">
-            <h3>{infoCustomer?.userName || " "}</h3>
-            <h3>{infoCustomer?.address || " "}</h3>
-            <h3>{infoCustomer?.phone || " "}</h3>
-            <h3>{data?.created_at || " "}</h3>
+            <h3>{data?.userClientName ?? infoCustomer?.userName ?? " "}</h3>
+            <h3>{data?.userClientAddress ?? infoCustomer?.address ?? " "}</h3>
+            <h3>{data?.userClientPhone ?? infoCustomer?.phone ?? " "}</h3>
+            <h3>{data?.created_at ?? " "}</h3>
           </div>
         </div>
       </div>

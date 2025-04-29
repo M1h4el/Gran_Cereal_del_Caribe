@@ -18,7 +18,7 @@ const AddressForm = ({ formData, onChange, onMapClick }) => {
 
       <TextField
         name="region"
-        label="Región"
+        label="Región/Departamento"
         variant="outlined"
         fullWidth
         value={formData.region}

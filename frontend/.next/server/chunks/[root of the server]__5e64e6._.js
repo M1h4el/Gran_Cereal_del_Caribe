@@ -207,8 +207,7 @@ async function GET(req, { params }) {
                 status: 400
             });
         }
-        const users = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`SELECT * FROM invoices i WHERE user_seller_id = ?;;
-        `, [
+        const users = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$dbUtils$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryDB"])(`SELECT * FROM invoices i WHERE i.user_seller_id = ?;`, [
             collaboratorId
         ]);
         return Response.json(users);
