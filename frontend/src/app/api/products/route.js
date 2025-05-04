@@ -6,7 +6,9 @@ export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
     const sucursalId = searchParams.get("sucursalId");
-    const productCode = searchParams.get("productCode")?.trim(); // opcional
+    const productCode = searchParams.get("productCode")?.trim();
+
+    console.log("URL recibida:", req.url);
 
     if (!sucursalId) {
       return NextResponse.json(
@@ -19,7 +21,7 @@ export async function GET(req) {
 
     if (productCode) {
       result = await queryDB(
-        "SELECT productCode, name, inventory FROM products WHERE sucursal_id = ? AND productCode = ? AND status = 'active'",
+        "SELECT * FROM products WHERE sucursal_id = ? AND productCode = ? AND status = 'active'",
         [sucursalId, productCode]
       );
     } else {
@@ -74,6 +76,7 @@ export async function PUT(req) {
         description,
         inventory,
         basePricing,
+        baseSucursalPricing,
         BaseSellerPricing,
         updated_at,
         price,
@@ -107,17 +110,19 @@ export async function PUT(req) {
             description,
             inventory,
             basePricing,
+            baseSucursalPricing,
             BaseSellerPricing,
             updated_at,
             sucursal_id,
             price
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             productCode,
             name || null,
             description || null,
             inventory || 0,
             basePricing || null,
+            baseSucursalPricing || null,
             BaseSellerPricing || null,
             updated_at,
             sucursalId,
@@ -145,6 +150,7 @@ export async function PUT(req) {
             description = ?,
             inventory = ?,
             basePricing = ?,
+            baseSucursalPricing = ?,
             BaseSellerPricing = ?,
             updated_at = ?,
             price = ?
@@ -155,6 +161,7 @@ export async function PUT(req) {
           description || null,
           inventory || 0,
           basePricing || null,
+          baseSucursalPricing || null,
           BaseSellerPricing || null,
           updated_at,
           price || null,

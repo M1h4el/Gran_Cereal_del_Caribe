@@ -59,6 +59,7 @@ function ProductsTable({
         row.description &&
         row.inventory !== "" &&
         row.basePricing !== "" &&
+        row.baseSucursalPricing !== "" &&
         row.BaseSellerPricing !== "" &&
         row.price !== ""
     );
@@ -246,6 +247,7 @@ function ProductsTable({
       description: "",
       inventory: 0,
       basePricing: null,
+      baseSucursalPricing: null,
       BaseSellerPricing: null,
       updated_at: new Date().toISOString(),
       price: null,
@@ -268,6 +270,13 @@ function ProductsTable({
       {
         name: "Precio Base",
         field: "basePricing",
+        editable: true,
+        format: formatCurrency,
+        type: "number",
+      },
+      {
+        name: "Precio Base Sucursal",
+        field: "baseSucursalPricing",
         editable: true,
         format: formatCurrency,
         type: "number",

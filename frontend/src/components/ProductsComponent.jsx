@@ -7,6 +7,20 @@ import ProductsTable from "./Swal/ProductsTable";
 import Modal from "./Modal";
 import CopyCode from "../components/MUI/CopyToClipboardInput";
 
+function formatDateToCustom(datetime) {
+  const date = new Date(datetime);
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Meses desde 0
+  const day = String(date.getDate()).padStart(2, "0");
+
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
 function ProductsComponent({ sucursal, totalProducts, handleGetProducts }) {
   const [stock, setStock] = useState(0);
   const [ultimoUpdate, setUltimoUpdate] = useState("Actualizado hace 1 día");
@@ -16,12 +30,15 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts }) {
   const [handleRefresh, setHandleRefresh] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  console.log("producto encontrado", productoEncontrado);
+
   let handleSetArray = (item) => {
     setArrayProducts(item);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setProductoEncontrado(null);
   };
 
   let fetchProductos = async () => {
@@ -61,10 +78,11 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts }) {
     if (!codigoBuscar) return;
     try {
       const result = await fetchData(
-        `/products/searchByCode?code=${codigoBuscar}&sucursalId=${sucursal.id}`
+        `/products?productCode=${codigoBuscar}&sucursalId=${sucursal.id}`
       );
       setStock(result?.inventory);
-      setProductoEncontrado(result || null);
+      setProductoEncontrado(result[0] || null);
+      setIsModalOpen(true);
     } catch (error) {
       console.error("Error al buscar producto:", error);
     }
@@ -105,25 +123,6 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts }) {
             Inventario: <strong>{stock}</strong>
           </div>
 
-          {productoEncontrado && (
-            <table className="mini-tabla-producto">
-              <thead>
-                <tr>
-                  <th>Código</th>
-                  <th>Nombre</th>
-                  <th>Stock</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{productoEncontrado.code}</td>
-                  <td>{productoEncontrado.name}</td>
-                  <td>{productoEncontrado.stock}</td>
-                </tr>
-              </tbody>
-            </table>
-          )}
-
           <div className="boton-gestionar">
             <button onClick={() => handleGestionarProductos(arrayProducts)}>
               Gestionar productos
@@ -132,17 +131,50 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts }) {
         </div>
         <hr />
         <div className="moreOptions">
-          <CopyCode valueToCopy={sucursal.codeCollaborator}/>
+          <CopyCode valueToCopy={sucursal.codeCollaborator} />
         </div>
       </div>
       {isModalOpen && (
         <Modal open={isModalOpen} onClose={handleCloseModal}>
-          <ProductsTable
-            arrayProducts={arrayProducts}
-            setArrayProducts={handleSetArray}
-            handleRefresh={handleReFetch}
-            sucursalId={sucursal.id}
-          />
+          {productoEncontrado ? (
+            <>
+              <h2 style={{padding: "20px"}}>Producto Encontrado</h2>
+
+              <table className="mini-tabla-producto">
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Stock</th>
+                    <th>Precio Base</th>
+                    <th>Precio (S)</th>
+                    <th>Precio (V)</th>
+                    <th>Precio (C)</th>
+                    <th>Actualizado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{productoEncontrado.productCode}</td>
+                    <td>{productoEncontrado.name}</td>
+                    <td>{productoEncontrado.inventory}</td>
+                    <td>{productoEncontrado.basePricing}</td>
+                    <td>{productoEncontrado.baseSucursalPricing}</td>
+                    <td>{productoEncontrado.BaseSellerPricing}</td>
+                    <td>{productoEncontrado.price}</td>
+                    <td>{formatDateToCustom(productoEncontrado.updated_at)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </>
+          ) : (
+            <ProductsTable
+              arrayProducts={arrayProducts}
+              setArrayProducts={handleSetArray}
+              handleRefresh={handleReFetch}
+              sucursalId={sucursal.id}
+            />
+          )}
         </Modal>
       )}
     </>

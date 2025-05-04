@@ -3,19 +3,34 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { fetchData } from "../../utils/api";
-import { useReactTable, getCoreRowModel, getPaginationRowModel, getFilteredRowModel, getSortedRowModel, flexRender } from "@tanstack/react-table";
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  flexRender,
+} from "@tanstack/react-table";
 import "@/styles/SellersScreen.scss";
 import ProductsComponent from "./ProductsComponent";
+import ToolTipLocation from "./MUI/ToolTipLocation";
 
-const SellersScreen = ({ sucursal, collaborator, totalProducts, handleGetProducts }) => {
+const SellersScreen = ({
+  sucursal,
+  collaborator,
+  totalProducts,
+  handleGetProducts,
+}) => {
   const { data: session, status } = useSession();
   const [colaboradores, setColaboradores] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState([]);
+  const [locationParam, setLocationParam] = useState([]);
+
+  console.log("location", locationParam);
 
   useEffect(() => {
-
-    if (status === "loading") return; // Wait for session to load
+    if (status === "loading") return;
     if (status === "unauthenticated") {
       console.error("No estás autenticado.");
       return;
@@ -34,8 +49,30 @@ const SellersScreen = ({ sucursal, collaborator, totalProducts, handleGetProduct
 
         console.log(res);
 
-        if (res.users.length === 0) console.log("No se encontraron colaboradores.");
+        if (res.users.length === 0)
+          console.log("No se encontraron colaboradores.");
         if (res.error) console.error("Error:", res.error);
+
+        res.users = res.users.map((user) => {
+          return {
+            ...user,
+            bought_sold: user.bought_sold || 0,
+            location: "Ver más",
+          };
+        });
+
+        const locationData = res.users.map((user, index) => {
+          return {
+            index: index,
+            country: user.country,
+            region: user.region,
+            city: user.city,
+            postalCode: user.postalcode,
+            address: user.address
+          }
+        })
+
+        setLocationParam(locationData)
 
         setColaboradores(res.users);
       } catch (error) {
@@ -59,17 +96,21 @@ const SellersScreen = ({ sucursal, collaborator, totalProducts, handleGetProduct
     }
   }
 
-  const columns = useMemo(() => [
-    { header: "#", accessorKey: "index" },
-    { header: "Nombre", accessorKey: "userName" },
-    { header: "Tipo", accessorKey: "role" },
-    { header: "Compras/Ventas ($)", accessorKey: "bought_sold" },
-    { header: "Ubicación", accessorKey: "location" },
-    { header: "Teléfono", accessorKey: "phone" },
-  ], []);
+  const columns = useMemo(
+    () => [
+      { header: "ID", accessorKey: "codeCollaborator" },
+      { header: "Nombre", accessorKey: "userName" },
+      { header: "Tipo", accessorKey: "role" },
+      { header: "Compras/Ventas ($)", accessorKey: "bought_sold" },
+      { header: "Liquidación/Comisiones ($)", accessorKey: "amount" },
+      { header: "Ubicación", accessorKey: "location" },
+      { header: "Teléfono", accessorKey: "phone" },
+    ],
+    []
+  );
 
-  const data = useMemo(() =>
-    colaboradores.map((colab, index) => ({ ...colab, index: index + 1 })),
+  const data = useMemo(
+    () => colaboradores.map((colab, index) => ({ ...colab, index: index + 1 })),
     [colaboradores]
   );
 
@@ -113,7 +154,11 @@ const SellersScreen = ({ sucursal, collaborator, totalProducts, handleGetProduct
               </div>
             </div>
           </div>
-          <ProductsComponent sucursal={sucursal} totalProducts={totalProducts} handleGetProducts={handleGetProducts} />
+          <ProductsComponent
+            sucursal={sucursal}
+            totalProducts={totalProducts}
+            handleGetProducts={handleGetProducts}
+          />
         </div>
       </section>
 
@@ -131,42 +176,68 @@ const SellersScreen = ({ sucursal, collaborator, totalProducts, handleGetProduct
           <hr />
           <table className="collaborators-table">
             <thead>
-              {table.getHeaderGroups().map(headerGroup => (
+              {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
-                  {headerGroup.headers.map(header => (
-                    <th key={header.id} onClick={header.column.getToggleSortingHandler()} style={{ cursor: "pointer", position: "relative" }}>
-                      {flexRender(header.column.columnDef.header, header.getContext())}
+                  {headerGroup.headers.map((header) => (
+                    <th
+                      key={header.id}
+                      onClick={header.column.getToggleSortingHandler()}
+                      style={{ cursor: "pointer", position: "relative" }}
+                    >
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                       {header.column.getIsSorted() && (
-                    <span
-                      className={`sort-arrow ${header.column.getIsSorted()}`}
-                    />
-                  )}
+                        <span
+                          className={`sort-arrow ${header.column.getIsSorted()}`}
+                        />
+                      )}
                     </th>
                   ))}
                 </tr>
               ))}
             </thead>
             <tbody>
-              {table.getRowModel().rows.map(row => (
+              {table.getRowModel().rows.map((row, rowIndex) => (
                 <tr key={row.id} onClick={() => handleRowClick(row.original)}>
-                  {row.getVisibleCells().map(cell => (
-                    <td key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
+                  {row.getVisibleCells().map((cell) => {
+                    const accessorKey = cell.column.columnDef.accessorKey;
+                    const value = cell.getValue();
+
+                    return (
+                      <td key={cell.id}>
+                        {accessorKey === "location" ? (
+                          <ToolTipLocation value={value} locationParamObject={locationParam[rowIndex]}/>
+                        ) : (
+                          flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )
+                        )}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
           </table>
 
           <div className="pagination-controls">
-            <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
               Anterior
             </button>
             <span>
-              Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
+              Página {table.getState().pagination.pageIndex + 1} de{" "}
+              {table.getPageCount()}
             </span>
-            <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+            <button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
               Siguiente
             </button>
           </div>

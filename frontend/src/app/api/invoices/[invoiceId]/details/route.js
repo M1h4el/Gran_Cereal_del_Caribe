@@ -66,34 +66,27 @@ export async function PUT(req, { params }) {
     const updated = [];
 
     // INSERT individual evitando duplicados
-    if (newRows.length > 0) {
-      console.log("Insertando nuevas filas sin duplicar productCode por invoiceId...");
-
-      for (const row of newRows) {
-        const [idinvoice, productCode, quantity, unitPrice, total] = row;
-
-        const result = await queryDB(
-          `INSERT INTO invoice_details (idinvoice, productCode, quantity, unitPrice, total)
-           SELECT ?, ?, ?, ?, ?
-           FROM DUAL
-           WHERE NOT EXISTS (
-             SELECT 1 FROM invoice_details WHERE idinvoice = ? AND productCode = ?
-           )`,
-          [idinvoice, productCode, quantity, unitPrice, total, idinvoice, productCode]
-        );
-
-        if (result.affectedRows > 0) {
-          updated.push({
-            idinvoice_detail: result.insertId,
-            idproduct: productCode,
-            quantity,
-            unitPrice,
-            total,
-          });
-        } else {
-          console.log(`Producto duplicado no insertado: ${productCode} para invoice ${idinvoice}`);
-        }
-      }
+    for (const row of newRows) {
+      const [idinvoice, productCode, quantity, unitPrice, total] = row;
+    
+      const result = await queryDB(
+        `INSERT INTO invoice_details (idinvoice, productCode, quantity, unitPrice, total)
+         VALUES (?, ?, ?, ?, ?)
+         ON DUPLICATE KEY UPDATE
+           quantity = VALUES(quantity),
+           unitPrice = VALUES(unitPrice),
+           total = VALUES(total)`,
+        [idinvoice, productCode, quantity, unitPrice, total]
+      );
+    
+      updated.push({
+        idinvoice_detail: result.insertId, // insertId será 0 si se hizo un UPDATE
+        idproduct: productCode,
+        quantity,
+        unitPrice,
+        total,
+      });
+      console.log("Response de inserción:", result);
     }
 
     // UPDATE múltiples usando CASE WHEN
@@ -101,7 +94,7 @@ export async function PUT(req, { params }) {
       const ids = existingRows.map((r) => r.idinvoice_detail);
 
       const updateQuery = `
-        UPDATE invoice_details
+        UPDATE invoice_details i
         SET
           productCode = CASE idinvoice_detail
             ${existingRows.map((r) => `WHEN ${r.idinvoice_detail} THEN ${JSON.stringify(r.productCode)}`).join("\n")}
@@ -115,7 +108,7 @@ export async function PUT(req, { params }) {
           total = CASE idinvoice_detail
             ${existingRows.map((r) => `WHEN ${r.idinvoice_detail} THEN ${r.total}`).join("\n")}
           END
-        WHERE idinvoice_detail IN (${ids.join(", ")}) AND idinvoice = ?
+        WHERE idinvoice_detail IN (${ids.join(", ")}) AND i.idinvoice = ?
       `;
 
       const responseUpdate = await queryDB(updateQuery, [invoiceId]);

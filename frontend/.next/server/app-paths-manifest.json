@@ -2,10 +2,9 @@
   "/dashboard/page": "app/dashboard/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/api/sucursales/route": "app/api/sucursales/route.js",
-  "/api/products/route": "app/api/products/route.js",
   "/api/users/[userId]/sucursales/[sucursalId]/children/route": "app/api/users/[userId]/sucursales/[sucursalId]/children/route.js",
+  "/api/products/route": "app/api/products/route.js",
   "/api/users/[userId]/collaborators/[collaboratorId]/invoices/route": "app/api/users/[userId]/collaborators/[collaboratorId]/invoices/route.js",
-  "/api/invoices/route": "app/api/invoices/route.js",
-  "/api/users/[userId]/route": "app/api/users/[userId]/route.js",
-  "/api/invoices/[invoiceId]/details/route": "app/api/invoices/[invoiceId]/details/route.js"
+  "/api/invoices/[invoiceId]/details/route": "app/api/invoices/[invoiceId]/details/route.js",
+  "/api/users/[userId]/route": "app/api/users/[userId]/route.js"
 }
