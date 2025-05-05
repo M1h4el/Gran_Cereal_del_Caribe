@@ -60,8 +60,7 @@ export async function POST(req) {
   }
 }
 
-// 🔹 Actualizar sucursal
-export async function PUT(req) {
+/* export async function PUT(req) {
   console.log("Tipo de queryDB:", typeof queryDB); // Debe ser "function"
 
   try {
@@ -83,25 +82,24 @@ export async function PUT(req) {
   }
 }
 
-// 🔹 Eliminar sucursal
 export async function DELETE(req) {
-  console.log("Tipo de queryDB:", typeof queryDB); // Debe ser "function"
-
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
-    const userEmail = session.user.email;
-    const { id } = await req.json();
+    const userId = session.user.id;
+    const { sucursal_id } = await req.json();
 
-    await queryDB("DELETE FROM sucursales WHERE sucursal_id = ? AND user_id = ?",
-  [id, session.user.id]);
+    await queryDB(
+      "DELETE FROM sucursales WHERE sucursal_id = ? AND user_id = ?",
+      [sucursal_id, userId]
+    );
 
     return NextResponse.json({ message: "Sucursal eliminada correctamente" }, { status: 200 });
   } catch (error) {
     console.error("Error al eliminar sucursal:", error);
     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
   }
-}
+} */
