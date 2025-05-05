@@ -1,3 +1,4 @@
+import { queryDB } from "@/lib/dbUtils";
 
 export async function GET() {
 }
@@ -23,7 +24,7 @@ export async function POST(request) {
       createdAt: new Date().toISOString(),
     };
 
-    payments.push(newPayment);
+    // const result = queryDB("INSERT ");
 
     return NextResponse.json({ message: 'Pago registrado', data: newPayment }, { status: 201 });
   } catch (error) {

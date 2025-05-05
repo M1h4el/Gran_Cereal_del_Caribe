@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { queryDB } from "@/lib/dbUtils";
 
 // Función para generar un código único

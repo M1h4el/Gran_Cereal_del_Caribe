@@ -1,16 +1,19 @@
 import { NextResponse } from "next/server";
 import { queryDB } from "@/lib/dbUtils"; // Función para conectar a la BD
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-
+/* import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/authOptions"
+ */
 // 🔹 Obtener sucursales del usuario autenticado
 export async function GET(req) {
-  console.log("Tipo de queryDB:", typeof queryDB); // Debe ser "function"
 
-  const session = await getServerSession(authOptions);
-  if (!session) {
+  // console.log("Valor de authOptions:", authOptions); // 👈 esto debería mostrar un objeto
+
+  // console.log("Tipo de queryDB:", typeof queryDB); // Debe ser "function"
+  // console.log("getServerSession", typeof getServerSession)
+  // const session = await getServerSession(authOptions);
+  /* if (!session) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
-  }
+  } */
 
   const { searchParams } = new URL(req.url);
   const userOwnerId = searchParams.get("userOwnerId");
@@ -60,46 +63,46 @@ export async function POST(req) {
   }
 }
 
-/* export async function PUT(req) {
-  console.log("Tipo de queryDB:", typeof queryDB); // Debe ser "function"
+// export async function PUT(req) {
+//   console.log("Tipo de queryDB:", typeof queryDB); // Debe ser "function"
 
-  try {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user) {
-      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-    }
+//   try {
+//     const session = await getServerSession(authOptions);
+//     if (!session || !session.user) {
+//       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+//     }
 
-    const userEmail = session.user.email;
-    const { id, nombre, descripcion } = await req.json();
+//     const userEmail = session.user.email;
+//     const { id, nombre, descripcion } = await req.json();
 
-    await queryDB("UPDATE sucursales SET title = ?, description = ? WHERE sucursal_id = ? AND user_id = ?;",
-      [nombre, descripcion, id, session.user.id]);
+//     await queryDB("UPDATE sucursales SET title = ?, description = ? WHERE sucursal_id = ? AND user_id = ?;",
+//       [nombre, descripcion, id, session.user.id]);
 
-    return NextResponse.json({ message: "Sucursal actualizada correctamente" }, { status: 200 });
-  } catch (error) {
-    console.error("Error al actualizar sucursal:", error);
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
-  }
-}
+//     return NextResponse.json({ message: "Sucursal actualizada correctamente" }, { status: 200 });
+//   } catch (error) {
+//     console.error("Error al actualizar sucursal:", error);
+//     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+//   }
+// }
 
-export async function DELETE(req) {
-  try {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user) {
-      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-    }
+// export async function DELETE(req) {
+//   try {
+//     const session = await getServerSession(authOptions);
+//     if (!session || !session.user) {
+//       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+//     }
 
-    const userId = session.user.id;
-    const { sucursal_id } = await req.json();
+//     const userId = session.user.id;
+//     const { sucursal_id } = await req.json();
 
-    await queryDB(
-      "DELETE FROM sucursales WHERE sucursal_id = ? AND user_id = ?",
-      [sucursal_id, userId]
-    );
+//     await queryDB(
+//       "DELETE FROM sucursales WHERE sucursal_id = ? AND user_id = ?",
+//       [sucursal_id, userId]
+//     );
 
-    return NextResponse.json({ message: "Sucursal eliminada correctamente" }, { status: 200 });
-  } catch (error) {
-    console.error("Error al eliminar sucursal:", error);
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
-  }
-} */
+//     return NextResponse.json({ message: "Sucursal eliminada correctamente" }, { status: 200 });
+//   } catch (error) {
+//     console.error("Error al eliminar sucursal:", error);
+//     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+//   }
+// }
