@@ -77,7 +77,6 @@ function ConfirmPayment({ onCancel, onConfirm }) {
           </FormControl>
         </Grid>
 
-        {/* Monto en caso de parcial */}
         {paymentType === "parcial" && (
           <Grid item xs={12} sm={6}>
             <TextField
@@ -92,7 +91,6 @@ function ConfirmPayment({ onCancel, onConfirm }) {
           </Grid>
         )}
 
-        {/* Detalles */}
         <Grid item xs={12}>
           <TextField
             label="Detalles de la Transacción"
@@ -106,7 +104,6 @@ function ConfirmPayment({ onCancel, onConfirm }) {
           />
         </Grid>
 
-        {/* Botones */}
         <Grid item xs={12} display="flex" justifyContent="space-between">
           <Button variant="outlined" color="error" onClick={onCancel}>
             Cancelar

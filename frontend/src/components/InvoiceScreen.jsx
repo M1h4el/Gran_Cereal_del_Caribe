@@ -145,11 +145,6 @@ function InvoiceScreen({ data, products }) {
     label: `${p.productCode} - ${p.name}`,
   }));
 
-  /* let unitPriceProduct = (code) => {
-    const productFound = products.find(product => product.productCode === code);
-    return productFound?.price || 0;
-  } */
-
   return (
     <div className="table-container">
       <div className="generalInfo">

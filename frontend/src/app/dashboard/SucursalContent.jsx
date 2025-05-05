@@ -119,7 +119,6 @@ function SucursalContent() {
     setSelection((prev) => {
       const newSelection = { ...prev };
 
-      // Dependiendo del nivel, limpiamos valores
       if (index === 0) {
         newSelection.sucursal = null;
         newSelection.collaborator = null;

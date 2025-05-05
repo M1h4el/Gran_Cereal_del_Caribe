@@ -14,7 +14,7 @@ function formatDateToCustom(datetime) {
   const date = new Date(datetime);
 
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Meses desde 0
+  const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
 
   const hours = String(date.getHours()).padStart(2, "0");
@@ -88,8 +88,6 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
     }
     fetchResumen();
   }, [sucursal.id, handleRefresh]);
-
-  console.log("111111111111:", arrayProducts);
 
   const handleReFetch = () => {
     setHandleRefresh((prev) => prev + 1);

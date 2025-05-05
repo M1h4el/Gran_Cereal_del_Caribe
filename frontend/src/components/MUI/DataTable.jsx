@@ -19,7 +19,6 @@ const validateRows = (rows) => {
     for (let field of requiredFields) {
       const value = row[field];
 
-      // Validación específica para el campo 'product'
       if (field === "product") {
         const isValidProduct =
           value &&
@@ -40,7 +39,6 @@ const validateRows = (rows) => {
         continue;
       }
 
-      // Validación general para los demás campos
       const isEmpty =
         value === null ||
         value === undefined ||
@@ -163,7 +161,7 @@ export default function DataTable({
     setTableRows((prev) => [
       ...prev,
       {
-        id: `temp-${Date.now()}`, // ID temporal para distinguir las nuevas
+        id: `temp-${Date.now()}`,
         product: "",
         quantity: 0,
         unitPrice: 0,
@@ -174,11 +172,11 @@ export default function DataTable({
 
   const handleEdit = () => {
     if (!isEditing) {
-      setOriginalRows(JSON.parse(JSON.stringify(tableRows))); // Hacemos una copia profunda de las filas originales
+      setOriginalRows(JSON.parse(JSON.stringify(tableRows)));
       setIsEditing(true);
-      setSelectedRows([]); // Limpiamos la selección al entrar en modo edición
+      setSelectedRows([]);
     } else {
-      setTableRows(originalRows); // Restauramos si ya está en edición
+      setTableRows(originalRows);
       setIsEditing(false);
       setSelectedRows([]);
     }
@@ -232,12 +230,6 @@ export default function DataTable({
   const handleDelete = async () => {
     if (selectedRows.length === 0) return;
 
-    // Filas que tienen ID temporal (no se deben enviar al backend)
-    const tempRowsToDelete = selectedRows.filter((row) =>
-      String(row.id).startsWith("temp")
-    );
-
-    // Filas originales que existen en la base de datos
     const originalRowsToDelete = selectedRows.filter(
       (row) =>
         !String(row.id).startsWith("temp") &&
@@ -265,7 +257,6 @@ export default function DataTable({
         if (res.error) {
           console.error("Error al eliminar en el backend:", res.error);
         } else {
-          // Actualizamos las filas originales
           const updatedOriginalRows = originalRows.filter(
             (row) => !idsToDelete.includes(row.id)
           );
@@ -282,7 +273,7 @@ export default function DataTable({
         deleteSelectedRows
       );
     } else {
-      deleteSelectedRows(); // solo hay filas temporales, no necesita confirmación
+      deleteSelectedRows();
     }
   };
 
@@ -335,7 +326,7 @@ export default function DataTable({
               }
               options={options.filter((opt) => {
                 const selectedLabels = tableRows
-                  .filter((_, idx) => idx !== rowIndex) // ignorar la fila actual
+                  .filter((_, idx) => idx !== rowIndex)
                   .map((r) =>
                     typeof r.product === "object" ? r.product.label : r.product
                   );
@@ -358,7 +349,7 @@ export default function DataTable({
               }
               variant="outlined"
               size="small"
-              sx={{ input: { padding: "4px", width: "70px" } }} // Para imitar el padding anterior
+              sx={{ input: { padding: "4px", width: "70px" } }}
             />
           )
         ) : col.format ? (
@@ -456,12 +447,12 @@ export default function DataTable({
         customStyles={{
           rows: {
             style: {
-              minHeight: "10px", // override the row height
+              minHeight: "10px",
             },
           },
           headCells: {
             style: {
-              minHeight: "50px", // override the row height for head cells
+              minHeight: "50px",
               fontSize: "1rem",
               fontWeight: "bold",
               color: "#333",
@@ -491,15 +482,15 @@ export default function DataTable({
               "&:focus-visible": {
                 backgroundColor: "#ccc",
               },
-              paddingLeft: "8px", // override the cell padding for head cells
+              paddingLeft: "8px",
               paddingRight: "8px",
             },
           },
           cells: {
             style: {
-              paddingLeft: "8px", // override the cell padding for data cells
+              paddingLeft: "8px",
               paddingRight: "8px",
-              minHeight: "50px", // override the cell padding for data cells
+              minHeight: "50px",
             },
           },
         }}

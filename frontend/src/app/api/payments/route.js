@@ -24,8 +24,6 @@ export async function POST(request) {
       createdAt: new Date().toISOString(),
     };
 
-    // const result = queryDB("INSERT ");
-
     return NextResponse.json({ message: 'Pago registrado', data: newPayment }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ message: 'Error en el servidor', error }, { status: 500 });

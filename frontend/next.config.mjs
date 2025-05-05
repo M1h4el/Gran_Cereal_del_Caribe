@@ -7,7 +7,7 @@ const nextConfig = {
         has: [
           {
             type: "host",
-            value: "grancerealdelcaribe.com", // sin www
+            value: "grancerealdelcaribe.com",
           },
         ],
         destination: "https://www.grancerealdelcaribe.com/:path*",
@@ -23,7 +23,7 @@ const nextConfig = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: "https://www.grancerealdelcaribe.com", // ahora con www
+            value: "https://www.grancerealdelcaribe.com",
           },
           {
             key: "Access-Control-Allow-Methods",
