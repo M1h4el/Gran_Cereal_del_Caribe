@@ -1,9 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":""}},
-    {"offset": {"line": 46, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}},
-    {"offset": {"line": 52, "column": 0}, "map": {"version":3,"sources":["file://C%3A/Users/solan/Desktop/AssessmentProject/frontend/src/app/api/test-db/route.js"],"sourcesContent":["import pool from '@/lib/db';\r\n\r\nexport async function GET() {\r\n  try {\r\n    const [rows] = await pool.query('SELECT NOW() AS now');\r\n    return Response.json({ \r\n      message: 'Conexión exitosa', \r\n      serverTime: rows[0].now \r\n    });\r\n  } catch (error) {\r\n    return Response.json({ \r\n      error: 'Error al conectar con la base de datos', \r\n      details: error.message \r\n    }, { status: 500 });\r\n  }\r\n}"],"names":[],"mappings":";;;AAAA;;AAEO,eAAe;IACpB,IAAI;QACF,MAAM,CAAC,KAAK,GAAG,MAAM,kHAAA,CAAA,UAAI,CAAC,KAAK,CAAC;QAChC,OAAO,SAAS,IAAI,CAAC;YACnB,SAAS;YACT,YAAY,IAAI,CAAC,EAAE,CAAC,GAAG;QACzB;IACF,EAAE,OAAO,OAAO;QACd,OAAO,SAAS,IAAI,CAAC;YACnB,OAAO;YACP,SAAS,MAAM,OAAO;QACxB,GAAG;YAAE,QAAQ;QAAI;IACnB;AACF"}},
-    {"offset": {"line": 73, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}

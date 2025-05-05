@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack://[project]/src/styles/bodyDashboard.scss.css"],"sourcesContent":["section{width:100%}.bodyDashboard{display:flex;flex:1;width:100%;height:auto}.menuSide{background-color:#f1f1f1;min-width:5%;position:relative}.displaySide{background-color:#ddd;min-width:5%;padding:80px 50px;height:auto}.resizer{cursor:ew-resize;background-color:#aaa;width:5px}"],"names":[],"mappings":"AAAA;;;;AAAmB;;;;;;;AAA0D;;;;;;AAAkE;;;;;;;AAA8E"}},
-    {"offset": {"line": 30, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}

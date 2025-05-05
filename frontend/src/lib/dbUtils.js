@@ -1,6 +1,6 @@
 import { pool } from "./db";
 
-export async function queryDB(query, params = []) {
+export const queryDB = async (query, params = []) => {
   let connection;
   try {
     connection = await pool.getConnection();
