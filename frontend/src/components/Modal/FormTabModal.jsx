@@ -104,9 +104,9 @@ export default function FormTabModal({
     });
   };
 
-  const handleReset = () => {
+  /* const handleReset = () => {
     setActiveStep(0);
-  };
+  }; */
 
   return (
     <Box sx={{ width: "100%" }}>

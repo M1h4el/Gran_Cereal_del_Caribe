@@ -27,7 +27,7 @@ function formatDate(dateString) {
   return date.toISOString().substring(0, 10);
 }
 
-const InvoicesSellerScreen = ({ collaboratorId, invoice }) => {
+const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
   const [globalFilter, setGlobalFilter] = useState("");
   const [rows, setRows] = useState([]);
   const [originalRows, setOriginalRows] = useState([]);
@@ -51,6 +51,9 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice }) => {
   if (!session?.user || !collaboratorId?.id) return;
 
   useEffect(() => {
+    if (invoiceByCode) {
+      setGlobalFilter(invoiceByCode);
+    }
     async function fetchInvoices() {
       if (!session?.user || !collaboratorId?.id) return;
 

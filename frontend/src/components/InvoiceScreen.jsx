@@ -6,6 +6,7 @@ import "@/styles/InvoiceScreen.scss";
 import DataTable from "./MUI/DataTable";
 import Modal from "./Modal";
 import { Button } from "@mui/material";
+import { useSession } from "next-auth/react";
 
 const formatter = new Intl.DateTimeFormat("es-ES", {
   day: "2-digit",
@@ -16,6 +17,7 @@ const formatter = new Intl.DateTimeFormat("es-ES", {
 });
 
 function InvoiceScreen({ data, products }) {
+  const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [invoiceDetails, setInvoiceDetails] = useState([]);
   const [infoCustomer, setInfoCustomer] = useState({});
@@ -172,6 +174,7 @@ function InvoiceScreen({ data, products }) {
       </div>
 
       <DataTable
+        roleUser={session.user.role}
         rows={invoiceDetails}
         columns={columns}
         options={productOptions}

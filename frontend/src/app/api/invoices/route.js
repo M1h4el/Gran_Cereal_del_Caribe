@@ -19,6 +19,56 @@ async function generateUniqueInvoiceCode() {
   return code;
 }
 
+export async function GET(req) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const invoiceCode = searchParams.get("invoiceCode")?.trim();
+
+    if (!invoiceCode) {
+      return NextResponse.json({ error: "Falta el código de factura" }, { status: 400 });
+    }
+
+    const result = await queryDB(
+      "SELECT * FROM invoices WHERE invoiceCode = ?;",
+      [invoiceCode]
+    );
+
+    if (!result || result.length === 0) {
+      return NextResponse.json({ error: "Factura no encontrada" }, { status: 404 });
+    }
+
+    const invoice = result[0];
+
+    const users = await queryDB(
+      "SELECT user_id, userName, address, phone, role FROM users WHERE user_id = ? OR user_id = ?",
+      [invoice.user_seller_id, invoice.user_buyer_id]
+    );
+
+    const seller = users.find(u => u.user_id === invoice.user_seller_id) || {};
+    const buyer = users.find(u => u.user_id === invoice.user_buyer_id) || {};
+
+    const responseData = {
+      ...invoice,
+      sellerName: seller.userName || null,
+      sellerRole: seller.role || null,
+      userClientName: buyer.userName || null,
+      userClientAddress: buyer.address || null,
+      userClientPhone: buyer.phone || null,
+      buyerRole: buyer.role || null,
+    };
+
+    console.log("response factura por código", responseData)
+    return NextResponse.json(responseData, { status: 200 });
+
+  } catch (error) {
+    console.error("Error al obtener factura:", error);
+    return NextResponse.json(
+      { error: "Error interno del servidor" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(req) {
 
   const body = await req.json();

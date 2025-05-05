@@ -14,25 +14,26 @@ import FormTabModal from "@/components/Modal/FormTabModal";
 function SucursalContent() {
   const { data: session, status } = useSession();
   const [routes, setRoutes] = useState([]);
-  const [totalProducts, setTotalProducts] = useState(0)
-  const [products, setProducts] = useState([])
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [products, setProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [statusUser, setStatusUser] = useState(session?.user?.status);
+  const [invoiceByCode, setInvoiceByCode] = useState("");
   const [selection, setSelection] = useState({
     sucursal: null,
     collaborator: null,
     invoices: null,
   });
 
-  console.log("selection", selection)
+  console.log("selection", selection);
 
   console.log("Cambiando ruta a:", routes);
 
   const handleStatusUser = async () => {
     setStatusUser("confirmed");
-  }
+  };
 
   const confirmUser = () => {
     if (!statusUser && statusUser === "confirmed") return;
@@ -47,7 +48,6 @@ function SucursalContent() {
       confirmUser();
     }
   }, [status, session]);
-  
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -64,36 +64,48 @@ function SucursalContent() {
       ...prev,
       sucursal: route,
     }));
-    setTotalProducts(route.total_products)
+    setTotalProducts(route.total_products);
   };
 
   const handleGetProducts = (products) => {
     setProducts(products);
+  };
+
+  const handleSearchByCodeInvoice = (code) => {
+    setInvoiceByCode(code);
   }
 
   const handlecollaboratorSellected = (collaborator) => {
-    if (!collaborator || !collaborator.id) {
-      console.error("Error: Colaborador no válido", collaborator);
+    if (!collaborator) {
+      console.error("Error: props no válidas", collaborator, invoice);
       return;
     }
-
-    let newIndex = ""
-
-    collaborator.role == "Vendedor" ? newIndex = "Tabla de Ventas" : collaborator.role == "Cliente" ? newIndex = "Tabla de Compras" : console.log("Rol no reconocido");
-
-    setRoutes((prevRoutes) => [...prevRoutes, newIndex]);
-
-    setSelection((prev) => {
-      const updatedSelection = {
-        ...prev,
-        collaborator: collaborator,
-      };
-
-      return updatedSelection;
-    });
+  
+    let newIndex = "";
+  
+    if (collaborator.role === "Vendedor") {
+      newIndex = "Tabla de Ventas";
+    } else if (collaborator.role === "Cliente") {
+      newIndex = "Tabla de Compras";
+    } else {
+      console.error("Rol no reconocido");
+      return;
+    }
+  
+    const newRoutes = [newIndex];
+  
+    setRoutes((prevRoutes) => [...prevRoutes, ...newRoutes]);
+  
+    setSelection((prev) => ({
+      ...prev,
+      collaborator: collaborator,
+    }));
   };
 
   const handleInvoiceSelected = (invoice) => {
+    if (!invoice) {
+      console.error("Error: Invoice no válido", invoice);
+    }
     setRoutes((prevRoutes) => [...prevRoutes, "Detalles de Venta"]);
     setSelection((prev) => ({
       ...prev,
@@ -112,9 +124,11 @@ function SucursalContent() {
         newSelection.sucursal = null;
         newSelection.collaborator = null;
         newSelection.invoices = null;
+        setInvoiceByCode("");
       } else if (index === 1) {
         newSelection.collaborator = null;
         newSelection.invoices = null;
+        setInvoiceByCode("");
       } else if (index === 2) {
         newSelection.invoices = null;
       }
@@ -134,14 +148,24 @@ function SucursalContent() {
             collaborator={handlecollaboratorSellected}
             totalProducts={totalProducts}
             handleGetProducts={handleGetProducts}
+            invoicehandle={handleInvoiceSelected}
+            searchByCodeInvoice={handleSearchByCodeInvoice}
+
           />
         );
       case 2:
         if (!selection.collaborator) console.log("Colaborador no seleccionado");
         return selection.collaborator.role === "Vendedor" ? (
-          <InvoicesSellerScreen collaboratorId={selection.collaborator} invoice={handleInvoiceSelected} />
+          <InvoicesSellerScreen
+            invoiceByCode={invoiceByCode}
+            collaboratorId={selection.collaborator}
+            invoice={handleInvoiceSelected}
+          />
         ) : selection.collaborator.role === "Cliente" ? (
-          <InvoicesCustomerScreen collaboratorId={selection.collaborator} invoice={handleInvoiceSelected} />
+          <InvoicesCustomerScreen
+            collaboratorId={selection.collaborator}
+            invoice={handleInvoiceSelected}
+          />
         ) : (
           console.log("Rol no reconocido")
         );
@@ -175,11 +199,16 @@ function SucursalContent() {
         </div>
       </section>
       <section>{renderComponent()}</section>
-      {isModalOpen && 
+      {isModalOpen && (
         <Modal open={isModalOpen} onClose={handleCloseModal} required>
-          <FormTabModal onClose={handleCloseModal} user={session.user} statusUser={statusUser} handleStatus={handleStatusUser}/>
+          <FormTabModal
+            onClose={handleCloseModal}
+            user={session.user}
+            statusUser={statusUser}
+            handleStatus={handleStatusUser}
+          />
         </Modal>
-      }
+      )}
     </>
   );
 }

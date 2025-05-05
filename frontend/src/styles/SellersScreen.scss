@@ -70,15 +70,22 @@
           border: none;
           margin: 0 20px;
         }
+        h2 {
+          margin-bottom: 20px;
+          width: 100%;
+        }
         .codingBox {
           @include v.flexing(column, flex-start, flex-start);
-          width: 50%;
+          width: 325px;
           height: 100%;
-          min-width: 600px;
-          h2 {
-            margin-bottom: 20px;
-            width: 100%;
-            text-align: center;
+        }
+        .invoicesContainer {
+          @include v.flexing(column, flex-start, flex-start);
+          width: 325px;
+          .resumenInvoices {
+            @include v.flexing(column, flex-start, flex-start);
+            gap: 4px;
+            margin-bottom: 10px;
           }
         }
         .moreOptions {

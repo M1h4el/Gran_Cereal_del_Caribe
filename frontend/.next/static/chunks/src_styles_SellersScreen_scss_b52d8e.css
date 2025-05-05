@@ -161,20 +161,35 @@ input {
   margin: 0 20px;
 }
 
+.sellers-screen .section1 .MenuProjectSection .codingContainer h2 {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
 .sellers-screen .section1 .MenuProjectSection .codingContainer .codingBox {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 50%;
+  width: 325px;
   height: 100%;
-  min-width: 600px;
 }
 
-.sellers-screen .section1 .MenuProjectSection .codingContainer .codingBox h2 {
-  margin-bottom: 20px;
-  width: 100%;
-  text-align: center;
+.sellers-screen .section1 .MenuProjectSection .codingContainer .invoicesContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 325px;
+}
+
+.sellers-screen .section1 .MenuProjectSection .codingContainer .invoicesContainer .resumenInvoices {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 4px;
+  margin-bottom: 10px;
 }
 
 .sellers-screen .section1 .MenuProjectSection .codingContainer .moreOptions {

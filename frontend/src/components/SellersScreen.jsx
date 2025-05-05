@@ -20,14 +20,13 @@ const SellersScreen = ({
   collaborator,
   totalProducts,
   handleGetProducts,
+  searchByCodeInvoice,
 }) => {
   const { data: session, status } = useSession();
   const [colaboradores, setColaboradores] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState([]);
   const [locationParam, setLocationParam] = useState([]);
-
-  console.log("location", locationParam);
 
   useEffect(() => {
     if (status === "loading") return;
@@ -84,13 +83,14 @@ const SellersScreen = ({
   }, [session]);
 
   function handleRowClick(row) {
+    console.log("row", row)
     if (collaborator) {
       const cardObject = {
-        id: row?.user_id,
-        name: row?.userName,
-        role: row?.role,
+        id: row?.user_id || row?.user_seller_id,
+        name: row?.userName || row?.sellerName,
+        role: row?.role || row?.sellerRole,
       };
-      collaborator(cardObject);
+      collaborator(cardObject, row);
     } else {
       console.error("handleRoute no está definido");
     }
@@ -158,6 +158,8 @@ const SellersScreen = ({
             sucursal={sucursal}
             totalProducts={totalProducts}
             handleGetProducts={handleGetProducts}
+            infoCollaborator={collaborator}
+            searchByCodeInvoice={searchByCodeInvoice}
           />
         </div>
       </section>

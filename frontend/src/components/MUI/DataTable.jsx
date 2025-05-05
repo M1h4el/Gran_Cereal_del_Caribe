@@ -7,6 +7,8 @@ import Stack from "@mui/material/Stack";
 import DataTableBase from "react-data-table-component";
 import { Autocomplete, Box, LinearProgress, TextField } from "@mui/material";
 import { fetchData } from "../../../utils/api";
+import Modal from "../Modal";
+import ConfirmPayment from "./ConfirmPayment";
 
 const validateRows = (rows) => {
   const requiredFields = ["product", "quantity", "unitPrice", "total"];
@@ -58,7 +60,19 @@ const validateRows = (rows) => {
   return true;
 };
 
+const newPayment = async (data) => {
+  try {
+    const response = fetchData('payments', "POST", data)
+
+    console.log("Pago registrado satisfactoriamente", response)
+
+  } catch (error) {
+    console.error("Error registrando el pago", error)
+  }
+}
+
 export default function DataTable({
+  roleUser,
   rows,
   columns,
   options,
@@ -71,6 +85,9 @@ export default function DataTable({
   const [originalRows, setOriginalRows] = useState(rows);
   const [selectedRows, setSelectedRows] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  console.log("roleUser desde DATATABLE", roleUser);
 
   const style = {
     h2: {
@@ -127,6 +144,14 @@ export default function DataTable({
 
       return false;
     });
+  };
+
+  const handlePayment = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   useEffect(() => {
@@ -261,29 +286,32 @@ export default function DataTable({
     }
   };
 
-  const handleRowChange = useCallback((rowIndex, field, value) => {
-    setTableRows((prevRows) => {
-      const updatedRows = [...prevRows];
-      const updatedRow = { ...updatedRows[rowIndex] };
+  const handleRowChange = useCallback(
+    (rowIndex, field, value) => {
+      setTableRows((prevRows) => {
+        const updatedRows = [...prevRows];
+        const updatedRow = { ...updatedRows[rowIndex] };
 
-      updatedRow[field] = value;
+        updatedRow[field] = value;
 
-      if (field === "product") {
-        const selectedProduct = options.find(
-          (opt) => opt.label === value?.label || opt.label === value
-        );
-        updatedRow.unitPrice = selectedProduct?.price || 0;
-      }
+        if (field === "product") {
+          const selectedProduct = options.find(
+            (opt) => opt.label === value?.label || opt.label === value
+          );
+          updatedRow.unitPrice = selectedProduct?.price || 0;
+        }
 
-      const qty = Number(updatedRow.quantity) || 0;
-      const price = Number(updatedRow.unitPrice) || 0;
-      updatedRow.total = qty * price;
+        const qty = Number(updatedRow.quantity) || 0;
+        const price = Number(updatedRow.unitPrice) || 0;
+        updatedRow.total = qty * price;
 
-      updatedRows[rowIndex] = updatedRow;
+        updatedRows[rowIndex] = updatedRow;
 
-      return updatedRows;
-    });
-  }, [options, tableRows]);
+        return updatedRows;
+      });
+    },
+    [options, tableRows]
+  );
 
   const customColumns = useMemo(() => {
     return columns.map((col) => ({
@@ -367,12 +395,12 @@ export default function DataTable({
   console.log("SubTotal", totalSum);
 
   return (
-    <Paper sx={{ padding: 2 }}>
+    <Paper sx={{ padding: 2, width: "100%" }}>
       <Stack
         direction="row"
         spacing={2}
         sx={{
-          width: "1400px",
+          width: "100%",
           height: "auto",
           marginBottom: 2,
           justifyContent: "space-between",
@@ -506,7 +534,39 @@ export default function DataTable({
       <h3 style={style.h3}>Sub Total: {totalSum}</h3>
       <h3 style={style.h3}>Descuento: %{0}</h3>
       <hr />
-      <h2 style={style.h2}>Total Neto: {totalSum}</h2>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent:
+            roleUser === "Admin" || "Sucursal" ? "space-between" : "flex-start",
+        }}
+      >
+        <h2 style={style.h2}>Total Neto: {totalSum}</h2>
+        {(roleUser === "Admin" || roleUser === "Sucursal") && (
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handlePayment}
+            disabled={isEditing}
+            sx={{ width: "200px", height: "50px" }}
+          >
+            Registrar Pago
+          </Button>
+        )}
+      </div>
+      {isModalOpen && (
+        <Modal open={isModalOpen} onClose={handleCloseModal} required>
+          <ConfirmPayment
+            onCancel={() => setIsModalOpen(false)}
+            onConfirm={(data) => {
+              console.log("Datos confirmados", data);
+              // Aquí puedes continuar con tu lógica (petición, cierre modal, etc)
+            }}
+          />
+        </Modal>
+      )}
     </Paper>
   );
 }

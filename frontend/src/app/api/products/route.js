@@ -8,8 +8,6 @@ export async function GET(req) {
     const sucursalId = searchParams.get("sucursalId");
     const productCode = searchParams.get("productCode")?.trim();
 
-    console.log("URL recibida:", req.url);
-
     if (!sucursalId) {
       return NextResponse.json(
         { error: "Sucursal no especificada" },
@@ -36,6 +34,7 @@ export async function GET(req) {
     }
 
     return NextResponse.json(result, { status: 200 });
+    
   } catch (error) {
     console.error("Error al obtener productos:", error);
     return NextResponse.json(
