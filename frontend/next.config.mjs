@@ -26,7 +26,7 @@ const nextConfig = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: "https://www.grancerealdelcaribe.com", // Cambia el valor si es necesario
+            value: "https://grancerealdelcaribe.com", // Cambia el valor si es necesario
           },
           {
             key: "Access-Control-Allow-Methods",
