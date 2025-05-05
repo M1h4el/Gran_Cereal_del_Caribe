@@ -5,6 +5,8 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 // 🔹 Obtener sucursales del usuario autenticado
 export async function GET(req) {
+  console.log("Tipo de queryDB:", typeof queryDB); // Debe ser "function"
+
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
@@ -30,6 +32,8 @@ export async function GET(req) {
 
 // 🔹 Crear nueva sucursal
 export async function POST(req) {
+  console.log("Tipo de queryDB:", typeof queryDB); // Debe ser "function"
+
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
@@ -58,6 +62,8 @@ export async function POST(req) {
 
 // 🔹 Actualizar sucursal
 export async function PUT(req) {
+  console.log("Tipo de queryDB:", typeof queryDB); // Debe ser "function"
+
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
@@ -65,9 +71,10 @@ export async function PUT(req) {
     }
 
     const userEmail = session.user.email;
-    const { id, nombre, descripcion, imagen } = await req.json();
+    const { id, nombre, descripcion } = await req.json();
 
-    await queryDB("UPDATE sucursales SET nombre = ?, descripcion = ?, imagen = ? WHERE id = ? AND email = ?", [nombre, descripcion, imagen, id, userEmail]);
+    await queryDB("UPDATE sucursales SET title = ?, description = ? WHERE sucursal_id = ? AND user_id = ?;",
+      [nombre, descripcion, id, session.user.id]);
 
     return NextResponse.json({ message: "Sucursal actualizada correctamente" }, { status: 200 });
   } catch (error) {
@@ -78,6 +85,8 @@ export async function PUT(req) {
 
 // 🔹 Eliminar sucursal
 export async function DELETE(req) {
+  console.log("Tipo de queryDB:", typeof queryDB); // Debe ser "function"
+
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
@@ -87,7 +96,8 @@ export async function DELETE(req) {
     const userEmail = session.user.email;
     const { id } = await req.json();
 
-    await queryDB("DELETE FROM sucursales WHERE id = ? AND email = ?", [id, userEmail]);
+    await queryDB("DELETE FROM sucursales WHERE sucursal_id = ? AND user_id = ?",
+  [id, session.user.id]);
 
     return NextResponse.json({ message: "Sucursal eliminada correctamente" }, { status: 200 });
   } catch (error) {
