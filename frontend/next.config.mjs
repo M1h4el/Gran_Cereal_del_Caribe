@@ -7,14 +7,11 @@ const nextConfig = {
         has: [
           {
             type: "host",
-            value: "www.gran-cereal-del-caribe.vercel.app",
+            value: "grancerealdelcaribe.com", // sin www
           },
         ],
-        destination: "https://gran-cereal-del-caribe.vercel.app/:path*",
+        destination: "https://www.grancerealdelcaribe.com/:path*",
         permanent: true,
-        // Asegúrate de que la redirección no afecte las rutas de API
-        // Excluye las rutas de API
-        basePath: false, // Permite que la redirección no aplique a rutas específicas
       },
     ];
   },
@@ -22,11 +19,11 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/api/:path*", // Rutas de la API
+        source: "/api/:path*",
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: "https://grancerealdelcaribe.com", // Cambia el valor si es necesario
+            value: "https://www.grancerealdelcaribe.com", // ahora con www
           },
           {
             key: "Access-Control-Allow-Methods",
