@@ -1,19 +1,14 @@
 import { NextResponse } from "next/server";
 import { queryDB } from "@/lib/dbUtils"; // Función para conectar a la BD
-/* import { getServerSession } from "next-auth/next";
+import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/authOptions"
- */
-// 🔹 Obtener sucursales del usuario autenticado
+
 export async function GET(req) {
 
-  // console.log("Valor de authOptions:", authOptions); // 👈 esto debería mostrar un objeto
-
-  // console.log("Tipo de queryDB:", typeof queryDB); // Debe ser "function"
-  // console.log("getServerSession", typeof getServerSession)
-  // const session = await getServerSession(authOptions);
-  /* if (!session) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
-  } */
+  }
 
   const { searchParams } = new URL(req.url);
   const userOwnerId = searchParams.get("userOwnerId");
