@@ -1,7 +1,8 @@
-const API_URL = process.env.API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const fetchData = async (endpoint, method, body = null) => {
 
+  console.log("12314123123123", API_URL);
   const headers = {
     'Content-Type': 'application/json',
   };
