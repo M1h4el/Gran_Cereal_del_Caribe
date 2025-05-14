@@ -1,11 +1,22 @@
 import { queryDB } from "@/lib/dbUtils";
+import { NextResponse } from "next/server";
 
 export async function GET() {
+  const { searchParams } = new URL(req.url);
+  const searchByCode = searchParams.get("searchByCode");
+
+  if (!searchByCode) {
+    return NextResponse.json(
+      { error: "Se requiere searchByCode" },
+      { status: 400 }
+    );
+  }
+
   try {
     const [users] = await queryDB("SELECT * FROM users");
-    return Response.json(users);
+    return NextResponse.json(users);
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
@@ -17,9 +28,9 @@ export async function POST(req) {
       [name, email, password, role]
     );
 
-    return Response.json({ id: result.insertId, name, email, role });
+    return NextResponse.json({ id: result.insertId, name, email, role });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
@@ -27,7 +38,7 @@ export async function PUT(req) {
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get("userId");
   if (!userId || isNaN(Number(userId))) {
-    return new Response("Invalid or missing userId", { status: 400 });
+    return NextResponse.json({error: "Invalid or missing userId"}, { status: 400 });
   }
   try {
     const {phone, dob, country, region, city, postalCode, address } =
@@ -35,10 +46,10 @@ export async function PUT(req) {
 
     
     if (!phone || !country || !region || !city || !postalCode || !address) {
-      return new Response("Missing required fields", { status: 400 });
+      return NextResponse.json({error: "Missing required fields"}, { status: 400 });
     }
 
-    const formattedDob = dob ?? new Date(dob).toISOString().slice(0, 19).replace('T', ' ') ;
+    const formattedDob = dob ?? Date.json(dob).toISOString().slice(0, 19).replace('T', ' ') ;
 
     console.log("variables", {
       phone,
@@ -58,11 +69,11 @@ export async function PUT(req) {
     console.log("res", res);
 
     if (res.affectedRows === 0) {
-      return new Response("User not found", { status: 404 });
+      return NextResponse.json("User not found", { status: 404 });
     }
 
-    return Response.json({ message: "Usuario actualizado" }, { status: 200 });
+    return NextResponse.json({ message: "Usuario actualizado" }, { status: 200 });
   } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

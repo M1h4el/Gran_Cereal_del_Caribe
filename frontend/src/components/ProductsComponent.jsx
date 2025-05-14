@@ -35,7 +35,6 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
   const [invoiceBuscar, setInvoiceBuscar] = useState("");
   const [invoiceEncontrado, setInvoiceEncontrado] = useState(null);
   const [modalSelected, setModalSelected] = useState("");
-  const [collaborator, setCollaborator] = useState({})
 
   let handleSetArray = (item) => {
     setArrayProducts(item);
@@ -252,7 +251,7 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
 
           <div className="boton-gestionar">
             <button onClick={() => handleGestionarProductos(arrayProducts)}>
-              Gestionar productos
+              Gestionar Productos
             </button>
           </div>
         </div>
@@ -283,7 +282,7 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
 
           <div className="boton-gestionar">
             <button onClick={() => handleGestionarInvoices}>
-              Gestionar facturas
+              Gestionar Facturas
             </button>
           </div>
         </div>

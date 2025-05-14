@@ -4,7 +4,6 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/authOptions"
 
 export async function GET(req) {
-
   const session = await getServerSession(authOptions);
   if (!session) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
@@ -12,19 +11,75 @@ export async function GET(req) {
 
   const { searchParams } = new URL(req.url);
   const userOwnerId = searchParams.get("userOwnerId");
+  const searchByCode = searchParams.get("searchByCode");
 
-  if (!userOwnerId) {
-    return NextResponse.json({ error: "Usuario no especificado" }, { status: 400 });
+  // Validación de parámetros
+  if (!userOwnerId && !searchByCode) {
+    return NextResponse.json(
+      { error: "Se requiere userOwnerId o searchByCode" },
+      { status: 400 }
+    );
   }
 
   try {
+    let query;
+    let params = [];
+    let errorMessage = "";
 
-    const sucursales = await queryDB("SELECT s.sucursal_id, s.user_admin_id, s.title, s.description, s.created_at, s.total_products, us.user_id, us.userName, us.email, us.phone, us.address, us.role, us.codeCollaborator, us.bought_sold FROM sucursales s, users us WHERE s.user_admin_id = ? AND us.user_id = s.user_id ORDER BY s.created_at DESC;", [userOwnerId]);
+    if (userOwnerId) {
+      // Consulta por userOwnerId (administrador)
+      query = `
+        SELECT 
+          s.sucursal_id, s.user_admin_id, s.title, s.description, 
+          s.created_at, s.total_products, us.user_id, us.userName, 
+          us.email, us.phone, us.address, us.role, us.codeCollaborator, 
+          us.bought_sold 
+        FROM 
+          sucursales s, users us 
+        WHERE 
+          s.user_admin_id = ? AND us.user_id = s.user_id 
+        ORDER BY 
+          s.created_at DESC
+      `;
+      params = [userOwnerId];
+      errorMessage = "No se encontraron sucursales para este administrador";
+    } else if (searchByCode) {
+      // Consulta por código de colaborador/sucursal
+      query = `
+        SELECT 
+          s.sucursal_id, s.user_admin_id, s.title, s.description, 
+          s.created_at, s.total_products, us.user_id, us.userName, 
+          us.email, us.phone, us.address, us.role, us.codeCollaborator, 
+          us.bought_sold 
+        FROM 
+          sucursales s
+        JOIN 
+          users us ON us.user_id = s.user_id
+        WHERE 
+          us.codeCollaborator = ?
+        ORDER BY 
+          s.created_at DESC
+      `;
+      params = [searchByCode];
+      errorMessage = "No se encontraron sucursales con este código";
+    }
 
-    return NextResponse.json(sucursales, { status: 200 });
+    const results = await queryDB(query, params);
+
+    if (!results || results.length === 0) {
+      return NextResponse.json(
+        { error: errorMessage },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(results, { status: 200 });
   } catch (error) {
     console.error("Error al obtener sucursales:", error);
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error interno del servidor" },
+      { status: 500 }
+    );
   }
 }
 

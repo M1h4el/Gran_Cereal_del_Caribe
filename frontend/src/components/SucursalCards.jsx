@@ -5,8 +5,6 @@ import React, { useState, useEffect } from "react";
 import { fetchData } from "../../utils/api";
 import ProjectCard from "@/components/ProjectCard";
 import { useSession } from "next-auth/react";
-import { showSwal } from "@/components/Swal/Swal";
-import CreateSucursal from "@/components/Swal/CreateSucursal";
 import CreateSucursalModal from "./Modal/CreateSucursalModal";
 import Modal from "./Modal";
 
@@ -25,7 +23,7 @@ function SucursalCards({ handleRoute }) {
 
   useEffect(() => {
     async function fetchSucursales() {
-      if (!session?.user) return;
+      if (session?.user.role !== 'Admin') return;
 
       try {
         const res = await fetchData(
@@ -84,7 +82,6 @@ function SucursalCards({ handleRoute }) {
             gap: "16px",
             justifyContent: "flex-start",
             alignItems: "flex-start",
-            padding: "16px",
           }}
         >
           {/* Primera tarjeta con formato especial */}

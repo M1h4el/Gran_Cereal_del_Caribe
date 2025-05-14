@@ -24,8 +24,16 @@ function InvoiceScreen({ data, products }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [onConfirmAction, setOnConfirmAction] = useState(() => () => {});
+  const [payments, setPayments] = useState([]);
+  const [refreshPayments, setRefreshPayments] = useState(0)
 
-  console.log("data de InvoiceScreen",data);
+  console.log("payments", payments)
+
+  const handleRefreshPayments = (refreshPayments) => {
+    setRefreshPayments((prev) => prev + 1)
+  }
+
+  console.log("data de InvoiceScreen", data);
 
   let handleTotalData = (newTot) => {
     data.total_net = newTot;
@@ -59,7 +67,7 @@ function InvoiceScreen({ data, products }) {
 
         const res = await fetchData(`invoices/${invoiceId}/details`, "GET");
 
-        const formatted = res.map((item, index) => ({
+        const formatted = res.details.map((item, index) => ({
           id: item?.idinvoice_detail ?? `temp-${Date.now()}-${index}`,
           idinvoice_detail: item?.idinvoice_detail,
           product: `${item?.productCode} - ${item?.name}`,
@@ -70,8 +78,14 @@ function InvoiceScreen({ data, products }) {
           updated_at: formatter.format(new Date(item.updated_at)),
         }));
 
-        console.log("Productos desde InvoiceScreen:", products);
+        const formattedPaid = res.paid.map((payment) => ({
+          ...payment,
+          created_at: formatter.format(new Date(payment.created_at)),
+          type: payment.type ? String(payment.type).toUpperCase() : '', // Corrección aquí
+          status: payment.status === 0 ? 'En proceso' : 'Confirmado' // Corrección aquí
+        }));
 
+        setPayments(formattedPaid);
         setInvoiceDetails(formatted);
       } catch (error) {
         console.error("Error al obtener detalles de factura:", error);
@@ -102,7 +116,7 @@ function InvoiceScreen({ data, products }) {
     fetchinfoCustomer();
     fetchInvoiceDetails();
     setIsLoading(false);
-  }, [data]);
+  }, [data, refreshPayments]);
 
   const columns = [
     {
@@ -173,6 +187,8 @@ function InvoiceScreen({ data, products }) {
         rows={invoiceDetails}
         columns={columns}
         options={productOptions}
+        payments={payments}
+        handleRefreshPayments={handleRefreshPayments}
         dataInvoice={data}
         openModal={handleOpenModal}
         closeModal={handleCloseModal}

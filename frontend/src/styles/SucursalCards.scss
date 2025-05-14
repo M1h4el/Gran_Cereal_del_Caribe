@@ -14,12 +14,12 @@ hr {
     width: 100%;
 }
 
-section {
+.section1 {
     height: auto;
     @include logbar.flexing(null, flex-start, center);
     .TitleSection {
         @include logbar.flexing(column, center, flex-start);
-        width: 97%;
+        width: 100%;
         .routeIndexContainer {
             @include logbar.flexing(row, center, center);
             gap: 20px;
@@ -42,8 +42,16 @@ section {
     .MenuProjectSection {
         height: 100%;
         width: 100%;
-        /* .ProjectCard {
-            
-        } */
+        
     }
+}
+
+.section2 {
+    width: 100%;
+    max-width: 1480px;
+    height: 320px;
+    margin: 20px 0;
+    background-color: gray;
+    border-radius: 20px;
+    padding: 40px;
 }

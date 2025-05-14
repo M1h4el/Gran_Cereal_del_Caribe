@@ -43,8 +43,9 @@ export const authOptions = {
       try {
         if (user) {
           token.id = user.id;
-          token.role = user.role;
+          token.userName = user.userName;
           token.codeCollaborator = user.codeCollaborator;
+          token.role = user.role;
           token.status = user.status;
         }
         return token;
@@ -57,6 +58,7 @@ export const authOptions = {
       try {
         if (token && session.user) {
           session.user.id = token.id;
+          session.user.userName = token.userName;
           session.user.email = token.email;
           session.user.role = token.role;
           session.user.codeCollaborator = token.codeCollaborator;

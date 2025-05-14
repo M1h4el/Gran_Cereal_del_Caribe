@@ -1,20 +1,16 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
-import {
-  TextField,
-  Button,
-  Paper,
-  Stack,
-  Box,
-  LinearProgress,
-} from "@mui/material";
+import { TextField, Button, Paper, Stack } from "@mui/material";
 
 import "@/styles/ProductsTable.scss";
 import { fetchData } from "../../../utils/api";
+import Modal from "../Modal";
+import { useSession } from "next-auth/react";
+import SupplyInventory from "../Modal/SupplyInventory";
 
 const formatCurrency = (value) => {
   if (!value && value !== 0) return "";
-  return `$ ${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  return `$${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
 };
 
 function formatToMySQLTimestamp(date) {
@@ -40,17 +36,29 @@ function ProductsTable({
   sucursalId,
   setArrayProducts,
 }) {
+  const { data: session, status } = useSession();
   const [globalFilter, setGlobalFilter] = useState("");
-  const [isEditing, setIsEditing] = useState(false); // Nuevo estado para manejar la edición
+  const [isEditing, setIsEditing] = useState(false);
   const [originalRows, setOriginalRows] = useState([]);
-  const [selectedRows, setSelectedRows] = useState([]); // Para seleccionar filas
+  const [selectedRows, setSelectedRows] = useState([]);
   const [newProducts, setNewProducts] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log("arrayProducts", arrayProducts);
-  console.log("originalRows", originalRows);
-  console.log("selectedRows", selectedRows);
-  console.log("isEditing", isEditing);
-  console.log("newProducts", newProducts);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const filteredData = useMemo(() => {
+  const text = globalFilter.toLowerCase();
+  return arrayProducts.filter((item) =>
+    Object.values(item).some(
+      (value) =>
+        typeof value === "string" && value.toLowerCase().includes(text)
+    )
+  );
+}, [arrayProducts, globalFilter]);
+
+  if (!session?.user || status == "unauthenticated") return;
 
   const validateRows = (rows) => {
     return rows.every(
@@ -120,7 +128,7 @@ function ProductsTable({
           : row
       )
     );
-  
+
     // Si es un producto nuevo, también actualizar en newProducts
     if (String(rowId).startsWith("temp-")) {
       setNewProducts((prev) =>
@@ -130,7 +138,7 @@ function ProductsTable({
       );
     }
   };
-  
+
   const handleEdit = () => {
     if (!isEditing) {
       setOriginalRows(JSON.parse(JSON.stringify(arrayProducts))); // Guardamos una copia profunda
@@ -205,7 +213,9 @@ function ProductsTable({
 
       return true; // en caso de que no cumpla ninguna condición
     });
-    setNewProducts((prev) => prev.filter((prod) => !tempRows.some((temp) => temp.id === prod.id)));
+    setNewProducts((prev) =>
+      prev.filter((prod) => !tempRows.some((temp) => temp.id === prod.id))
+    );
     setArrayProducts(newRows);
     setSelectedRows([]);
 
@@ -256,16 +266,22 @@ function ProductsTable({
     setNewProducts((prev) => [...prev, newProducts]);
   };
 
+  const supplyInventory = () => {
+    setIsModalOpen(true);
+  };
+
   const columns = useMemo(
     () => [
-      { name: "Código", field: "productCode", editable: false },
-      { name: "Nombre", field: "name", editable: true },
+      { name: "Código", field: "productCode", editable: false, minWidth: "150px" },
+      { name: "Nombre", field: "name", editable: true, minWidth: "280px" },
       { name: "Descripción", field: "description", editable: true },
       {
         name: "Inventario",
         field: "inventory",
         editable: true,
         type: "number",
+        minWidth: "150px",
+        right: true
       },
       {
         name: "Precio Base",
@@ -273,6 +289,7 @@ function ProductsTable({
         editable: true,
         format: formatCurrency,
         type: "number",
+        right: true
       },
       {
         name: "Precio Base Sucursal",
@@ -280,6 +297,8 @@ function ProductsTable({
         editable: true,
         format: formatCurrency,
         type: "number",
+        minWidth: "220px",
+        right: true
       },
       {
         name: "Precio Base Vendedor",
@@ -287,6 +306,8 @@ function ProductsTable({
         editable: true,
         format: formatCurrency,
         type: "number",
+        minWidth: "220px",
+        right: true
       },
       {
         name: "Valor",
@@ -294,33 +315,38 @@ function ProductsTable({
         editable: true,
         format: formatCurrency,
         type: "number",
+        minWidth: "150px",
+        right: true
       },
       {
         name: "Última Actualización",
         field: "updated_at",
         editable: false,
         format: (value) => new Date(value).toLocaleDateString("es-ES"),
+        minWidth: "200px"
       },
     ],
     []
   );
 
   const customColumns = useMemo(() => {
-    return columns.map((col) => ({
+    const filteredColumns =
+      session?.user?.role !== "Admin"
+        ? columns.filter((col) => col.field !== "basePricing")
+        : columns;
+
+    return filteredColumns.map((col) => ({
       name: col.name,
       selector: (row) => row[col.field],
       sortable: true,
-      grow: col.flex || 1,
-      right: col.right,
-      width: col.width || "auto",
+      ...(col.minWidth ? { minWidth: col.minWidth } : { grow: col.grow || 1 }),
+      right: col.right || false,
       grow: col.grow || 1,
       cell: (row, rowIndex) =>
         col.editable && isEditing ? (
           <TextField
             type={col.type === "number" ? "number" : "text"}
-            value={
-              row[col.field] ?? (col.type === "number" ? 0 : "")
-            }
+            value={row[col.field] ?? (col.type === "number" ? 0 : "")}
             onChange={(e) => {
               console.log("Antes:", row[col.field], "Nuevo:", e.target.value);
               handleRowChange(
@@ -343,7 +369,7 @@ function ProductsTable({
           row[col.field]
         ),
     }));
-  }, [columns, isEditing]);
+  }, [columns, isEditing, session]);
 
   // Función para guardar los cambios después de editar
   const handleSaveChanges = () => {
@@ -358,59 +384,61 @@ function ProductsTable({
         <h2>Tabla de Productos</h2>
         <input
           placeholder="Buscar producto..."
-          value={globalFilter ?? ""}
+          value={globalFilter.trim() ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
           className="inputSearch"
         />
       </div>
 
       <Paper>
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{
-            width: "1600px",
-            height: "auto",
-            marginBottom: 2,
-            justifyContent: "space-between",
-          }}
-        >
-          <Button
-            variant="contained"
-            color={isEditing ? "error" : "primary"}
-            onClick={handleEdit}
+        {session.user.role === "Admin" && (
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              width: "1600px",
+              height: "auto",
+              marginBottom: 2,
+              justifyContent: "space-between",
+            }}
           >
-            {isEditing ? "Cancelar" : "Editar"}
-          </Button>
-          <div style={{ display: "flex", gap: "10px" }}>
             <Button
               variant="contained"
-              color="success"
-              onClick={handleSave}
-              disabled={!isEditing}
+              color={isEditing ? "error" : "primary"}
+              onClick={handleEdit}
             >
-              Guardar cambios
+              {isEditing ? "Cancelar" : "Editar"}
             </Button>
-            <Button
-              variant="contained"
-              onClick={handleAdd}
-              disabled={!isEditing}
-            >
-              Agregar
-            </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={handleDelete}
-              disabled={!isEditing || selectedRows.length === 0}
-            >
-              Eliminar Seleccionados
-            </Button>
-          </div>
-        </Stack>
+            <div style={{ display: "flex", gap: "10px" }}>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleSave}
+                disabled={!isEditing}
+              >
+                Guardar cambios
+              </Button>
+              <Button
+                variant="contained"
+                onClick={handleAdd}
+                disabled={!isEditing}
+              >
+                Agregar
+              </Button>
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={handleDelete}
+                disabled={!isEditing || selectedRows.length === 0}
+              >
+                Eliminar Seleccionados
+              </Button>
+            </div>
+          </Stack>
+        )}
         <DataTable
           columns={customColumns}
-          data={arrayProducts}
+          data={filteredData}
           selectableRows={isEditing}
           onSelectedRowsChange={(state) => setSelectedRows(state.selectedRows)}
           pagination
@@ -419,11 +447,6 @@ function ProductsTable({
           fixedHeader
           fixedHeaderScrollHeight="400px"
           customStyles={{
-            rows: {
-              style: {
-                minHeight: "10px", // override the row height
-              },
-            },
             headCells: {
               style: {
                 minHeight: "50px", // override the row height for head cells
@@ -436,12 +459,6 @@ function ProductsTable({
                 borderLeft: "1px solid #ddd",
                 borderRight: "1px solid #ddd",
                 width: "auto",
-                "&:first-child": {
-                  borderLeft: "none",
-                },
-                "&:last-child": {
-                  borderRight: "none",
-                },
                 "&:hover": {
                   backgroundColor: "#e0e0e0",
                 },
@@ -463,10 +480,9 @@ function ProductsTable({
             },
             cells: {
               style: {
-                paddingLeft: "8px", // override the cell padding for data cells
-                paddingRight: "8px",
                 minHeight: "50px", // override the cell padding for data cells
-              },
+                textAlign: "left"
+              }
             },
           }}
           noDataComponent={
@@ -482,9 +498,9 @@ function ProductsTable({
               }}
             >
               <h2 style={{ textAlign: "center", color: "GrayText" }}>
-                Registra y administra tus productos aquí.
+                No se encontraron productos.
               </h2>
-              <Button
+              {!filteredData && <Button
                 variant="contained"
                 style={{ width: "150px", height: "50px", fontSize: "18px" }}
                 onClick={() => {
@@ -493,11 +509,27 @@ function ProductsTable({
                 }}
               >
                 Agregar
-              </Button>
+              </Button>}
             </div>
           }
         />
+        {session.user.role === "Admin" && (
+          <Stack>
+            <Button
+              variant="outlined"
+              onClick={supplyInventory}
+              disabled={isEditing}
+            >
+              Abastecer
+            </Button>
+          </Stack>
+        )}
       </Paper>
+      {isModalOpen && (
+        <Modal open={isModalOpen} onClose={handleCloseModal}>
+          <SupplyInventory arrayProducts={arrayProducts} />
+        </Modal>
+      )}
     </div>
   );
 }

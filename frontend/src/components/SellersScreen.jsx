@@ -55,7 +55,8 @@ const SellersScreen = ({
         res.users = res.users.map((user) => {
           return {
             ...user,
-            bought_sold: user.bought_sold || 0,
+            bought_sold: `$${Number(user?.bought_sold || 0).toLocaleString("es-CO")}`,
+            amount: `$${Number(user?.amount || 0).toLocaleString("es-CO")}`,
             location: "Ver más",
           };
         });
@@ -110,7 +111,11 @@ const SellersScreen = ({
   );
 
   const data = useMemo(
-    () => colaboradores.map((colab, index) => ({ ...colab, index: index + 1 })),
+    () => colaboradores.map((colab, index) => ({ 
+      ...colab, 
+      index: index + 1,
+      bought_sold: colab.bought_sold
+    })),
     [colaboradores]
   );
 
@@ -164,7 +169,7 @@ const SellersScreen = ({
         </div>
       </section>
 
-      <section className="section2">
+      <section className="section2SellerScreen">
         <div className="table-container">
           <div className="title_tools">
             <h2>Colaboradores</h2>

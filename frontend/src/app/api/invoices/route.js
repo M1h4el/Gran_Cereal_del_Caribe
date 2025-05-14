@@ -11,7 +11,7 @@ async function generateUniqueInvoiceCode() {
   while (!isUnique) {
     code = generateCode();
     const check = await queryDB(
-      "SELECT user_id FROM users WHERE codeCollaborator = ?",
+      "SELECT invoice_id FROM invoices WHERE invoiceCode = ?",
       [code]
     );
     isUnique = check.length === 0;

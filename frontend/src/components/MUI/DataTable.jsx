@@ -58,17 +58,6 @@ const validateRows = (rows) => {
   return true;
 };
 
-const newPayment = async (data) => {
-  try {
-    const response = fetchData('payments', "POST", data)
-
-    console.log("Pago registrado satisfactoriamente", response)
-
-  } catch (error) {
-    console.error("Error registrando el pago", error)
-  }
-}
-
 export default function DataTable({
   roleUser,
   rows,
@@ -78,14 +67,21 @@ export default function DataTable({
   openModal,
   loadingDetails,
   updating,
+  payments,
+  handleRefreshPayments,
 }) {
   const [tableRows, setTableRows] = useState(rows);
   const [originalRows, setOriginalRows] = useState(rows);
   const [selectedRows, setSelectedRows] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tot, setTot] = useState(0);
 
-  console.log("roleUser desde DATATABLE", roleUser);
+  let totalAbono = 0;
+
+  payments.map((payment, index) => {
+    totalAbono = Number(totalAbono) + Number(payment.amount);
+  });
 
   const style = {
     h2: {
@@ -94,6 +90,8 @@ export default function DataTable({
       margin: "30px 0",
     },
     h3: {
+      width: "100%",
+      textAlign: "right",
       fontSize: "1.2rem",
       marginBottom: "10px",
       fontWeight: "normal",
@@ -146,6 +144,28 @@ export default function DataTable({
 
   const handlePayment = () => {
     setIsModalOpen(true);
+  };
+
+  const confirmingPayment = async (data) => {
+    try {
+      const newData = {
+        ...data,
+        user_id: dataInvoice.user_buyer_id,
+        invoice_id: dataInvoice.invoice_id,
+      };
+
+      console.log("New", newData);
+
+      const paymentPosted = await fetchData(`payments`, "POST", newData);
+
+      setIsModalOpen(false);
+
+      handleRefreshPayments();
+
+      console.log("paymentPosted", paymentPosted);
+    } catch (error) {
+      console.error("Error Registrando Pago", error);
+    }
   };
 
   const handleCloseModal = () => {
@@ -310,7 +330,7 @@ export default function DataTable({
       selector: (row) => row[col.field],
       sortable: true,
       grow: col.flex || 1,
-      right: col.right,
+      right: col.right || false,
       cell: (row, rowIndex) =>
         col.editable && isEditing ? (
           col.type === "autocomplete" ? (
@@ -365,25 +385,23 @@ export default function DataTable({
   }, [columns, isEditing, options, tableRows]);
 
   const totalSum = useMemo(() => {
-    let tot = tableRows.reduce((sum, row) => {
-      const value = parseFloat(row.total);
-
-      return sum + (isNaN(value) ? 0 : value);
+    // Calcula el nuevo total
+    const nuevoTotal = tableRows.reduce((sum, row) => {
+      const value = parseFloat(row.total) || 0;
+      return sum + value;
     }, 0);
 
-    updating(tot);
+    setTot(nuevoTotal);
 
-    const formatValue = (value) =>
-      `$${Number(value || 0).toLocaleString("es-CL", {
-        minimumFractionDigits: 0,
-      })}`;
+    updating(nuevoTotal);
 
-    const newTotal = formatValue(tot);
-
-    return newTotal;
+    // Formatea para visualización
+    return `$${Number(nuevoTotal || 0).toLocaleString("es-CL", {
+      minimumFractionDigits: 0,
+    })}`;
   }, [tableRows]);
 
-  console.log("SubTotal", totalSum);
+  let pendingBalance = Number(tot) - Number(totalAbono);
 
   return (
     <Paper sx={{ padding: 2, width: "100%" }}>
@@ -534,26 +552,92 @@ export default function DataTable({
             roleUser === "Admin" || "Sucursal" ? "space-between" : "flex-start",
         }}
       >
+        {(roleUser === "Admin" || roleUser === "Sucursal") &&
+          tableRows.length !== 0 && (
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handlePayment}
+              disabled={isEditing}
+              sx={{ width: "200px", height: "50px" }}
+            >
+              Registrar Pago
+            </Button>
+          )}
         <h2 style={style.h2}>Total Neto: {totalSum}</h2>
-        {(roleUser === "Admin" || roleUser === "Sucursal") && (
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handlePayment}
-            disabled={isEditing}
-            sx={{ width: "200px", height: "50px" }}
-          >
-            Registrar Pago
-          </Button>
-        )}
       </div>
+      <hr />
+      <Stack p={2}>
+        <h2 style={{ padding: "20px 0" }}>Pagos Registrados</h2>
+        {payments.length === 0 ? (
+          <div>No Se Han Registrado Pagos</div>
+        ) : (
+          <>
+            <small>Se Registraron {payments.length} Pagos</small>
+            <table style={{ width: "100%", paddingTop: "20px" }}>
+              <thead>
+                <tr>
+                  <th style={{ padding: "0 300px" }}>#</th>
+                  <th>Método de Pago</th>
+                  <th>Tipo</th>
+                  <th>Detalles</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th>Cantidad</th>
+                </tr>
+              </thead>
+              <tbody>
+                {payments.map((payment, index) => (
+                  <tr key={payment.id}>
+                    <td>{index + 1}</td>
+                    <td>{payment.method_payment}</td>
+                    <td>{payment.type}</td>
+                    <td>{payment.details}</td>
+                    <td>{payment.status}</td>
+                    <td>{payment.created_at}</td>
+                    <td>{payment.amount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
+
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            gap: "40px",
+            padding: "40px 20px",
+          }}
+        >
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "30px" }}
+          >
+            <h3>Abonos Totales:</h3>
+            <h3>Saldo Pendiente:</h3>
+          </div>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "36px" }}
+          >
+            <div>{`$${Number(totalAbono || 0).toLocaleString("es-CL", {
+              minimumFractionDigits: 0,
+            })}`}</div>
+            <div>{`$${Number(pendingBalance || 0).toLocaleString("es-CL", {
+              minimumFractionDigits: 0,
+            })}`}</div>
+          </div>
+        </div>
+      </Stack>
       {isModalOpen && (
         <Modal open={isModalOpen} onClose={handleCloseModal} required>
           <ConfirmPayment
             onCancel={() => setIsModalOpen(false)}
             onConfirm={(data) => {
-              console.log("Datos confirmados", data);
-              // Aquí puedes continuar con tu lógica (petición, cierre modal, etc)
+              confirmingPayment(data);
             }}
           />
         </Modal>

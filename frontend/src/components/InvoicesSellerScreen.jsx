@@ -123,7 +123,7 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
       editable: true,
       type: "date",
     },
-    { name: "Estado", field: "state", editable: true },
+    { name: "Estado", field: "state", editable: false },
     { name: "Fecha de creación", field: "created_at", editable: false },
     { name: "Valor", field: "total_net", editable: false, type: "number" },
   ];

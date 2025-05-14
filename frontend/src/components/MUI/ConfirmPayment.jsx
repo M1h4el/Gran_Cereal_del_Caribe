@@ -15,17 +15,17 @@ function ConfirmPayment({ onCancel, onConfirm }) {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [details, setDetails] = useState("");
   const [paymentType, setPaymentType] = useState("");
-  const [partialAmount, setPartialAmount] = useState("");
+  const [amount, setAmount] = useState("");
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newErrors = {};
 
     if (!paymentMethod) newErrors.paymentMethod = "Requerido";
     if (!details.trim()) newErrors.details = "Requerido";
     if (!paymentType) newErrors.paymentType = "Requerido";
-    if (paymentType === "parcial" && (!partialAmount || isNaN(partialAmount)))
-      newErrors.partialAmount = "Monto válido requerido";
+    if (paymentType === "parcial" && (!amount || isNaN(amount)))
+      newErrors.amount = "Monto válido requerido";
 
     setErrors(newErrors);
 
@@ -34,9 +34,11 @@ function ConfirmPayment({ onCancel, onConfirm }) {
         paymentMethod,
         details,
         paymentType,
-        amount: paymentType === "parcial" ? parseFloat(partialAmount) : "total",
+        amount: paymentType === "parcial" ? parseFloat(amount) : NaN,
       });
     }
+
+    
   };
 
   return (
@@ -83,10 +85,10 @@ function ConfirmPayment({ onCancel, onConfirm }) {
               label="Monto a abonar"
               type="number"
               fullWidth
-              value={partialAmount}
-              onChange={(e) => setPartialAmount(e.target.value)}
-              error={!!errors.partialAmount}
-              helperText={errors.partialAmount}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              error={!!errors.amount}
+              helperText={errors.amount}
             />
           </Grid>
         )}
