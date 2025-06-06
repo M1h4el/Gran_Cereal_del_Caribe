@@ -47,6 +47,7 @@ hr {
 }
 
 .section2 {
+    @include logbar.flexing(row, space-between, flex-start);
     width: 100%;
     max-width: 1480px;
     height: 320px;
@@ -54,4 +55,43 @@ hr {
     background-color: gray;
     border-radius: 20px;
     padding: 40px;
+
+    .generalStats {
+        width: 300px;
+        hr {
+            margin: 20px 0;
+        }
+        .statsParams {
+            @include logbar.flexing(row, space-between, center);
+            width: 100%;
+            .titleParams {
+                @include logbar.flexing(column, flex-start, flex-start);
+                gap: 15px;
+                width: 100%;
+                h4 {
+                    margin-right: 10px;
+                }
+            }
+            .valueParams {
+                @include logbar.flexing(column, flex-start, flex-end);
+                gap: 15px;
+                width: 100%;
+                h4 {
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+
+    .actions {
+        width: 280px;
+        hr {
+            margin: 20px 0;
+        }
+        .actionButtons {
+            @include logbar.flexing(column, flex-start, flex-start);
+            gap: 15px;
+        }
+    }
+
 }

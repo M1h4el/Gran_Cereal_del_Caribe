@@ -21,11 +21,11 @@ const ProjectCard = ({ title, description}) => {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
+      {/* <CardActions>
         <Button size="small" color="primary">
           Share
         </Button>
-      </CardActions>
+      </CardActions> */}
     </Card>
   );
 };

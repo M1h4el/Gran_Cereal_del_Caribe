@@ -22,6 +22,7 @@ function SucursalCards({ handleRoute }) {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     async function fetchSucursales() {
       if (session?.user.role !== 'Admin') return;
 
@@ -40,6 +41,7 @@ function SucursalCards({ handleRoute }) {
       } catch (error) {
         console.error("Error cargando las sucursales:", error);
       }
+      setIsLoading(false);
     }
 
     fetchSucursales();
@@ -58,22 +60,18 @@ function SucursalCards({ handleRoute }) {
     cardData.length > 1 ? [...cardData.slice(1), cardData[0]] : cardData;
 
   function handleCardClick(card) {
-    console.log(card, "clicked");
-    if (handleRoute) {
+    console.log("clicked", card);
       const cardObject = {
         id: card?.sucursal_id,
         title: card?.title,
         total_products: card?.total_products,
         codeCollaborator: card?.codeCollaborator,
-      };
+      }
       handleRoute(cardObject);
-    } else {
-      console.error("handleRoute no está definido");
-    }
   }
   return (
     <>
-      <div className="MenuProjectSection">
+      {!isLoading && <div className="MenuProjectSection">
         {/* <TbNewSection /> */}
         <div
           style={{
@@ -124,7 +122,7 @@ function SucursalCards({ handleRoute }) {
             </div>
           ))}
         </div>
-      </div>
+      </div>}
       {isModalOpen ? (
         <Modal open={isModalOpen} onClose={handleCloseModal}>
           <CreateSucursalModal 

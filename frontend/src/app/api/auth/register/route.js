@@ -93,10 +93,11 @@ export async function POST(req) {
     const newUserId = insertResult.insertId;
     let parentUserId = null;
     let belongToSucursalId = null;
+    let infoNotification;
 
     if (codeCollaborator) {
       const parentUser = await queryDB(
-        "SELECT user_id, role FROM users WHERE codeCollaborator = ?",
+        "SELECT user_id, userName, role FROM users WHERE codeCollaborator = ?",
         [codeCollaborator]
       );
 
@@ -110,7 +111,8 @@ export async function POST(req) {
       }
 
       parentUserId = parentUser[0].user_id;
-
+      const parentRole = parentUser[0].role;
+      
       if (finalRole === "Sucursal") {
         belongToSucursalId = await createSucursal({
           user_admin_id,
@@ -118,14 +120,20 @@ export async function POST(req) {
           description,
           user_id: newUserId,
         });
-
-        const parentRole = parentUser[0].role;
-
+        
+        
         if (parentRole === "Admin") {
           await queryDB(
             "INSERT INTO relaciones (user_child_id, user_parent_id) VALUES (?, ?)",
             [newUserId, parentUserId]
           );
+          
+          infoNotification = `${parentUser[0].userName};`;
+
+          await queryDB(
+            "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
+            [parentUserId, infoNotification, "111"]
+          )
         } else {
           return NextResponse.json(
             {
@@ -151,12 +159,19 @@ export async function POST(req) {
 
         if (parentRole === "Sucursal") {
           belongToSucursalId = await queryDB(
-            "SELECT sucursal_id FROM sucursales WHERE user_id = ?;",
+            "SELECT sucursal_id, title FROM sucursales WHERE user_id = ?;",
             [parentUserId]
           );
           console.log("belongToSucursalId:", belongToSucursalId);
+
+          infoNotification = `${role};${generatedCode}`
+
           belongToSucursalId = belongToSucursalId[0].sucursal_id;
 
+          await queryDB(
+            "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
+            [parentUserId, infoNotification, "19"]
+          )
         }
 
         const dataInserted = await queryDB(
@@ -175,16 +190,13 @@ export async function POST(req) {
       } else if (finalRole === "Cliente") {
         if (parentUser[0].role === "Admin") {
           return NextResponse.json(
-            {
-              error:
-                "El código del colaborador no es válido para este tipo de usuario.",
-            },
+            { error: "El código del colaborador no es válido para este tipo de usuario." },
             { status: 400 }
           );
 
         } else if (parentUser[0].role === "Sucursal") {
           belongToSucursalId = await queryDB(
-            "SELECT sucursal_id FROM sucursales WHERE user_id = ?",
+            "SELECT sucursal_id, user_id FROM sucursales WHERE user_id = ?",
             [parentUserId]
           );
           if (belongToSucursalId.length === 0) {
@@ -193,17 +205,60 @@ export async function POST(req) {
               { status: 400 }
             );
           }
+          
           belongToSucursalId = belongToSucursalId[0].sucursal_id;
+          infoNotification = `${role};${generatedCode}`
+
+          await queryDB(
+            "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?);",
+            [parentUserId, infoNotification, "19"]
+          )
+
         } else if (parentUser[0].role === "Vendedor") {
           const parentSucursal = await queryDB(
-            "SELECT sucursal_id FROM relaciones WHERE user_child_id = ?",
+            "SELECT sucursal_id FROM relaciones WHERE user_child_id = ?;",
             [parentUserId]
           );
+
+          if (parentSucursal.length === 0) {
+            return NextResponse.json(
+              { error: "Relación no encontrada" },
+              { status: 404 }
+            )
+          }
           belongToSucursalId = parentSucursal[0].sucursal_id;
         }
         await queryDB(
           "INSERT INTO relaciones (user_child_id, user_parent_id, sucursal_id) VALUES (?, ?, ?)",
           [newUserId, parentUserId, belongToSucursalId]
+        );
+
+        infoNotification = `${userName};${generatedCode}`
+
+        // revisar cuándo hay
+
+        const data = await queryDB(
+          "SELECT user_parent_id FROM relaciones WHERE user_child_id = ?;",
+          [parentUserId]
+        );
+
+        if (data[0].length === 0) {
+          await queryDB(
+            "INSERT INTO debug_log (message) VALUES (?)",
+            [`No se ha notificado a la sucursal del vendedor respecto al nuevo cliente ${generatedCode} registrado.`]
+          )
+        }
+
+        const infoNotSuc = `${role};${generatedCode}`
+
+        const idSucursalOfSeller = data[0].user_parent_id
+        await queryDB(
+          "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
+          [idSucursalOfSeller, infoNotSuc, "19"]
+        )
+        await queryDB(
+          "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
+          [parentUserId, infoNotification, "213"]
         );
       }
 

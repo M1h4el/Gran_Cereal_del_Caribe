@@ -1,43 +1,81 @@
-'use client'
+"use client";
 
-import React, { useEffect, useState } from 'react'
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
+import React, { useEffect, useState, useRef } from "react";
+import {
+  List,
+  ListItem,
+  Divider,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  Typography,
+} from "@mui/material";
 import { fetchData } from "../../../utils/api";
-import handleNotification from '../../../utils/handleNotification';
+import notificationType from "../../../utils/handleNotification.json";
 
-function NotificationsContent({userId}) {
+function replacePlaceholders(template, data) {
+  const placeholders = template.match(/{([^}]+)}/g) || [];
+  const dataArray = data.split(";");
 
+  return placeholders.reduce((result, placeholder, index) => {
+    const key = placeholder.replace(/[{}]/g, "").trim();
+    const value = dataArray[index] || `{${key}}`;
+    return result.replace(placeholder, value);
+  }, template);
+}
+
+function NotificationsContent({ userId }) {
   const [notifications, setNotifications] = useState([]);
+  const intervalRef = useRef(null);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchNotifications = async () => {
       try {
-        const jsonData = await fetchData(`/notifications?user_id=${userId}`);
-        const formatted = handleNotification({ notifications: jsonData.notifications });
-        setNotifications(formatted);
+        const data = await fetchData(`/notifications?user_id=${userId}`, "GET");
+        const notificationsData = data?.notifications || [];
+        if (!Array.isArray(notificationsData)) {
+          console.error("Error en el servidor o datos inválidos");
+          if (isMounted) setNotifications([]);
+          return;
+        }
+
+        const processedNotif = notificationsData.map((notification) => {
+          const template = notificationType[notification.type];
+          if (template) {
+            const description = replacePlaceholders(
+              template.description,
+              notification.info || ""
+            );
+            return { ...notification, ...template, description };
+          }
+          return notification;
+        });
+
+        if (isMounted) setNotifications(processedNotif);
       } catch (error) {
         console.error("Error al obtener notificaciones:", error);
+        if (isMounted) setNotifications([]);
       }
     };
 
     fetchNotifications();
+    intervalRef.current = setInterval(fetchNotifications, 5000);
 
-    const interval = setInterval(fetchNotifications, 5000);
-
-    return () => clearInterval(interval);
+    return () => {
+      isMounted = false;
+      clearInterval(intervalRef.current);
+    };
   }, [userId]);
 
   return (
     <>
-      <h1>Notificaciones</h1>
-      <h4>Recibe las últimas actualizaciones de los proyectos en los que participas</h4>
+      <h1 className="index">
+        Notificaciones
       <hr />
+      </h1>
+
       <List sx={{ width: "100%", bgcolor: "#f5f5f5" }}>
         {notifications.length === 0 ? (
           <Typography sx={{ padding: 2, textAlign: "center" }}>
@@ -45,13 +83,8 @@ function NotificationsContent({userId}) {
           </Typography>
         ) : (
           notifications.map((notification, index) => (
-            <React.Fragment key={notification.idnotifications || index}>
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <Avatar sx={{ bgcolor: "#1976d2" }}>
-                    🛎️
-                  </Avatar>
-                </ListItemAvatar>
+            <React.Fragment key={notification.idnotifications ?? index}>
+              <ListItem alignItems="flex-start" sx={{ cursor: "pointer"}}>
                 <ListItemText
                   primary={notification.title}
                   secondary={
@@ -76,4 +109,4 @@ function NotificationsContent({userId}) {
   );
 }
 
-export default NotificationsContent
+export default NotificationsContent;

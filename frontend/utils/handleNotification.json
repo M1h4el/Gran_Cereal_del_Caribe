@@ -1,0 +1,402 @@
+{
+  "0": {
+    "id": "welcome",
+    "title": "¡Bienvenido!",
+    "description": "Aquí recibirás todas tus notificaciones.",
+    "clasif": 0,
+    "vars": 0
+  },
+  "1": {
+    "id": "email_confirmed_branch",
+    "title": "Confirmación de E-mail exitosa",
+    "description": "Tu correo electrónico ha sido confirmado correctamente.",
+    "clasif": 0,
+    "vars": 0
+  },
+
+  "10-99": "Notificaciones para Sucursales",
+
+  "12": {
+    "id": "branch_settings_changed",
+    "title": "Cambios en los ajustes de la sucursal",
+    "description": "Se han modificado los ajustes/propiedades de la sucursal.",
+    "clasif": 10,
+    "vars": 0
+  },
+  "13": {
+    "id": "branch_deactivated",
+    "title": "Sucursal desactivada",
+    "description": "Tu sucursal ha sido temporalmente desactivada por el administrador.",
+    "clasif": 10,
+    "vars": 0
+  },
+  "14": {
+    "id": "new_suplying_call_user",
+    "title": "Solicitud de Abastecimiento registrada",
+    "description": "Has registrado una solicitud de abastecimiento con código {supplyCode}.",
+    "clasif": 10,
+    "vars": 1
+  },
+  "15": {
+    "id": "supply_delivered",
+    "title": "Abastecimiento Entregado",
+    "description": "Abastecimiento {supplyCode} Entregado.",
+    "clasif": 10,
+    "vars": 1
+  },
+  "16": {
+    "id": "supply_date_changed",
+    "title": "Ajuste de fecha de entrega",
+    "description": "Ajuste de fecha de entrega para la solicitud de abastecimiento {supplyCode}. Si no has hecho este cambio o no estás conforme, reportalo o modificalo.",
+    "clasif": 10,
+    "vars": 1
+  },
+  "17": {
+    "id": "supply_changes_success",
+    "title": "Cambios en abastecimiento realizados",
+    "description": "Cambios en la solicitud de abastecimiento {supplyCode} realizados exitosamente.",
+    "clasif": 10,
+    "vars": 1
+  },
+  "18": {
+    "id": "supply_cancelled",
+    "title": "Abastecimiento Cancelado",
+    "description": "Se ha cancelado la solicitud de abastecimiento {supplyCode}.",
+    "clasif": 10,
+    "vars": 1
+  },
+  "19": {
+    "id": "newCollab_S",
+    "title": "Nuevo Colaborador",
+    "description": "Se ha registrado un nuevo usuario {role} como colaborador con código {codeCollaborator}.",
+    "clasif": 10,
+    "vars": 2
+  },
+  "20": {
+    "id": "create_invoice",
+    "title": "Nueva Factura Registrada",
+    "description": "Se ha registrado una nueva factura de ventas con código {invoiceCode}.",
+    "clasif": 10,
+    "vars": 1
+  },
+  "21": {
+    "id": "update_invoice",
+    "title": "Factura Actualizada",
+    "description": "Se han editado correctamente los cambios asociados a la factura {invoiceCode}.",
+    "clasif": 10,
+    "vars": 1
+  },
+  "22": {
+    "id": "invoice_deleted",
+    "title": "Factura Eliminada",
+    "description": "Se ha borrado la factura {invoiceCode} exitosamente.",
+    "clasif": 10,
+    "vars": 1
+  },
+  "23": {
+    "id": "new_Payment",
+    "title": "Pago Registrado",
+    "description": "Se ha efectuado un pago {payment_type} de {amount} a la factura {invoiceCode}",
+    "clasif": 10,
+    "vars": 3
+  },
+  "23.1": {
+    "id": ""
+  },
+  "24": {
+    "id": "low_stock",
+    "title": "Producto bajo de stock",
+    "description": "El producto {productCode} se encuentra bajo de stock. Revisar.",
+    "clasif": 10,
+    "vars": 1
+  },
+  "25": {
+    "id": "new_products_added",
+    "title": "Nuevos productos añadidos",
+    "description": "El usuario administrador ha actualizado el inventario de productos. Revisar.",
+    "clasif": 10,
+    "vars": 1
+  },
+  "26": {
+    "id": "product_temp_removed",
+    "title": "Producto eliminado temporalmente",
+    "description": "El usuario administrador a eliminado temporalmente el producto {productCode}.",
+    "clasif": 10,
+    "vars": 1
+  },
+  "27": {
+    "id": "liquidation_registered",
+    "title": "Liquidación registrada",
+    "description": "Se ha registrado una liquidación de {amount} al usuario {codeCollaborator}.",
+    "clasif": 10,
+    "vars": 2
+  },
+  "28": {
+    "id": "debt_cancelled",
+    "title": "Deuda cancelada",
+    "description": "El usuario Admin ha cancelado la deuda asociada al abastecimiento {supplyCode}.",
+    "clasif": 10,
+    "vars": 1
+  },
+  "29": {
+    "id": "payment_non_compliance",
+    "title": "Incumplimiento de pagos reportado",
+    "description": "Se ha reportado incumplimiento en los pagos a tu Administrador.",
+    "clasif": 10,
+    "vars": 0
+  },
+  "30": {
+    "id": "critical_stock",
+    "title": "Stock crítico",
+    "description": "¡ATENCIÓN! El producto {productCode} tiene stock crítico ({currentStock} unidades).",
+    "clasif": 10,
+    "vars": 2
+  },
+  "31": {
+    "id": "payment_reported",
+    "title": "Se ha reportado un problema con el pago",
+    "description": "Un cliente ha solicitado revisión del pago {codePayment}. Ver detalles.",
+    "clasif": "10",
+    "vars": 1
+  },
+
+  "110-199": "Notificaciones para Admin",
+  
+  "111": {
+    "id": "new_S",
+    "title": "Nueva Sucursal Creada",
+    "description": "Has creado la sucursal {branch}, ahora puedes agregar colaboradores y registrar tus productos.",
+    "clasif": 110,
+    "vars": 1
+  },
+  "112": {
+    "id": "admin_settings_changed",
+    "title": "Cambios en ajustes de administrador",
+    "description": "Cambios en los ajustes/propiedades de la cuenta Admin.",
+    "clasif": 110,
+    "vars": 0
+  },
+  "113": {
+    "id": "new_suplying_call_parent",
+    "title": "Solicitud de Abastecimiento",
+    "description": "La Sucursal {userName} ha hecho una solicitud de abastecimiento. Ver más.",
+    "clasif": 110,
+    "vars": 1
+  },
+  "114": {
+    "id": "supply_due_soon",
+    "title": "Abastecimiento próximo a entregar",
+    "description": "Solicitud de abastecimiento {supplyCode} próxima a fecha de Entrega.",
+    "clasif": 110,
+    "vars": 1
+  },
+  "115": {
+    "id": "supply_changes_notification",
+    "title": "Cambios en abastecimiento",
+    "description": "La sucursal {userName} ha hecho cambios en su solicitud de abastecimiento. Revisar.",
+    "clasif": 110,
+    "vars": 1
+  },
+  "116": {
+    "id": "supply_expired",
+    "title": "Abastecimiento caducado",
+    "description": "La solicitud de abastecimiento {supplyCode} ha caducado.",
+    "clasif": 110,
+    "vars": 1
+  },
+  "117": {
+    "id": "branch_session_confirmed",
+    "title": "Sesión de sucursal confirmada",
+    "description": "Se ha confirmado la sesión de la Sucursal {userName}.",
+    "clasif": 110,
+    "vars": 1
+  },
+  "118": {
+    "id": "supply_issue_reported",
+    "title": "Problema con abastecimiento",
+    "description": "Se ha reportado un problema con la solicitud de abastecimiento {supplyCode}.",
+    "clasif": 110,
+    "vars": 1
+  },
+  "119": {
+    "id": "debt_fully_paid",
+    "title": "Deuda completamente pagada",
+    "description": "La Sucursal {userName} ha cancelado la totalidad de su deuda.",
+    "clasif": 110,
+    "vars": 1
+  },
+  "120": {
+    "id": "payment_overdue",
+    "title": "Pago retrasado",
+    "description": "La Sucursal {userName} ha sobrepasado la fecha límite de pago.",
+    "clasif": 110,
+    "vars": 1
+  },
+  "121": {
+    "id": "admin_low_stock",
+    "title": "Producto bajo de stock",
+    "description": "El producto {productCode} se encuentra bajo de stock. Revisar.",
+    "clasif": 110,
+    "vars": 1
+  },
+  "122": {
+    "id": "multiple_low_stock",
+    "title": "Múltiples productos con stock bajo",
+    "description": "La Sucursal {userName} tiene {amount} productos casi agotados. Revisar.",
+    "clasif": 110,
+    "vars": 2
+  },
+  "123": {
+    "id": "new_branch_registered",
+    "title": "Nueva sucursal registrada",
+    "description": "La sucursal {branchName} se ha registrado con el código {branchCode}.",
+    "clasif": 110,
+    "vars": 2
+  },
+  "124": {
+    "id": "monthly_sales_report",
+    "title": "Reporte mensual de ventas",
+    "description": "El reporte de ventas del mes {month} muestra un {percentage}% de crecimiento.",
+    "clasif": 110,
+    "vars": 2
+  },
+  "125": {
+    "id": "catalog_updated",
+    "title": "Catálogo actualizado",
+    "description": "Se han realizado los cambios en el catálogo de productos.",
+    "clasif": 110,
+    "vars": 0
+  },
+  "126": {
+    "id": "changing_credentials",
+    "title": "Se ha cambiado la configuración de las credenciales de la sucursal.",
+    "description": "Se han modificado los ajustes/propiedades de la Sucursal. Revisar.",
+    "clasif": 110,
+    "vars": 0
+  },
+  "127": {
+    "id": "branch_deactivaded_by_admin",
+    "title": "Sucursal Desactivada",
+    "description": "Has desactivado temporalmente la sucursal {branchName}. Puedes reactivarla en cualquier momento.",
+    "clasif": 110,
+    "vars": 1
+  },
+
+  "210-299": "Notificaciones para Vendedor",
+
+  "212": {
+    "id": "seller_settings_changed",
+    "title": "Cambios en ajustes de vendedor",
+    "description": "Cambios en los ajustes/propiedades de usuario.",
+    "clasif": 210,
+    "vars": 0
+  },
+  "213": {
+    "id": "client_linked",
+    "title": "Nuevo Cliente Registrado",
+    "description": "Tu cliente {userName} con código {userCode} se ha registrado con éxito.",
+    "clasif": 310,
+    "vars": 2
+  },
+  "213.1": {
+    "id": "first_client_linked",
+    "title": "Primer Cliente Vinculado",
+    "description": "Felicidades! Has vinculado a tu primer Cliente.",
+    "clasif": 210,
+    "vars": 0
+  },
+  "214": {
+    "id": "client_purchase",
+    "title": "Nueva Compra de Cliente",
+    "description": "Tu Cliente {clientName} con código {clientCode} ha hecho una compra de {amount} en la Sucursal.",
+    "clasif": 210,
+    "vars": 3
+  },
+  "215": {
+    "id": "seller_liquidation",
+    "title": "Liquidación recibida",
+    "description": "La Sucursal te ha liquidado {amount} de tus ventas. !Sigue así!",
+    "clasif": 210,
+    "vars": 1
+  },
+  "216": {
+    "id": "report_processed",
+    "title": "Reporte procesado",
+    "description": "Se ha diligenciado correctamente tu reporte del tipo {reportType}.",
+    "clasif": 210,
+    "vars": 1
+  },
+  "217": {
+    "id": "sales_quota_not_met",
+    "title": "Cuota de ventas no alcanzada",
+    "description": "No has cumplido con tu cuota semanal de ventas. Ventas actuales: {currentSales}/{quota}.",
+    "clasif": 210,
+    "vars": 2
+  },
+  "218": {
+    "id": "new_client_bonus",
+    "title": "Bono por nuevo cliente",
+    "description": "Has recibido un bono de {amount} por vincular a tu cliente {clientName}.",
+    "clasif": 210,
+    "vars": 2
+  },
+  "219": {
+    "id": "top_seller_ranking",
+    "title": "¡Eres uno de los mejores vendedores!",
+    "description": "Felicidades, estás en el top {position} de vendedores este mes.",
+    "clasif": 210,
+    "vars": 1
+  },
+
+  "310-399": "Notificaciones para Cliente",
+  
+  "312": {
+    "id": "client_welcome",
+    "title": "Bienvenido Cliente",
+    "description": "Gracias por registrarte, {userName}. Ahora puedes realizar compras en nuestra sucursal.",
+    "clasif": 310,
+    "vars": 1
+  },
+  "313": {
+    "id": "client_settings_changed",
+    "title": "Cambios en ajustes de cliente",
+    "description": "Se han modificado tus ajustes de cliente correctamente.",
+    "clasif": 310,
+    "vars": 0
+  },
+  "314": {
+    "id": "new_V",
+    "title": "Nueva venta registrada",
+    "description": "Se ha creado una nueva venta registrada con código {saleCode} por un monto de {amount}.",
+    "clasif": 310,
+    "vars": 2
+  },
+  "315": {
+    "id": "delivered_V",
+    "title": "Venta Entregada",
+    "description": "Se ha registrado la entrega de la venta {saleCode} al cliente {clientName}.",
+    "clasif": 310,
+    "vars": 2
+  },
+  "316": {
+    "id": "client_payment_reminder",
+    "title": "Recordatorio de pago",
+    "description": "Recuerda que tienes un pago pendiente de {amount} para la factura {invoiceCode}.",
+    "clasif": 310,
+    "vars": 2
+  },
+  "317": {
+    "id": "special_offer",
+    "title": "Oferta especial",
+    "description": "¡Oferta exclusiva! {productName} con un {discount}% de descuento hasta {date}.",
+    "clasif": 310,
+    "vars": 3
+  },
+  "318": {
+    "id": "loyalty_points",
+    "title": "Puntos de fidelidad",
+    "description": "Has acumulado {points} puntos por tus compras. ¡Sigue así!",
+    "clasif": 310,
+    "vars": 1
+  }
+}

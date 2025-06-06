@@ -258,55 +258,61 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
           sx={{ width: "100%", justifyContent: "space-between" }}
         >
           <div style={{ display: "flex", gap: "20px" }}>
-            <TextField
-              placeholder="Buscar..."
-              value={globalFilter}
-              onChange={(e) => setGlobalFilter(e.target.value)}
-              size="small"
-            />
-            <Button
-              variant="contained"
-              color={isEditing ? "error" : "info"}
-              onClick={handleEdit}
-            >
-              {isEditing ? "Cancelar" : "Editar"}
-            </Button>
-          </div>
-          <div style={{ display: "flex", gap: "20px" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAdd}
-              disabled={!isEditing}
-            >
-              Agregar
-            </Button>
+            {session.user.role !== ("Vendedor" || "Cliente") && (
+              <>
+                <TextField
+                  placeholder="Buscar..."
+                  value={globalFilter}
+                  onChange={(e) => setGlobalFilter(e.target.value)}
+                  size="small"
+                />
 
-            <Button
-              variant="contained"
-              color="success"
-              onClick={handleSave}
-              disabled={!isEditing}
-            >
-              Guardar
-            </Button>
-
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={handleDelete}
-              disabled={!isEditing || selectedRows.length === 0}
-            >
-              Eliminar Seleccionados
-            </Button>
+                <Button
+                  variant="contained"
+                  color={isEditing ? "error" : "info"}
+                  onClick={handleEdit}
+                >
+                  {isEditing ? "Cancelar" : "Editar"}
+                </Button>
+              </>
+            )}
           </div>
+          {session.user.role !== ("Vendedor" || "Cliente") && (
+            <div style={{ display: "flex", gap: "20px" }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAdd}
+                disabled={!isEditing}
+              >
+                Agregar
+              </Button>
+
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleSave}
+                disabled={!isEditing}
+              >
+                Guardar
+              </Button>
+
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={handleDelete}
+                disabled={!isEditing || selectedRows.length === 0}
+              >
+                Eliminar Seleccionados
+              </Button>
+            </div>
+          )}
         </Stack>
 
         <DataTable
           columns={customColumns}
           data={filteredRows}
           progressPending={false}
-          progressComponent={<LinearProgress />}
           selectableRows
           onSelectedRowsChange={(state) => setSelectedRows(state.selectedRows)}
           onRowClicked={(row) => {
@@ -317,7 +323,7 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
           pagination
           highlightOnHover
           dense
-          noDataComponent="No hay datos para mostrar"
+          noDataComponent={<h4 style={{padding: "40px 0"}}>No hay datos para mostrar</h4>}
         />
       </Paper>
       {isOpenModal && (

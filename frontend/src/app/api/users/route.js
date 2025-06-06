@@ -72,6 +72,11 @@ export async function PUT(req) {
       return NextResponse.json("User not found", { status: 404 });
     }
 
+    await queryDB(
+      "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
+      [userId, null, "1"]
+    );
+
     return NextResponse.json({ message: "Usuario actualizado" }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -25,7 +25,10 @@ export async function GET(req) {
     const invoiceCode = searchParams.get("invoiceCode")?.trim();
 
     if (!invoiceCode) {
-      return NextResponse.json({ error: "Falta el código de factura" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Falta el código de factura" },
+        { status: 400 }
+      );
     }
 
     const result = await queryDB(
@@ -34,7 +37,10 @@ export async function GET(req) {
     );
 
     if (!result || result.length === 0) {
-      return NextResponse.json({ error: "Factura no encontrada" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Factura no encontrada" },
+        { status: 404 }
+      );
     }
 
     const invoice = result[0];
@@ -44,8 +50,9 @@ export async function GET(req) {
       [invoice.user_seller_id, invoice.user_buyer_id]
     );
 
-    const seller = users.find(u => u.user_id === invoice.user_seller_id) || {};
-    const buyer = users.find(u => u.user_id === invoice.user_buyer_id) || {};
+    const seller =
+      users.find((u) => u.user_id === invoice.user_seller_id) || {};
+    const buyer = users.find((u) => u.user_id === invoice.user_buyer_id) || {};
 
     const responseData = {
       ...invoice,
@@ -57,9 +64,8 @@ export async function GET(req) {
       buyerRole: buyer.role || null,
     };
 
-    console.log("response factura por código", responseData)
+    console.log("response factura por código", responseData);
     return NextResponse.json(responseData, { status: 200 });
-
   } catch (error) {
     console.error("Error al obtener factura:", error);
     return NextResponse.json(
@@ -70,7 +76,6 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-
   const body = await req.json();
 
   const {
@@ -81,8 +86,8 @@ export async function POST(req) {
     details = null,
     collaboratorId,
   } = body;
-  
-  const deliveryDate = rawDeliveryDate === '' ? null : rawDeliveryDate;
+
+  const deliveryDate = rawDeliveryDate === "" ? null : rawDeliveryDate;
 
   try {
     if (!email || !state || !collaboratorId) {
@@ -92,7 +97,7 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-    
+
     const userBuyer = await queryDB(
       `SELECT user_id, userName, codeCollaborator, address, phone FROM users WHERE email = ?;`,
       [email]
@@ -138,6 +143,7 @@ export async function POST(req) {
         { status: 500 }
       );
     }
+
     const invoice = rowNewInvoice[0];
     invoice["userClientName"] = userBuyerName;
     invoice["userClientCode"] = userBuyerCode;
@@ -146,9 +152,8 @@ export async function POST(req) {
 
     return NextResponse.json(
       { message: "Factura registrada con éxito", invoice },
-      { status: 201 },
+      { status: 201 }
     );
-    
   } catch (error) {
     console.error(error);
     return NextResponse.json(

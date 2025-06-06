@@ -1,4 +1,5 @@
 import { queryDB } from "@/lib/dbUtils";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 // ✅ GET: Obtener todos los detalles de una factura
@@ -36,15 +37,19 @@ export async function GET(req, { params }) {
   }
 }
 
-// ✅ PUT: Actualizar un detalle existente
 export async function PUT(req, { params }) {
   const { invoiceId } = await params;
+
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user) {
+    return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+  }
 
   console.log("InvoiceId", invoiceId)
 
   try {
     const body = await req.json();
-    const { data } = body;
+    const { data, invoiceCode } = body;
 
     if (!Array.isArray(data)) {
       return NextResponse.json({ error: "Formato inválido" }, { status: 400 });
@@ -122,10 +127,28 @@ export async function PUT(req, { params }) {
 
       const responseUpdate = await queryDB(updateQuery, [invoiceId]);
       console.log("Response de actualización:", responseUpdate);
+
       updated.push(...existingRows);
     }
 
-    return NextResponse.json({ updated });
+    const init = updated.find(p => p.idinvoice_detail === 0);
+    let infoNotification = `${invoiceCode};`
+
+    if (init && init.length > 0) {
+      // lógica de notificaciones si es un Update de una factura
+      await queryDB(
+        "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?);",
+        [session.user.role === "Sucursal" && session.user.id, infoNotification, "21"]
+      )
+    } else {
+      // lógica si es una factura nueva
+      await queryDB(
+        "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?);",
+        [session.user.role === "Sucursal" && session.user.id, infoNotification, "20"]
+      )
+    }
+
+    return NextResponse.json({ updated }, {status: 201});
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Error al actualizar detalles" }, { status: 500 });

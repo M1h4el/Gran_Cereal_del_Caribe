@@ -70,6 +70,46 @@ export async function POST(request) {
 
     console.log("Pago registrado", result);
 
+    const invoiceData = queryDB(
+      "SELECT invoiceCode FROM invoices WHERE invoice_id = ?;",
+      [invoice_id]
+    );
+
+    const invoiceCode = invoiceData[0].invoiceCode
+
+    if (!invoiceCode) {
+      return NextResponse.json(
+        {error: "No hay invoice asociado al pago"},
+        {status: 404}
+      )
+    }
+
+    const infoNotification = `${invoiceCode};${newAmount};`
+    const infoNotifSucursal = `${paymentType};${amount};${invoiceCode}`
+
+    await queryDB(
+      "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
+      [user_id, infoNotification, "314"]
+    )
+
+    const row = await queryDB(
+      "SELECT user_id FROM sucursales s, relaciones r WHERE s.sucursal_id = r.sucursal_id AND r.user_child_id = ?;",
+      [user_id]
+    )
+
+    if (!row.length) {
+      return NextResponse.json(
+        { error: "No se encontró sucursal asociada al usuario." },
+        { status: 404 }
+      )
+    }
+    const sucursalId = row[0].user_id;
+
+    await queryDB(
+      "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
+      [sucursalId, infoNotifSucursal, "23"]
+    )
+
     return NextResponse.json(
       { error: "Pago registrado", result },
       { status: 201 }

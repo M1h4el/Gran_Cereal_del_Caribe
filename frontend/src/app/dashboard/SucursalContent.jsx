@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import SucursalCards from "../../components/SucursalCards";
 import "@/styles/SucursalCards.scss";
 import SellersScreen from "@/components/SellersScreen";
@@ -10,6 +10,7 @@ import InvoiceScreen from "@/components/InvoiceScreen";
 import Modal from "@/components/Modal";
 import { useSession } from "next-auth/react";
 import FormTabModal from "@/components/Modal/FormTabModal";
+import CopyCode from "../../components/MUI/CopyToClipboardInput";
 import { fetchData } from "../../../utils/api";
 
 function SucursalContent() {
@@ -23,7 +24,6 @@ function SucursalContent() {
   const [isError, setIsError] = useState(false);
   const [statusUser, setStatusUser] = useState(null);
   const [invoiceByCode, setInvoiceByCode] = useState("");
-  const [updatedSession, setUpdatedSession] = useState(session);
   const [selection, setSelection] = useState({
     sucursal: null,
     collaborator: null,
@@ -38,7 +38,7 @@ function SucursalContent() {
     "initialIndex",
     initialIndexRoute,
     "updatedSession",
-    updatedSession
+    session
   );
 
   // Memoized functions
@@ -47,24 +47,47 @@ function SucursalContent() {
   }, []);
 
   const confirmUser = useCallback(() => {
+    setStatusUser("confirmed");
     if (statusUser === "unconfirmed") {
       setIsModalOpen(true);
     }
   }, [statusUser]);
 
-  let roleIndexMap = {
-    Admin: 0,
-    Sucursal: 1,
-    Vendedor: 2,
-    Cliente: 3,
-  };
-  // Initialize session and routes
+  const roleIndexMap = useMemo(
+    () => ({
+      Admin: 0,
+      Sucursal: 1,
+      Vendedor: 2,
+      Cliente: 2,
+    }),
+    []
+  );
+
   useEffect(() => {
     if (status !== "authenticated" || !session?.user) return;
 
-    setStatusUser(session?.user?.status);
-    setUpdatedSession(session || {});
-    confirmUser();
+    async function confirmedUser() {
+      try {
+        
+        const response = await fetchData(`confirmUser`, "POST", session?.user?.id);
+
+        if (response?.error) {
+          console.error("Error al confirmar usuario:", response.error);
+          return;
+        }
+
+        if (response?.response) {
+          confirmUser();
+        }
+
+      } catch (error) {
+        console.error("Error al obtener el estado del usuario:", error);
+        setIsError(true);
+      }
+    }
+
+
+    confirmedUser();
 
     const userRole = session?.user?.role;
     const userName = session?.user?.userName;
@@ -125,12 +148,13 @@ function SucursalContent() {
     const role = session?.user?.role;
     if (role === "Admin") {
       setRoutes((prev) => [...prev, route?.title]);
+      setSelection((prev) => ({ ...prev, sucursal: route }));
     }
     if (role === "Sucursal") {
       setSelection((prev) => ({ ...prev, sucursal: route }));
       setTotalProducts(route?.total_products);
     }
-    if ((role === "Vendedor")) {
+    if (role === "Vendedor") {
       setSelection((prev) => ({ ...prev, collaborator: route }));
     }
   };
@@ -172,24 +196,62 @@ function SucursalContent() {
     setSelection((prev) => ({ ...prev, invoices: invoice }));
   };
 
-  const removeRoute = (index) => {
-    // Recorta el array de rutas hasta el índice deseado incluido
+  const removeRoute = (clickedIndex) => {
+    const role = session?.user?.role;
+    const roleOffset = role === "Admin" ? 0 : 1; // Offset base para rutas
 
-    setRoutes((prev) =>
-      prev.slice(0, index + roleIndexMap[updatedSession?.user?.role])
-    );
+    // 1. Actualización de rutas
+    setRoutes((prev) => {
+      const newLength = clickedIndex + roleOffset;
+      return prev.slice(0, newLength);
+    });
 
-    // Actualiza el selection de acuerdo al índice
+    // 2. Actualización de selection según rol
     setSelection((prev) => {
       const newSelection = { ...prev };
 
-      if (index < 1) {
-        newSelection.sucursal = prev.sucursal;
-        newSelection.collaborator = null;
-        newSelection.invoices = null;
-      } else if (index < 2) {
-        newSelection.collaborator = prev.collaborator;
-        newSelection.invoices = null;
+      switch (role) {
+        case "Vendedor":
+          if (clickedIndex === 2) {
+            // Click en nombre del vendedor (ruta inicial)
+            newSelection.invoices = null;
+          } else if (clickedIndex === 1) {
+            // Click en "Tabla de Ventas"
+            newSelection.invoices = null;
+          }
+          break;
+
+        case "Cliente":
+          if (clickedIndex === 2) {
+            // Click en nombre del cliente (ruta inicial)
+            newSelection.collaborator = null;
+            newSelection.invoices = null;
+          } else if (clickedIndex === 1) {
+            // Click en "Tabla de Compras"
+            newSelection.invoices = null;
+          }
+          break;
+
+        case "Admin":
+          if (clickedIndex < 1) {
+            newSelection.sucursal = prev.sucursal;
+            newSelection.collaborator = null;
+            newSelection.invoices = null;
+          } else if (clickedIndex < 2) {
+            newSelection.collaborator = prev.collaborator;
+            newSelection.invoices = null;
+          }
+          break;
+
+        case "Sucursal":
+          if (clickedIndex < 1) {
+            newSelection.collaborator = null;
+            newSelection.invoices = null;
+          }
+          break;
+
+        default:
+          break;
       }
 
       return newSelection;
@@ -200,7 +262,8 @@ function SucursalContent() {
 
   let currentRouteIndex = routes.length;
 
-  session?.user?.role === "Vendedor" && (currentRouteIndex = currentRouteIndex + 1);
+  session?.user?.role === "Vendedor" &&
+    (currentRouteIndex = currentRouteIndex + 1);
 
   const renderComponent = () => {
     switch (currentRouteIndex) {
@@ -242,7 +305,7 @@ function SucursalContent() {
   };
 
   if (status === "loading") return <div>Cargando...</div>;
-  if (status !== "authenticated" || !updatedSession?.user)
+  if (status !== "authenticated" || !session?.user)
     return <div>No autenticado</div>;
 
   return (
@@ -251,9 +314,9 @@ function SucursalContent() {
         <div className="TitleSection">
           <div className="routeIndexContainer">
             <h1 className="index" onClick={() => removeRoute(0)}>
-              {updatedSession.user.role === "Admin"
+              {session.user.role === "Admin"
                 ? "Sucursales"
-                : updatedSession.user.userName}{" "}
+                : session.user.userName}{" "}
               <hr />
             </h1>
             {routes.map((route, index) => {
@@ -273,7 +336,7 @@ function SucursalContent() {
               ) : (
                 <React.Fragment key={index}>
                   {" > "}
-                  <h2 className="index" onClick={() => removeRoute(index)}>
+                  <h2 className="index" onClick={() => removeRoute(index + 1)}>
                     {route}
                     <hr />
                   </h2>
@@ -290,7 +353,37 @@ function SucursalContent() {
 
       {currentRouteIndex === 0 && (
         <section className="section2">
-          <div>Contenido adicional</div>
+          <div className="generalStats">
+            <h2>Estadísticas Generales</h2>
+            <hr />
+            <div className="statsParams">
+              <div className="titleParams">
+                <div>Parámetro</div>
+                <div>Parámetro</div>
+                <div>Parámetro</div>
+                <div>Parámetro</div>
+              </div>
+              <div className="valueParams">
+                <div>$0</div>
+                <div>$0</div>
+                <div>0%</div>
+                <div>0%</div>
+              </div>
+            </div>
+          </div>
+          <div className="actions">
+            <h2>Acciones</h2>
+            <hr />
+            <div className="actionButtons">
+              <button>Buttons</button>
+              <button>Buttons</button>
+              <button>Buttons</button>
+              <button>Buttons</button>
+            </div>
+          </div>
+          <div>
+            <CopyCode valueToCopy={session.user.codeCollaborator} />
+          </div>
         </section>
       )}
 
@@ -300,7 +393,7 @@ function SucursalContent() {
         <Modal open={isModalOpen} onClose={handleCloseModal} required>
           <FormTabModal
             onClose={handleCloseModal}
-            user={updatedSession.user}
+            user={session.user}
             statusUser={statusUser}
             handleStatus={handleStatusUser}
           />

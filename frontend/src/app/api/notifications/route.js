@@ -15,7 +15,11 @@ export async function GET(req) {
       [userId]
     );
 
-    return NextResponse.json({ notifications });
+    if (!notifications || notifications.length === 0) {
+      return NextResponse.json({ notifications: [] }, { status: 200 });
+    }
+
+    return NextResponse.json({ notifications }, {status: 200});
   } catch (error) {
     console.error("Error al obtener notificaciones:", error);
     return NextResponse.json({ error: "Error interno" }, { status: 500 });

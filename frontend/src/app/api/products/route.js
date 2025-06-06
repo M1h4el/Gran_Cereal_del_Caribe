@@ -64,8 +64,8 @@ export async function PUT(req) {
 
     console.log("Productos recibidos:", data);
 
-    const insertedProducts = [];
-    const updatedProducts = [];
+    let insertedProducts = [];
+    let updatedProducts = [];
 
     for (const product of data) {
       const {
@@ -179,7 +179,33 @@ export async function PUT(req) {
           console.log("Error al actualizar el producto:", idproduct);
         }
       }
+    };
+
+    const infoNotification = `${JSON.stringify(updatedProducts)};${JSON.stringify(insertedProducts)}`
+
+    await queryDB(
+      "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
+      [sucursalId, infoNotification, "25"]
+    );
+
+    const row = await queryDB(
+      "SELECT user_parent_id from relaciones WHERE user_child_id = ?",
+      [sucursalId]
+    );
+
+    if (!row.length) {
+      return NextResponse.json(
+        { error: "No se encontró Administrador asociado a la Sucursal." },
+        { status: 404 }
+      )
     }
+
+    const adminId = row[0].user_parentid;
+
+    await queryDB(
+      "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
+      [adminId, infoNotification, "125"]
+    )
 
     return NextResponse.json(
       { message: "Productos procesados correctamente", insertedProducts, updatedProducts },

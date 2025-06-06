@@ -233,6 +233,7 @@ export default function DataTable({
         "PUT",
         {
           data: rowsToSend,
+          invoiceCode: dataInvoice?.invoiceCode
         }
       );
 

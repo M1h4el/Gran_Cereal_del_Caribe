@@ -28,21 +28,29 @@ export async function POST(req) {
   let connection;
   try {
     const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: "No autenticado" }, { status: 401 });
-    if (session.user.role !== "Admin") return NextResponse.json({ error: "Tipo de usuario inválido" }, { status: 400 });
+    if (!session)
+      return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+    if (session.user.role === "admin") {
+      return NextResponse.json(
+        { error: "Acción no permitida para administradores" },
+        { status: 403 }
+      );
+    }
 
     const body = await req.json();
     const { supply, totalSold, totalDebt, totalUtility } = body;
 
     if (!Array.isArray(supply)) {
-      return NextResponse.json({ error: "Supply debe ser un array" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Supply debe ser un array" },
+        { status: 400 }
+      );
     }
 
     connection = await pool.getConnection();
     await connection.beginTransaction();
 
     try {
-      // 1. Insertar factura principal (CORRECCIÓN AQUÍ)
       const generatedCode = await generateUniqueInvoiceCode();
       const [invoiceResult] = await connection.execute(
         "INSERT INTO supplyinvoices (user_id, invoiceCode, total_net, settlement, admin_debt) VALUES (?, ?, ?, ?, ?)",
@@ -70,7 +78,9 @@ export async function POST(req) {
 
       // 3. Construir y ejecutar consulta masiva
       if (detailValues.length > 0) {
-        const placeholders = detailValues.map(() => "(?, ?, ?, ?, ?)").join(", ");
+        const placeholders = detailValues
+          .map(() => "(?, ?, ?, ?, ?)")
+          .join(", ");
         const query = `
           INSERT INTO supplyinvoices_details 
           (idsupply_invoice, productCode, quantity, unit_price, total) 
@@ -78,6 +88,27 @@ export async function POST(req) {
         `;
         await connection.execute(query, detailValues.flat());
       }
+
+      const infoNotification = `${generatedCode};`;
+
+      await queryDB(
+        "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?);",
+        [session.user.id, infoNotification, "14"]
+      );
+
+      const idParentList = await queryDB(
+        "SELECT user_admin_id FROM sucursales WHERE user_child_id = ?;",
+        [session.user.id]
+      );
+
+      const userParentId = idParentList[0].user_admin_id;
+
+      const infoNotificationParent = `${session.user.userName};`;
+
+      await queryDB(
+        "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?);",
+        [userParentId, infoNotificationParent, "113"]
+      );
 
       await connection.commit();
 
@@ -95,7 +126,8 @@ export async function POST(req) {
       return NextResponse.json(
         {
           error: "Error al procesar la orden",
-          details: process.env.NODE_ENV === "development" ? error.message : null,
+          details:
+            process.env.NODE_ENV === "development" ? error.message : null,
         },
         { status: 500 }
       );

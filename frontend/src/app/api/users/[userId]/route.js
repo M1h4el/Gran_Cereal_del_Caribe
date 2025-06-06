@@ -28,6 +28,24 @@ export async function PUT(req, { params }) {
 
     console.log("updatedData", updatedData);
 
+    const data = await queryDB(
+      "SELECT user_parent_id FROM relaciones WHERE user_child_id = ?",
+      [userId]
+    )
+
+    if (data.length === 0) {
+      return NextResponse.json({ error: 'No se encontró relación con el usuario' }, { status: 404 });
+    }
+
+    const user_parent_id = data[0].user_parent_id;
+
+    const infoNotification = `${name};`
+
+    await queryDB(
+      "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
+      [user_parent_id, infoNotification, "126"]
+    )
+
     return NextResponse.json({ message: 'Usuario actualizado' });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -37,6 +55,35 @@ export async function PUT(req, { params }) {
 export async function DELETE(_, { params }) {
   try {
     await queryDB('DELETE FROM users WHERE user_id = ?', [params.iduser]);
+
+    await queryDB(
+      "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
+      [params.iduser, null, "13"]
+    );
+
+    const data1 = await queryDB(
+      "SELECT user_parent_id FROM relaciones WHERE user_child_id = ?",
+      [params.iduser]
+    );
+
+    const data2 = await queryDB(
+      "SELECT userName FROM users WHERE user_id = ?",
+      [params.iduser]
+    );
+
+    if (data1.length === 0 || data2.length === 0) {
+      return NextResponse.json({ error: 'No se encontró relación con el usuario' }, { status: 404 });
+    };
+
+    const user_parent_id = data1[0].user_parent_id;
+    const userName = data2[0].userName;
+
+    const infoNotification = `${userName};`
+
+    await queryDB(
+      "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
+      [user_parent_id, infoNotification, "127"]
+    );
 
     return NextResponse.json({ message: 'Usuario eliminado' });
   } catch (error) {
