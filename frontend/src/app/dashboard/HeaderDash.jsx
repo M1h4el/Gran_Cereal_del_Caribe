@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import Image from "next/image";
+import logoGC from "../../../public/assets/LogoGC.png";
 import "@/styles/HeaderDash.scss";
 
 // React-icons
@@ -19,31 +21,40 @@ function HeaderDash({ onSelect }) {
 
   return (
     <header>
-      <div className="logoContainer">Logo</div>
+      <div className="logoContainer">
+        <Image
+          className="logo"
+          src={logoGC}
+          alt="Logo"
+          width={200} // Ajusta el ancho según necesites
+          height={180} // Ajusta el alto según necesites
+          priority
+        />
+      </div>
       <div className="menuBar">
         <div
           className={activeTab === "projects" ? "active" : ""}
           onClick={() => handleIconClick("projects")}
         >
-          <GoProjectSymlink style={{color:'black'}} />
+          <GoProjectSymlink style={{ color: "black" }} />
         </div>
         <div
           className={activeTab === "social" ? "active" : ""}
           onClick={() => handleIconClick("social")}
         >
-          <FaUsers style={{color:'black'}}/>
+          <FaUsers style={{ color: "black" }} />
         </div>
         <div
           className={activeTab === "notifications" ? "active" : ""}
           onClick={() => handleIconClick("notifications")}
         >
-          <MdNotificationsActive style={{color:'black'}}/>
+          <MdNotificationsActive style={{ color: "black" }} />
         </div>
         <div
           className={activeTab === "profile" ? "active" : ""}
           onClick={() => handleIconClick("profile")}
         >
-          <FaRegUserCircle style={{color:'black'}}/>
+          <FaRegUserCircle style={{ color: "black" }} />
         </div>
       </div>
     </header>

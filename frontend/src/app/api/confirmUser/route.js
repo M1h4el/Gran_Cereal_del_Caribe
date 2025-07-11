@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { queryDB } from "@/lib/dbUtils";
 
 export async function POST (req) {
+    
     const userId = await req.json();
+    
     if (!userId) {
         return NextResponse.json({ error: "userId es requerido" }, { status: 400 });
     }

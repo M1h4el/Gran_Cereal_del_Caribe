@@ -276,6 +276,18 @@ export async function POST(req) {
         },
         { status: 201 }
       );
+    } else {
+       return NextResponse.json(
+        {
+          message: "Usuario registrado con éxito",
+          userId: newUserId,
+          codeCollaborator: generatedCode,
+          details: {
+            role: finalRole,
+          },
+        },
+        { status: 201 }
+      );
     }
   } catch (error) {
     console.error("Error en el registro:", error);

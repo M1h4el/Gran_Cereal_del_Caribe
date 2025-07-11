@@ -30,9 +30,9 @@ export async function POST(req) {
     const session = await getServerSession(authOptions);
     if (!session)
       return NextResponse.json({ error: "No autenticado" }, { status: 401 });
-    if (session.user.role === "admin") {
+    if (!session.user.role === "admin") {
       return NextResponse.json(
-        { error: "Acción no permitida para administradores" },
+        { error: "Acción no permitida para el rol de usuario" },
         { status: 403 }
       );
     }
@@ -89,7 +89,7 @@ export async function POST(req) {
         await connection.execute(query, detailValues.flat());
       }
 
-      const infoNotification = `${generatedCode};`;
+      /* const infoNotification = `${generatedCode};`;
 
       await queryDB(
         "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?);",
@@ -108,16 +108,20 @@ export async function POST(req) {
       await queryDB(
         "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?);",
         [userParentId, infoNotificationParent, "113"]
-      );
+      ); */
 
       await connection.commit();
 
+      const result = {
+        success: true,
+        invoiceId: invoiceResult.insertId,
+        invoiceCode: generatedCode,
+      }
+
+        console.log("supplyInventory from back", result)
+
       return NextResponse.json(
-        {
-          success: true,
-          invoiceId: invoiceResult.insertId,
-          invoiceCode: generatedCode,
-        },
+        result,
         { status: 200 }
       );
     } catch (error) {

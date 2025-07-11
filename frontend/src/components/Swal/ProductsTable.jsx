@@ -168,6 +168,8 @@ function ProductsTable({
       updated_at: now,
     }));
 
+    console.log("777777777777", rowsToSend);
+
     const res = await fetchData(`products?sucursalId=${sucursalId}`, "PUT", {
       data: rowsToSend,
     });

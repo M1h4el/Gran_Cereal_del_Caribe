@@ -19,6 +19,8 @@ async function generateUniqueInvoiceCode() {
   return code;
 }
 
+// Editando desde InvoicesSellerScreen.jsx, necesito que reciba el nuevo Date en el POST y lea el formato correcto en el GET
+
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
@@ -80,6 +82,7 @@ export async function POST(req) {
 
   const {
     invoiceCode = null,
+    dateRegistered = null,
     email,
     state,
     deliveryDate: rawDeliveryDate,
@@ -90,7 +93,7 @@ export async function POST(req) {
   const deliveryDate = rawDeliveryDate === "" ? null : rawDeliveryDate;
 
   try {
-    if (!email || !state || !collaboratorId) {
+    if (!email || !state || !collaboratorId || !dateRegistered) {
       console.log("Faltan datos requeridos", body);
       return NextResponse.json(
         { error: "Faltan datos requeridos" },

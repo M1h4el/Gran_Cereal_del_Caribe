@@ -9,11 +9,16 @@ import {
   LinearProgress,
   Paper,
   MenuItem,
+  FormControl,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { fetchData } from "../../utils/api";
 import "@/styles/InvoicesSellerScreen.scss";
 import Modal from "./Modal";
+import CopyToClipboardField from "./MUI/CopyToClipboardInput";
+import TablePayments from "./Modal/TablePayments";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 
 function formatDateTime(dateString) {
   if (!dateString) return "";
@@ -36,7 +41,11 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [params, setParams] = useState({});
+  const [modalSelected, setModalSelected] = useState("");
   const [dataInvoice, setDataInvoice] = useState({
+    dateRegistered: "",
     email: "",
     state: "Pendiente",
     deliveryDate: "",
@@ -44,8 +53,7 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
     collaboratorId: collaboratorId?.id,
   });
 
-  console.log("dataInvoice", dataInvoice);
-  console.log("errorMessage", error);
+  console.log("collaboratorId", collaboratorId);
 
   const { data: session } = useSession();
   if (!session?.user || !collaboratorId?.id) return;
@@ -64,25 +72,22 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
           null
         );
 
-        console.log("res GET", res);
-
-        if (res.length === 0) console.log("No se encontraron facturas.");
-        if (res.error) console.error("Error:", res.error);
+        if (res.message) {
+          console.log("mensaje del servidor:", res.message);
+        }
 
         const formatted = res.map((el) => {
-          // Formatear delivery_date a AAAA-MM-DD
           let formattedDeliveryDate = "Por asignar";
           if (el.invoice?.delivery_date) {
             const deliveryDateObj = new Date(el.invoice.delivery_date);
-            formattedDeliveryDate = deliveryDateObj.toISOString().split("T")[0]; // AAAA-MM-DD
+            formattedDeliveryDate = deliveryDateObj.toISOString().split("T")[0];
           }
 
-          // Formatear created_at usando el.invoice.created_at a AAAA-MM-DD hh:mm:ss
           let formattedCreatedAt = "";
           if (el.invoice?.created_at) {
             const createdAtObj = new Date(el.invoice.created_at);
-            const isoString = createdAtObj.toISOString(); // AAAA-MM-DDTHH:MM:SS.sssZ
-            formattedCreatedAt = isoString.replace("T", " ").substring(0, 19); // AAAA-MM-DD hh:mm:ss
+            const isoString = createdAtObj.toISOString();
+            formattedCreatedAt = isoString.replace("T", " ").substring(0, 19);
           }
 
           const net = Number(el.invoice.total_net) || 0;
@@ -104,13 +109,43 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
           return formattedObject;
         });
 
-        console.log("invoices", formatted);
-
         setRows(formatted);
       } catch (error) {
         console.error("Error cargando las facturas:", error);
       }
     }
+
+    const params = new URLSearchParams({
+      searchById: collaboratorId.id,
+      screen: "sellerInvoiceScreen",
+    });
+
+    const gettingParams = async () => {
+      try {
+        const data = await fetchData(
+          `params?${params.toString()}`,
+          "GET",
+          null
+        );
+
+        console.log(22222222222, data);
+
+        setParams(
+          {
+            estimatedProfit: data.stats.confirmed.total_utility,
+            total_settlementsPaid: data.stats.confirmed.total_settlementsPaid,
+            balance: Number(
+              data.stats.confirmed.total_utility -
+                data.stats.confirmed.total_settlementsPaid
+            ),
+          } || {}
+        );
+      } catch (error) {
+        console.error("Error obteniendo los parámetros:", error);
+      }
+    };
+
+    gettingParams();
     fetchInvoices();
   }, [session, collaboratorId, invoice]);
 
@@ -132,6 +167,11 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
     setRows((prev) =>
       prev.map((row) => (row.id === rowId ? { ...row, [field]: value } : row))
     );
+  };
+
+  const handlePaymentAdmin = () => {
+    setIsOpenModal(true);
+    setModalSelected("Payment");
   };
 
   const handleEdit = () => {
@@ -156,6 +196,7 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
 
   const handleAdd = () => {
     setIsOpenModal(true);
+    setModalSelected("Add");
   };
 
   const handleCreateInvoice = async (data) => {
@@ -163,7 +204,6 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
     try {
       const res = await fetchData(`invoices`, "POST", data);
 
-      console.log("res", res);
       if (!res) {
         console.error("No hay respuesta del servidor");
         setError("Error del servidor al crear la factura.");
@@ -249,85 +289,142 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
 
   return (
     <>
-      <Paper sx={{ padding: 2, marginTop: 5, width: "1470px" }} elevation={3}>
-        <Stack
-          direction="row"
-          spacing={2}
-          alignItems="center"
-          mb={2}
-          sx={{ width: "100%", justifyContent: "space-between" }}
-        >
-          <div style={{ display: "flex", gap: "20px" }}>
-            {session.user.role !== ("Vendedor" || "Cliente") && (
-              <>
-                <TextField
-                  placeholder="Buscar..."
-                  value={globalFilter}
-                  onChange={(e) => setGlobalFilter(e.target.value)}
-                  size="small"
-                />
+      <section className="headSection">
+        <div className="statsSeller">
+          <h2>Estadísticas Generales</h2>
+          <div className="statsContainer">
+            <div className="statTitle">
+              <h3>Balance Total</h3>
+              <h3>Liquidación pagada</h3>
+              <h3>Ganancias generadas</h3>
+            </div>
+            <div className="statValue">
+              <h4>{`$ ${Number(params?.balance ?? 0).toLocaleString(
+                "es-CO"
+              )}`}</h4>
+              <h4>{`$ ${Number(
+                params?.total_settlementsPaid ?? 0
+              ).toLocaleString("es-CO")}`}</h4>
+              <h4>{`$ ${Number(params?.estimatedProfit ?? 0).toLocaleString(
+                "es-CO"
+              )}`}</h4>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div className="actionsSeller">
+          <h2>Acciones</h2>
+          <CopyToClipboardField
+            valueToCopy={
+              session.user.role === "Vendedor"
+                ? session.user.codeCollaborator
+                : collaboratorId?.codeCollaborator
+            }
+          />
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handlePaymentAdmin()}
+            // disabled={session.user.role !== "Admin" || session.user.role !== "Sucursal"}
+            sx={{ width: "200px", height: "40px" }}
+          >
+            Pagos Recibidos
+          </Button>
+        </div>
+      </section>
+      <section>
+        <Paper sx={{ padding: 2, marginTop: 5, width: "100%" }} elevation={3}>
+          <Stack
+            direction="row"
+            spacing={2}
+            alignItems="center"
+            mb={2}
+            sx={{ width: "100%", justifyContent: "space-between" }}
+          >
+            <div style={{ display: "flex", gap: "20px" }}>
+              {(session.user.role !== "Vendedor" ||
+                session.user.role !== "Cliente") && (
+                <>
+                  <TextField
+                    placeholder="Buscar..."
+                    value={globalFilter}
+                    onChange={(e) => setGlobalFilter(e.target.value)}
+                    size="small"
+                  />
+
+                  <Button
+                    variant="contained"
+                    color={isEditing ? "error" : "info"}
+                    onClick={handleEdit}
+                  >
+                    {isEditing ? "Cancelar" : "Editar"}
+                  </Button>
+                </>
+              )}
+            </div>
+            {(session.user.role !== "Vendedor" ||
+              session.user.role !== "Cliente") && (
+              <div style={{ display: "flex", gap: "20px" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleAdd}
+                  disabled={!isEditing}
+                >
+                  Agregar
+                </Button>
 
                 <Button
                   variant="contained"
-                  color={isEditing ? "error" : "info"}
-                  onClick={handleEdit}
+                  color="success"
+                  onClick={handleSave}
+                  disabled={!isEditing}
                 >
-                  {isEditing ? "Cancelar" : "Editar"}
+                  Guardar
                 </Button>
-              </>
+
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleDelete}
+                  disabled={!isEditing || selectedRows.length === 0}
+                >
+                  Eliminar Seleccionados
+                </Button>
+              </div>
             )}
-          </div>
-          {session.user.role !== ("Vendedor" || "Cliente") && (
-            <div style={{ display: "flex", gap: "20px" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleAdd}
-                disabled={!isEditing}
-              >
-                Agregar
-              </Button>
+          </Stack>
 
-              <Button
-                variant="contained"
-                color="success"
-                onClick={handleSave}
-                disabled={!isEditing}
-              >
-                Guardar
-              </Button>
-
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={handleDelete}
-                disabled={!isEditing || selectedRows.length === 0}
-              >
-                Eliminar Seleccionados
-              </Button>
-            </div>
-          )}
-        </Stack>
-
-        <DataTable
-          columns={customColumns}
-          data={filteredRows}
-          progressPending={false}
-          selectableRows
-          onSelectedRowsChange={(state) => setSelectedRows(state.selectedRows)}
-          onRowClicked={(row) => {
-            if (isEditing) return;
-            console.log("Row clicked:", row);
-            invoice(row);
+          <DataTable
+            columns={customColumns}
+            data={filteredRows}
+            progressPending={false}
+            selectableRows
+            onSelectedRowsChange={(state) =>
+              setSelectedRows(state.selectedRows)
+            }
+            onRowClicked={(row) => {
+              if (isEditing) return;
+              invoice(row);
+              console.log(129412934, row);
+            }}
+            pagination
+            highlightOnHover
+            dense
+            noDataComponent={
+              <h4 style={{ padding: "40px 0" }}>No hay datos para mostrar</h4>
+            }
+          />
+        </Paper>
+      </section>
+      {isOpenModal && modalSelected === "Add" ? (
+        <Modal
+          open={isOpenModal}
+          onClose={() => {
+            setIsOpenModal(false);
+            setModalSelected("");
           }}
-          pagination
-          highlightOnHover
-          dense
-          noDataComponent={<h4 style={{padding: "40px 0"}}>No hay datos para mostrar</h4>}
-        />
-      </Paper>
-      {isOpenModal && (
-        <Modal open={isOpenModal} onClose={() => setIsOpenModal(false)}>
+        >
           <div className="modalContent">
             <h2>Registra una nueva factura</h2>
             <div className="fieldsContainer">
@@ -373,6 +470,19 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
                 <MenuItem value="Pendiente">Pendiente</MenuItem>
                 <MenuItem value="Cancelado">Cancelado</MenuItem>
               </TextField>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <FormControl fullWidth>
+                  <DatePicker
+                    label="Selecciona una fecha"
+                    value={dataInvoice.dateRegistered || null}
+                    onChange={(newValue) => setDataInvoice((prev) => ({
+                      ...prev,
+                      dateRegistered: newValue ? newValue.format("YYYY-MM-DD") : "",
+                    }))}
+                    format="YYYY-MM-DD"
+                  />
+                </FormControl>
+              </LocalizationProvider>
               <TextField
                 label="Fecha de entrega"
                 type="date"
@@ -434,7 +544,29 @@ const InvoicesSellerScreen = ({ collaboratorId, invoice, invoiceByCode }) => {
             </div>
           </div>
         </Modal>
-      )}
+      ) : isOpenModal && modalSelected === "Payment" ? (
+        <Modal
+          open={isOpenModal}
+          onClose={() => {
+            setIsOpenModal(false);
+            setModalSelected("");
+          }}
+        >
+          <TablePayments
+            type="settlementSeller"
+            session={session}
+            sellerId={
+              session.user.role === "Vendedor"
+                ? session?.user?.id
+                : collaboratorId?.id
+            }
+            handleCloseModalF={() => {
+              setIsOpenModal(false);
+              setModalSelected("");
+            }}
+          />
+        </Modal>
+      ) : null}
     </>
   );
 };

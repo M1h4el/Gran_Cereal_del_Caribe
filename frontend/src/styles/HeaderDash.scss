@@ -5,6 +5,11 @@ header {
   background-color: logbar.$primary-color;
   height: 100px;
 
+  .logoContainer {
+    @include logbar.flexing(null, flex-start, center);
+    margin-left: 50px;
+  }
+
   .menuBar {
     @include logbar.flexing(null, center, center);
     height: 100%;

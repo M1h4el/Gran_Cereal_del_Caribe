@@ -41,11 +41,11 @@ export async function PUT(req) {
     return NextResponse.json({error: "Invalid or missing userId"}, { status: 400 });
   }
   try {
-    const {phone, dob, country, region, city, postalCode, address } =
+    const {phone, dob, country, region, city, postalCode = null, address, neighborhood, lat, lon, description = null } =
       await req.json();
 
     
-    if (!phone || !country || !region || !city || !postalCode || !address) {
+    if (!phone || !country || !region || !city || !address || !neighborhood /* || !lat || !lon */) {
       return NextResponse.json({error: "Missing required fields"}, { status: 400 });
     }
 
@@ -59,11 +59,24 @@ export async function PUT(req) {
       city,
       postalCode,
       address,
+      lat,
+      lon,
+      neighborhood,
+      description
     });
 
+    const updating = await queryDB(
+      "UPDATE users SET phone = ?, dob = ?, status = 'confirmed' WHERE user_id = ?;",
+      [phone, formattedDob, userId]
+    );
+
+    if (updating.affectedRows === 0) {
+      return NextResponse.json("user not found", {status: 404});
+    }
+
     const res = await queryDB(
-      "UPDATE users SET phone = ?, dob = ?, country = ?, region = ?, city = ?, postalCode = ?, address = ?, status = 'confirmed' WHERE user_id = ?;",
-      [phone, formattedDob, country, region, city, postalCode, address, userId]
+      "INSERT INTO locations (user_id, country, region, city, postalCode, address, neighborhood, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
+      [userId, country, region, city, postalCode, address, neighborhood, description]
     );
 
     console.log("res", res);

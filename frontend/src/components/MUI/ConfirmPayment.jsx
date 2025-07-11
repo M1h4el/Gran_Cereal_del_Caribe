@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   Box,
   Grid,
@@ -12,15 +15,17 @@ import {
 } from "@mui/material";
 
 function ConfirmPayment({ onCancel, onConfirm }) {
+  const [selectedDate, setSelectedDate] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [details, setDetails] = useState("");
   const [paymentType, setPaymentType] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(0);
   const [errors, setErrors] = useState({});
 
   const handleSubmit = async () => {
     const newErrors = {};
 
+    if (!selectedDate) newErrors.selectedDate = "Fecha requerida";
     if (!paymentMethod) newErrors.paymentMethod = "Requerido";
     if (!details.trim()) newErrors.details = "Requerido";
     if (!paymentType) newErrors.paymentType = "Requerido";
@@ -31,6 +36,7 @@ function ConfirmPayment({ onCancel, onConfirm }) {
 
     if (Object.keys(newErrors).length === 0) {
       onConfirm({
+        date: selectedDate.format("YYYY-MM-DD"),
         paymentMethod,
         details,
         paymentType,
@@ -38,18 +44,40 @@ function ConfirmPayment({ onCancel, onConfirm }) {
       });
     }
 
-    
+    // Reset form fields after submission
+    setSelectedDate(null);
+    setPaymentMethod("");
+    setDetails("");
+    setPaymentType("");
+    setAmount("");
+    setErrors({});
   };
 
   return (
-    <Box sx={{ p: 3, width: "500px" }}>
-      <Typography variant="h6" gutterBottom sx={{paddingBottom: "20px"}}>
+    <Box sx={{ p: 3, width: "100%" }}>
+      <Typography variant="h6" gutterBottom sx={{ paddingBottom: "20px" }}>
         Confirmar Pago de Factura
       </Typography>
-      <Grid container spacing={2} sx={{display: "flex", flexDirection: "column"}}>
+      <Grid
+        container
+        spacing={2}
+        sx={{ display: "flex", flexDirection: "column" }}
+      >
+        <Grid item xs={12} sm={6}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <FormControl fullWidth error={!!errors.paymentMethod}>
+              <DatePicker
+                label="Selecciona una fecha"
+                value={selectedDate}
+                onChange={(newValue) => setSelectedDate(newValue)}
+                format="YYYY-MM-DD"
+              />
+            </FormControl>
+          </LocalizationProvider>
+        </Grid>
         {/* Modalidad de Pago */}
         <Grid item xs={12} sm={6}>
-          <FormControl fullWidth error={!!errors.paymentMethod} >
+          <FormControl fullWidth error={!!errors.paymentMethod}>
             <InputLabel>Modalidad de Pago</InputLabel>
             <Select
               value={paymentMethod}

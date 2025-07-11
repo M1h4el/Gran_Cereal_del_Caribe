@@ -446,7 +446,6 @@ export default function DataTable({
           </Button>
         </div>
       </Stack>
-
       <DataTableBase
         columns={customColumns}
         data={tableRows}

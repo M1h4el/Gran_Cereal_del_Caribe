@@ -12,14 +12,18 @@ import { useSession } from "next-auth/react";
 import FormTabModal from "@/components/Modal/FormTabModal";
 import CopyCode from "../../components/MUI/CopyToClipboardInput";
 import { fetchData } from "../../../utils/api";
+import { Button } from "@mui/material";
+import TablePayments from "@/components/Modal/TablePayments";
 
 function SucursalContent() {
   const { data: session, status } = useSession();
   const [routes, setRoutes] = useState([]);
   const [initialIndexRoute, setInitialIndexRoute] = useState(0);
-  const [totalProducts, setTotalProducts] = useState(0);
   const [products, setProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const [params, setParams] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [statusUser, setStatusUser] = useState(null);
@@ -41,13 +45,14 @@ function SucursalContent() {
     session
   );
 
+  console.log(111111111111, params);
+
   // Memoized functions
   const handleStatusUser = useCallback(async () => {
     setStatusUser("confirmed");
   }, []);
 
   const confirmUser = useCallback(() => {
-    setStatusUser("confirmed");
     if (statusUser === "unconfirmed") {
       setIsModalOpen(true);
     }
@@ -66,28 +71,19 @@ function SucursalContent() {
   useEffect(() => {
     if (status !== "authenticated" || !session?.user) return;
 
-    async function confirmedUser() {
-      try {
-        
-        const response = await fetchData(`confirmUser`, "POST", session?.user?.id);
+    const fetchUserStatus = async () => {
+      const status = await fetchData(
+        `confirmUser?userId=${session?.user?.id}`,
+        "POST",
+        session?.user?.id
+      );
 
-        if (response?.error) {
-          console.error("Error al confirmar usuario:", response.error);
-          return;
-        }
+      setStatusUser(status || "confirmed");
+    };
 
-        if (response?.response) {
-          confirmUser();
-        }
+    fetchUserStatus();
 
-      } catch (error) {
-        console.error("Error al obtener el estado del usuario:", error);
-        setIsError(true);
-      }
-    }
-
-
-    confirmedUser();
+    confirmUser();
 
     const userRole = session?.user?.role;
     const userName = session?.user?.userName;
@@ -127,9 +123,30 @@ function SucursalContent() {
       }
     }
 
+    async function fetchParamsAdmin() {
+      try {
+        const data = await fetchData(
+          `params?searchById=${session?.user?.id}`,
+          "GET",
+          {type}
+        );
+
+        if (!data || data.length === 0) {
+          console.error("No se encontraron parámetros de administrador");
+          return;
+        }
+
+        setParams({ ...data.params });
+        return data;
+      } catch (error) {
+        console.error("Error al cargar datos de administrador:", error);
+      }
+    }
+
     // Set initial routes based on role
     if (userRole === "Admin") {
       setRoutes([]);
+      fetchParamsAdmin();
     } else if (userRole === "Sucursal") {
       setRoutes([userName]);
       loadSucursalData();
@@ -139,7 +156,11 @@ function SucursalContent() {
     }
 
     setInitialIndexRoute(roleIndexMap[userRole] || 0);
-  }, [status, session, confirmUser]);
+  }, [status, session]);
+
+  function handleEntregas() {
+    setIsModalOpen2(true);
+  }
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -152,7 +173,6 @@ function SucursalContent() {
     }
     if (role === "Sucursal") {
       setSelection((prev) => ({ ...prev, sucursal: route }));
-      setTotalProducts(route?.total_products);
     }
     if (role === "Vendedor") {
       setSelection((prev) => ({ ...prev, collaborator: route }));
@@ -165,6 +185,10 @@ function SucursalContent() {
 
   const handleSearchByCodeInvoice = (code) => {
     setInvoiceByCode(code);
+  };
+
+  const handleCloseModal3 = () => {
+    setIsModalOpen3(false);
   };
 
   const handleCollaboratorSelected = (collaborator) => {
@@ -270,12 +294,11 @@ function SucursalContent() {
       case 0:
         return <SucursalCards handleRoute={handleRoute} />;
       case 1:
-        if (!selection.sucursal) return <div>Selecciona una Sucursal</div>;
+        if (!selection.sucursal) return <div>Cargando...</div>;
         return (
           <SellersScreen
             sucursal={selection.sucursal}
             collaborator={handleCollaboratorSelected}
-            totalProducts={totalProducts}
             handleGetProducts={handleGetProducts}
             invoicehandle={handleInvoiceSelected}
             searchByCodeInvoice={handleSearchByCodeInvoice}
@@ -283,7 +306,7 @@ function SucursalContent() {
         );
       case 2:
         if (!selection.collaborator)
-          return <div>Selecciona un colaborador</div>;
+          return <div>Cargando...</div>;
         return selection.collaborator.role === "Vendedor" ? (
           <InvoicesSellerScreen
             invoiceByCode={invoiceByCode}
@@ -297,7 +320,7 @@ function SucursalContent() {
           />
         );
       case 3:
-        if (!selection.invoices) return <div>Selecciona una factura</div>;
+        if (!selection.invoices) return <div>Cargando...</div>;
         return <InvoiceScreen data={selection.invoices} products={products} />;
       default:
         return <div>🔍 Vista profunda en {routes[routes.length - 1]}</div>;
@@ -358,45 +381,79 @@ function SucursalContent() {
             <hr />
             <div className="statsParams">
               <div className="titleParams">
-                <div>Parámetro</div>
-                <div>Parámetro</div>
-                <div>Parámetro</div>
-                <div>Parámetro</div>
+                <h4>Deuda Total</h4>
+                <h4>Utilidad Total</h4>
+                <h4>Saldo Sucursales</h4>
               </div>
               <div className="valueParams">
-                <div>$0</div>
-                <div>$0</div>
-                <div>0%</div>
-                <div>0%</div>
+                <h4>{`$ ${Number(
+                  params?.total_admin_factory_debt || 0
+                ).toLocaleString("es-CO")}`}</h4>
+                <h4>{`$ ${Number(
+                  params?.total_admin_profit || 0
+                ).toLocaleString("es-CO")}`}</h4>
+                <h4>{`$ ${Number(
+                  params?.total_sucursal_admin_debt || 0
+                ).toLocaleString("es-CO")}`}</h4>
               </div>
             </div>
           </div>
           <div className="actions">
-            <h2>Acciones</h2>
+            <h2>Entregas</h2>
             <hr />
             <div className="actionButtons">
-              <button>Buttons</button>
-              <button>Buttons</button>
-              <button>Buttons</button>
-              <button>Buttons</button>
+              <h5>Total Productos: {}</h5>
+              <h5>Ultima Entrega</h5>
+              <div className="boton-gestionar">
+                <button onClick={() => handleEntregas()}>
+                  Gestionar Productos
+                </button>
+              </div>
             </div>
           </div>
           <div>
             <CopyCode valueToCopy={session.user.codeCollaborator} />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setIsModalOpen3(true)}
+            >
+              Gestionar Pagos
+            </Button>
           </div>
         </section>
       )}
 
       <section>{renderComponent()}</section>
 
-      {isModalOpen && (
-        <Modal open={isModalOpen} onClose={handleCloseModal} required>
-          <FormTabModal
-            onClose={handleCloseModal}
-            user={session.user}
-            statusUser={statusUser}
-            handleStatus={handleStatusUser}
-          />
+      {(isModalOpen || isModalOpen2 || isModalOpen3) && (
+        <Modal
+          open={isModalOpen || isModalOpen2 || isModalOpen3}
+          onClose={handleCloseModal}
+          required
+        >
+          {isModalOpen && (
+            <FormTabModal
+              onClose={handleCloseModal}
+              user={session.user}
+              statusUser={statusUser}
+              handleStatus={handleStatusUser}
+            />
+          )}
+
+          {
+            isModalOpen2 &&
+              null /* Aquí podrías poner otro modal si quisieras */
+          }
+
+          {isModalOpen3 && (
+            <TablePayments
+              adminId={session?.user.id}
+              session={session}
+              type="Admin"
+              handleCloseModalF={handleCloseModal3}
+            />
+          )}
         </Modal>
       )}
     </>

@@ -7,8 +7,8 @@ import ProductsTable from "./Swal/ProductsTable";
 import Modal from "./Modal";
 import CopyCode from "../components/MUI/CopyToClipboardInput";
 import InvoicesTable from "./InvoicesTable";
-
-
+import { Button } from "@mui/material";
+import TablePayments from "./Modal/TablePayments";
 
 function formatDateToCustom(datetime) {
   const date = new Date(datetime);
@@ -24,7 +24,15 @@ function formatDateToCustom(datetime) {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCollaborator, searchByCodeInvoice }) {
+function ProductsComponent({
+  sucursal,
+  handleGetProducts,
+  infoCollaborator,
+  searchByCodeInvoice,
+  session,
+  totalDebt,
+  params,
+}) {
   const [stock, setStock] = useState(0);
   const [ultimoUpdate, setUltimoUpdate] = useState("Actualizado hace 1 día");
   const [codigoBuscar, setCodigoBuscar] = useState("");
@@ -41,7 +49,7 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
   };
 
   const handleGetInInvoice = (row) => {
-    console.log("row", row)
+    console.log("row", row);
     if (infoCollaborator) {
       const cardObject = {
         id: row?.user_seller_id,
@@ -53,7 +61,7 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
     } else {
       console.error("handleRoute no está definido");
     }
-  }
+  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -106,12 +114,15 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
     }
   }
 
+  const handlePaymentAdmin = () => {
+    setIsModalOpen(true);
+    setModalSelected("Payment");
+  };
+
   async function handleBuscarInvoice() {
     if (!invoiceBuscar) return;
     try {
-      const result = await fetchData(
-        `/invoices?invoiceCode=${invoiceBuscar}`
-      );
+      const result = await fetchData(`/invoices?invoiceCode=${invoiceBuscar}`);
       setInvoiceEncontrado(result || null);
       setIsModalOpen(true);
       console.log("Invoice found:", result);
@@ -129,7 +140,7 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
   const handleGestionarInvoices = () => {
     setInvoiceBuscar("");
     setIsModalOpen(true);
-    setModalSelected("Invoices")
+    setModalSelected("Invoices");
   };
 
   const renderModalContent = () => {
@@ -166,7 +177,7 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
         </>
       );
     }
-  
+
     if (invoiceEncontrado && modalSelected === "") {
       return (
         <>
@@ -200,7 +211,7 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
         </>
       );
     }
-  
+
     if (modalSelected === "Products") {
       return (
         <ProductsTable
@@ -211,11 +222,24 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
         />
       );
     }
-  
+
     if (modalSelected === "Invoices") {
       return <InvoicesTable />;
     }
-  
+
+    if (modalSelected === "Payment") {
+      return (
+        <>
+          <TablePayments
+            sucursal={sucursal}
+            session={session}
+            type="Sucursal"
+            handleCloseModalF={handleCloseModal}
+          />
+        </>
+      );
+    }
+
     return null;
   };
 
@@ -226,8 +250,7 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
           <h2>Productos</h2>
           <div className="resumen-productos">
             <div>
-              Total productos:{" "}
-              <strong>{totalProducts ? totalProducts : 0}</strong>
+              Total productos: <strong>{sucursal?.total_products || 0}</strong>
             </div>
 
             <div>
@@ -257,7 +280,7 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
         </div>
         <hr />
         <div className="invoicesContainer">
-          <h2>Facturas/Pagos</h2>
+          <h2>Facturas</h2>
           <div className="resumenInvoices">
             <div>
               Total facturas:{" "}
@@ -287,12 +310,26 @@ function ProductsComponent({ sucursal, totalProducts, handleGetProducts, infoCol
           </div>
         </div>
         <hr />
-        <div className="moreOptions">
-          <CopyCode valueToCopy={sucursal.codeCollaborator} />
+        <div>
+          <h2>Más</h2>
+
+          <div className="moreOptions">
+            <CopyCode valueToCopy={sucursal.codeCollaborator} />
+          </div>
+          <div className="boton-gestionar">
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => handlePaymentAdmin()}
+              sx={{ width: "200px", height: "40px" }}
+            >
+              Gestionar Pagos
+            </Button>
+          </div>
         </div>
       </div>
       {isModalOpen && (
-        <Modal open={isModalOpen} onClose={handleCloseModal}>
+        <Modal open={isModalOpen} onClose={handleCloseModal} required>
           {renderModalContent()}
         </Modal>
       )}

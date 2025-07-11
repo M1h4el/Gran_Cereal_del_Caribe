@@ -11,7 +11,6 @@ import {
   Paper,
   Grid,
 } from "@mui/material";
-import { update } from "lodash";
 import { fetchData } from "../../../utils/api";
 
 const SupplyInventory = ({ arrayProducts }) => {

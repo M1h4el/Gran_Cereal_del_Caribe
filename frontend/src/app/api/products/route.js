@@ -183,7 +183,7 @@ export async function PUT(req) {
 
     const infoNotification = `${JSON.stringify(updatedProducts)};${JSON.stringify(insertedProducts)}`
 
-    await queryDB(
+    /* await queryDB(
       "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
       [sucursalId, infoNotification, "25"]
     );
@@ -206,7 +206,7 @@ export async function PUT(req) {
       "INSERT INTO notifications (user_id, info, type) VALUES (?, ?, ?)",
       [adminId, infoNotification, "125"]
     )
-
+ */
     return NextResponse.json(
       { message: "Productos procesados correctamente", insertedProducts, updatedProducts },
       { status: 200 }

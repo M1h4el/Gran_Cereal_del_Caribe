@@ -1,6 +1,60 @@
 @use "./LogBar.scss" as v;
 @use "./mixins.scss" as mixTable;
 
+.headSection {
+  @include v.flexing(row, space-between, flex-start);
+  width: 100%;
+  height: 250px;
+  margin-top: 30px;
+  padding: 30px 40px;
+  background-color: #4d4d6052;
+  border-radius: 10px;
+  hr {
+    width: 1px;
+    height: 100%;
+    margin: 0 30px;
+  }
+  .statsSeller {
+    @include v.flexing(column, flex-start, flex-start);
+    width: 30%;
+    height: 100%;
+    gap: 30px;
+    .statsContainer {
+      @include v.flexing(row, space-between, center);
+      width: 100%;
+      gap: 25px;
+      .statValue {
+        @include v.flexing(column, flex-start, flex-start);
+        gap: 25px;
+        text-align: left;
+      }
+      .statTitle {
+        @include v.flexing(column, flex-end, flex-start);
+        gap: 25px;
+        text-align: left;
+      }
+    }
+  }
+  .actionsSeller {
+    @include v.flexing(column, flex-start, flex-start);
+    height: 100%;
+    gap: 30px;
+    flex: 1;
+    .actionButton {
+      @include v.flexing(row, center, center);
+      width: 100%;
+      height: 50px;
+      background-color: #4d4d60;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      &:hover {
+        background-color: #3a3a4c;
+      }
+    }
+  }
+}
+
 .table-container {
   @include v.flexing(column, center, center);
   width: 100%;

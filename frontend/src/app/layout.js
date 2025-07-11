@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "leaflet/dist/leaflet.css";
 import Footer from '../components/Layout'
 import {DataProvider} from '@/context/DataContext'
 import { SessionProvider } from "next-auth/react";

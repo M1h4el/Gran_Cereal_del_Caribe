@@ -8,7 +8,7 @@ export async function GET(req, { params }) {
 
     if (!params || !collaboratorId) {
       return NextResponse.json(
-        { error: "Usuario o sucursal no especificados" },
+        { message: "Usuario o sucursal no especificados" },
         { status: 400 }
       );
     }
@@ -19,7 +19,7 @@ export async function GET(req, { params }) {
       );
     if (invoices.length === 0) {
       return NextResponse.json(
-        { error: "No se encontraron facturas" },
+        { message: "No se encontraron facturas" },
         { status: 404 }
       );
     }
@@ -38,7 +38,7 @@ export async function GET(req, { params }) {
       })
     );
 
-    console.log("User Clients with Invoices", userClients);
+    // console.log("User Clients with Invoices", userClients);
 
     return NextResponse.json(userClients, { status: 200 });
   } catch (error) {

@@ -6,12 +6,11 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import PhoneAndDOBForm from "../PhoneAndDOBForm";
-import AddressForm from "../AddressForm";
 import { useState } from "react";
 import { fetchData } from "../../../utils/api";
-import { useSession, signIn } from "next-auth/react";
+/* import AddressForm from "../AddressForm"; */
 
-const steps = ["Verificar Email", "Datos Personales", "Localización"];
+const steps = ["Verificar Email", "Datos Personales"/* , "Localización" */];
 
 export default function FormTabModal({
   onClose,
@@ -29,12 +28,15 @@ export default function FormTabModal({
     region: "",
     city: "",
     postalCode: "",
+    neighborhood: "",
     address: "",
+    /* lat: 0,
+    lon: 0, */
+    description: "",
   });
 
   console.log("useState error", error);
-
-  console.log("formData", formData);
+  console.log("useState formData", formData);
 
   const saveData = async () => {
     try {
@@ -60,11 +62,6 @@ export default function FormTabModal({
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setError("");
-  };
-
-  const handleMapClick = () => {
-    console.log("Integrando con mapa con esta dirección:", formData.address);
-    // Aquí podrías abrir un modal o componente de mapa (como Google Maps)
   };
 
   const isStepSkipped = (step) => skipped.has(step);
@@ -109,76 +106,78 @@ export default function FormTabModal({
   }; */
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Stepper activeStep={activeStep}>
-        {steps.map((label, index) => {
-          const stepProps = {};
-          const labelProps = {};
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
-            </Step>
-          );
-        })}
-      </Stepper>
+    <>
+      <Box sx={{ width: "100%" }}>
+        <Stepper activeStep={activeStep}>
+          {steps.map((label, index) => {
+            const stepProps = {};
+            const labelProps = {};
+            if (isStepSkipped(index)) {
+              stepProps.completed = false;
+            }
+            return (
+              <Step key={label} {...stepProps}>
+                <StepLabel {...labelProps}>{label}</StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
 
-      {activeStep === steps.length ? (
-        <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            {!error ? "Registro completado correctamente 🎉" : error.startsWith('Duplicate entry') ? "El número telefónico digitado ya se encuentra registrado." : error}
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={error === ""}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >Atrás</Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <Button variant="contained" color="primary" onClick={onClose}>
-              Cerrar
-            </Button>
-          </Box>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <Box sx={{ mt: 2, mb: 1 }}>
-            {activeStep === 0 ? (
-              <Typography>Verifica tu email para continuar.</Typography>
-            ) : activeStep === 1 ? (
-              <PhoneAndDOBForm formData={formData} onChange={handleChange} error={error}/>
-            ) : (
-              <AddressForm
-                formData={formData}
-                onChange={handleChange}
-                onMapClick={handleMapClick}
-              />
-            )}
-          </Box>
+        {activeStep === steps.length ? (
+          <React.Fragment>
+            <Typography sx={{ mt: 2, mb: 1 }}>
+              {!error ? "Registro completado correctamente 🎉" : error.startsWith('Duplicate entry') ? "El número telefónico digitado ya se encuentra registrado." : error}
+            </Typography>
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Button
+                color="inherit"
+                disabled={error === ""}
+                onClick={handleBack}
+                sx={{ mr: 1 }}
+              >Atrás</Button>
+              <Box sx={{ flex: "1 1 auto" }} />
+              <Button variant="contained" color="primary" onClick={onClose}>
+                Cerrar
+              </Button>
+            </Box>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Box sx={{ mt: 2, mb: 1 }}>
+              {activeStep === 0 ? (
+                <Typography>Verifica tu email para continuar.</Typography>
+              ) : activeStep === 1 ? (
+                <PhoneAndDOBForm formData={formData} onChange={handleChange} error={error}/>
+              ) : (
+                null
+                // <AddressForm
+                //   formData={formData}
+                //   onChange={handleChange}
+                // />
+              )}
+            </Box>
 
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0 || error === ""}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Atrás
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <Button
-              onClick={() => handleNext(activeStep === steps.length - 1)}
-              variant="contained"
-              disabled={error !== "" && activeStep == steps.length - 1}
-            >
-              {activeStep === steps.length - 1 ? "Finalizar" : "Siguiente"}
-            </Button>
-          </Box>
-        </React.Fragment>
-      )}
-    </Box>
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Button
+                color="inherit"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                sx={{ mr: 1 }}
+              >
+                Atrás
+              </Button>
+              <Box sx={{ flex: "1 1 auto" }} />
+              <Button
+                onClick={() => handleNext(activeStep === steps.length - 1)}
+                variant="contained"
+                disabled={error !== "" && activeStep == steps.length - 1}
+              >
+                {activeStep === steps.length - 1 ? "Finalizar" : "Siguiente"}
+              </Button>
+            </Box>
+          </React.Fragment>
+        )}
+      </Box>
+    </>
   );
 }
