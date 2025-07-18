@@ -80,9 +80,12 @@ function InvoiceScreen({ data, products }) {
 
         const formattedPaid = res.paid.map((payment) => ({
           ...payment,
-          created_at: formatter.format(new Date(payment.created_at)),
-          type: payment.type ? String(payment.type).toUpperCase() : '', // Corrección aquí
-          status: payment.status === 0 ? 'En proceso' : 'Confirmado' // Corrección aquí
+          date_payment: formatter.format(new Date(payment.date_payment)),
+          type: payment.type ? String(payment.type).toUpperCase() : '',
+          status: payment.status === 0 ? 'En proceso' : 'Confirmado',
+          amount: `$${Number(payment.amount || 0).toLocaleString("es-CL", {
+            minimumFractionDigits: 0,
+          })}`,
         }));
 
         setPayments(formattedPaid);

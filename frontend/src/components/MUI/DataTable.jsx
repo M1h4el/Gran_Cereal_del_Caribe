@@ -594,7 +594,7 @@ export default function DataTable({
                     <td>{payment.type}</td>
                     <td>{payment.details}</td>
                     <td>{payment.status}</td>
-                    <td>{payment.created_at}</td>
+                    <td>{payment.date_payment}</td>
                     <td>{payment.amount}</td>
                   </tr>
                 ))}

@@ -127,8 +127,7 @@ function SucursalContent() {
       try {
         const data = await fetchData(
           `params?searchById=${session?.user?.id}`,
-          "GET",
-          {type}
+          "GET"
         );
 
         if (!data || data.length === 0) {

@@ -12,13 +12,12 @@ export async function GET(req, { params }) {
         `SELECT p.productCode, p.name, p.price, ind.idinvoice_detail, ind.quantity, ind.unitPrice, ind.total, p.created_at, p.updated_at  FROM invoice_details ind, products p WHERE ind.idinvoice = ? AND ind.productCode = p.productCode AND ind.state = 0;`,
         [invoiceId]
       );
-      console.log("detailllllls", details);
 
       if (details.length === 0) {
         return NextResponse.json({error: "Detalles no encontrados"}, {status: 404})
       }
 
-      const paid = await queryDB("SELECT idpayment, method_payment, type, amount, details, created_at, status FROM payments WHERE invoice_id = ?;", [invoiceId]);
+      const paid = await queryDB("SELECT idpayment, method_payment, type, amount, details, date_payment, status FROM payments WHERE invoice_id = ?;", [invoiceId]);
 
       console.log("allData from details API", details);
 
