@@ -7,8 +7,8 @@ async function checkDatabase() {
     console.log('Database:', process.env.MYSQLDATABASE);
     
     const connection = await mysql.createConnection({
-      host: process.env.MYSQLHOST,
-      port: process.env.MYSQLPORT || 3306,
+      host: 'kodama.proxy.rlwy.net',
+      port: 3306,
       user: process.env.MYSQLUSER,
       password: process.env.MYSQLPASSWORD,
       database: process.env.MYSQLDATABASE
