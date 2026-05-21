@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "check-db": "node check-db.js"
+  }
+}
